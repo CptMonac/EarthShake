@@ -1,0 +1,26 @@
+Reconstructme:
+        Free SDK for non-commercial use (a license fee applies for professional purposes): http://reconstructme.net/projects/reconstructmeqt/
+        Kinect for 3d scans: http://www.open-electronics.org/kinect-for-3d-scans/
+        One Minute Example: http://reconstructme.net/wp-content/uploads/ReconstructMe/2.0/doc/_getting_started_page.html#OneMinuteExample
+        Instructables tutorial: http://www.instructables.com/id/EASY-Kinect-3D-Scanner/
+ 
+PointCloud Library(PCL):
+        "OpenCV for 3D"
+        PCL website: http://pointclouds.org/
+        Get more info on octree: http://docs.pointclouds.org/trunk/group__octree.html
+                                                         http://www.pointclouds.org/documentation/tutorials/octree_change.php#octree-change-detection
+        Face Point Cloud Tracking using PCL, OpenCV, and Kinect: http://www.youtube.com/watch?v=4fJCAQZpvKk
+        3d reconstruction with opencv and point cloud library: http://blog.martinperis.com/2012/01/3d-reconstruction-with-opencv-and-point.html
+ 
+OpenCV:
+        Blob Detection using FindContour()
+                 http://docs.opencv.org/modules/imgproc/doc/structural_analysis_and_shape_descriptors.html?highlight=contour#cv.FindContours
+ 
+        Extracting contours with OpenCV
+                http://bytefish.de/blog/extracting_contours_with_opencv/
+ 
+        Tracking Colored Objects in Video using OpenCV:
+                http://www.technical-recipes.com/2011/tracking-coloured-objects-in-video-using-opencv/
+ 
+        StackOverflow single-blob tracking?
+                http://stackoverflow.com/questions/12943410/opencv-python-single-rather-than-multiple-blob-tracking
