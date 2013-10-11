@@ -24,3 +24,7 @@ OpenCV:
  
         StackOverflow single-blob tracking?
                 http://stackoverflow.com/questions/12943410/opencv-python-single-rather-than-multiple-blob-tracking
+
+ROS Object Recognition Kitchen Library
+        http://wg-perception.github.io/object_recognition_core/
+        http://wiki.ros.org/groovy/Installation/Ubuntu
