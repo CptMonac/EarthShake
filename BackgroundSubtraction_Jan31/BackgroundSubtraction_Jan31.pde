@@ -248,31 +248,32 @@ boolean rectOverlap(BlobRect A, BlobRect B)
   if (valueInRange(A.x, B.x, B.x + B.blobWidth))
   {
     xOverlap = true;
-    boundX = min(A.x,B.x);
-    boundWidth = max(A.x+A.blobWidth, B.x+B.blobWidth);
+    boundX = B.x;
+    boundWidth = (A.x+A.blobWidth) - (B.x);
   }
   else if (valueInRange(B.x, A.x, A.x + A.blobWidth))
   {
     xOverlap = true;
-    boundX = min(A.x,B.x);
-    boundWidth = max(A.x+A.blobWidth, B.x+B.blobWidth);
+    boundX = A.x;
+    boundWidth = (B.x + B.blobWidth) - (A.x);
   }
 
   //Vertical Overlap
   if (valueInRange(A.y, B.y, B.y + B.blobHeight))
   {
     yOverlap = true;
-    boundY = min(B.y,A.y);
-    boundHeight = max(A.y+A.blobHeight, B.y+B.blobHeight);
+    boundY = B.y;
+    boundHeight = (A.y+A.blobHeight) - (B.y);
 
   }
   else if (valueInRange(B.y, A.y, A.y + B.blobHeight))
   {
     yOverlap = true;
-    boundY = min(A.y,B.y);
-    boundHeight = max(A.y+A.blobHeight, B.y+B.blobHeight);
+    boundY = A.y;
+    boundHeight = (B.y+B.blobHeight) - (A.y);
   }
 
+  //Create new bounding rectangle
   if (xOverlap && yOverlap)
   {
     boundingRectangle = new BlobRect(boundX, boundY, boundWidth, boundHeight);
