@@ -13,14 +13,13 @@ import blobDetection.*;
 OpenCV opencv;
 PImage beforeTower, afterTower, diff, temp;
 SimpleOpenNI  context;
-int snapshotNumber;
 Mat skinHistogram;
 String prompt;
 String fileName;
 int[] dmap1,dmap2;
-
 ArrayList<Contour> contours;
 BlobDetection theBlobDetection;
+BlobRect boundingRectangle;
 
 
 void setup()
@@ -37,21 +36,22 @@ void setup()
   context.enableUser();
   context.enableRGB();
   
-  //Capture images
+  //Initialize capture images
   beforeTower = createImage(640, 480, RGB);
   temp = context.depthImage();
   beforeTower = temp.get();
   size(beforeTower.width, beforeTower.height);
 
+  //Initialize openCv
   opencv = new OpenCV(this, beforeTower);
-  snapshotNumber = 0;
 }
 
 void draw()
 {
   
-  context.update();
-  if ((keyPressed) && (key == 'c')) //Take a before picture
+  context.update();                 //Update camera image
+
+  if ((keyPressed) && (key == 'c')) //Take a reference picture if camera key pressed
   {
     background(150);
     beforeTower = createImage(640, 40, RGB);
@@ -136,39 +136,152 @@ void drawBlobsAndEdges(boolean drawBlobs, boolean drawEdges)
   noFill();
   Blob b;
   EdgeVertex eA, eB;
-  for (int n=0 ; n<theBlobDetection.getBlobNb() ; n++)
+  ArrayList<BlobRect> towerContours = mergeBlobs();
+  
+  if (drawBlobs)
   {
-    b=theBlobDetection.getBlob(n);
-    if (b!=null)
+    BlobRect tempBlob;
+    for (int i = 0; i<towerContours.size(); i++)
     {
-      // Edges
-      if (drawEdges)
-      {
-        strokeWeight(2);
-        stroke(0, 255, 0);
-        for (int m=0;m<b.getEdgeNb();m++)
-        {
-          eA = b.getEdgeVertexA(m);
-          eB = b.getEdgeVertexB(m);
-          if (eA !=null && eB !=null)
-            line(
-            eA.x*width, eA.y*height, 
-            eB.x*width, eB.y*height
-              );
-        }
-      }
+      strokeWeight(2);
+      stroke(255, 0, 0);
+      tempBlob = towerContours.get(i);
+      rect(tempBlob.x, tempBlob.y, tempBlob.blobWidth, tempBlob.blobHeight);
+    }
+  }
+  // for (int n=0 ; n<theBlobDetection.getBlobNb() ; n++)
+  // {
+  //   b=theBlobDetection.getBlob(n);
+  //   if (b!=null)
+  //   {
+  //     // Edges
+  //     if (drawEdges)
+  //     {
+  //       strokeWeight(2);
+  //       stroke(0, 255, 0);
+  //       for (int m=0;m<b.getEdgeNb();m++)
+  //       {
+  //         eA = b.getEdgeVertexA(m);
+  //         eB = b.getEdgeVertexB(m);
+  //         if (eA !=null && eB !=null)
+  //           line(
+  //           eA.x*width, eA.y*height, 
+  //           eB.x*width, eB.y*height
+  //             );
+  //       }
+  //     }
 
-      // Blobs
-      if (drawBlobs)
+  //     // Blobs
+  //     if (drawBlobs)
+  //     {
+  //       strokeWeight(1);
+  //       stroke(255, 0, 0);
+  //       rect(
+  //       b.xMin*width, b.yMin*height, 
+  //       b.w*width, b.h*height
+  //         );
+  //     }
+  //   }
+  // }
+}
+
+ArrayList<BlobRect> mergeBlobs()
+{
+  int blobCount = theBlobDetection.getBlobNb();
+  ArrayList<BlobRect> mergedBlobs = new ArrayList<BlobRect>();
+
+  for (int i =0; i<theBlobDetection.getBlobNb(); i++)
+  {
+    Blob currBlob = theBlobDetection.getBlob(i);
+    BlobRect currRect = new BlobRect(currBlob);
+    mergedBlobs.add(currRect);
+
+    for (int j = 0; j < mergedBlobs.size(); j++)
+    {
+      if (rectOverlap(currRect, mergedBlobs.get(j)) && (currRect != mergedBlobs.get(j)))
       {
-        strokeWeight(1);
-        stroke(255, 0, 0);
-        rect(
-        b.xMin*width, b.yMin*height, 
-        b.w*width, b.h*height
-          );
+        mergedBlobs.remove(currRect);
+        mergedBlobs.remove(j);
+        mergedBlobs.add(boundingRectangle);
       }
     }
+  }
+  return mergedBlobs;
+}
+
+public class BlobRect {
+  public float x;
+  public float y;
+  public float blobWidth;
+  public float blobHeight;
+
+  BlobRect(Blob inputBlob)
+  {
+    x = inputBlob.xMin*width;
+    y = inputBlob.yMin*height;
+    blobWidth = inputBlob.w*width;
+    blobHeight = inputBlob.h*height;
+  }
+
+  BlobRect(float inputX, float inputY, float inputWidth, float inputHeight)
+  {
+    x = inputX;
+    y = inputY;
+    blobWidth = inputWidth;
+    blobHeight = inputHeight;
+  }
+}
+boolean valueInRange(float value, float min, float max)
+{
+ return (value >= min) && (value <= max);
+}
+boolean rectOverlap(BlobRect A, BlobRect B)
+{
+  boolean xOverlap = false;
+  boolean yOverlap = false; 
+  float boundX = 0;
+  float boundY = 0;
+  float boundWidth = 0;
+  float boundHeight = 0;
+
+  //Horizontal Overlap
+  if (valueInRange(A.x, B.x, B.x + B.blobWidth))
+  {
+    xOverlap = true;
+    boundX = min(A.x,B.x);
+    boundWidth = max(A.x+A.blobWidth, B.x+B.blobWidth);
+  }
+  else if (valueInRange(B.x, A.x, A.x + A.blobWidth))
+  {
+    xOverlap = true;
+    boundX = min(A.x,B.x);
+    boundWidth = max(A.x+A.blobWidth, B.x+B.blobWidth);
+  }
+
+  //Vertical Overlap
+  if (valueInRange(A.y, B.y, B.y + B.blobHeight))
+  {
+    yOverlap = true;
+    boundY = min(B.y,A.y);
+    boundHeight = max(A.y+A.blobHeight, B.y+B.blobHeight);
+
+  }
+  else if (valueInRange(B.y, A.y, A.y + B.blobHeight))
+  {
+    yOverlap = true;
+    boundY = min(A.y,B.y);
+    boundHeight = max(A.y+A.blobHeight, B.y+B.blobHeight);
+  }
+
+  if (xOverlap && yOverlap)
+  {
+    boundingRectangle = new BlobRect(boundX, boundY, boundWidth, boundHeight);
+    return true;
+  }
+  else
+  {
+    boundingRectangle = null;
+    return false;
   }
 }
 
