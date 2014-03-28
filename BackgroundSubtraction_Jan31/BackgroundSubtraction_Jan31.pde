@@ -8,6 +8,9 @@ import org.opencv.core.Scalar;
 import org.opencv.core.CvType;
 import org.opencv.imgproc.Imgproc;
 import blobDetection.*;
+import controlP5.*;
+
+
 
 
 OpenCV opencv;
@@ -20,7 +23,7 @@ int[] dmap1,dmap2;
 ArrayList<Contour> contours;
 BlobDetection theBlobDetection;
 BlobRect boundingRectangle;
-
+ControlP5 guiControls;
 
 void setup()
 {
@@ -44,6 +47,14 @@ void setup()
 
   //Initialize openCv
   opencv = new OpenCV(this, beforeTower);
+  
+  //Draw GUI
+  guiControls = new ControlP5(this);
+  guiControls.addButton("updateImage")
+             .setValue(0)
+             .setPosition(width-92,height-40)
+             .setSize(90,25);
+  
 }
 
 void draw()
@@ -53,27 +64,27 @@ void draw()
 
   if ((keyPressed) && (key == 'c')) //Take a reference picture if camera key pressed
   {
-    background(150);
-    beforeTower = createImage(640, 40, RGB);
-    PImage depthImage = context.depthImage();
-    depthImage.loadPixels();
-    dmap1 = context.depthMap();
-
-    //Strip out error locations
-    for (int i = 0; i<context.depthMapSize(); i++)
-    {
-      if (dmap1[i] == 0)  //Error value
-        context.depthImage().pixels[i]=color(0,0,0);
-
-      if (dmap1[i] > 800) //Irrelevant depths
-        context.depthImage().pixels[i]=color(0,0,0);
-    }
-
-    //Save background image
-    temp = context.depthImage();
-    beforeTower = temp.get();
-    fileName = sketchPath + java.io.File.separator + "beforeTower.jpg";
-    beforeTower.save(fileName);
+//    background(150);
+//    beforeTower = createImage(640, 40, RGB);
+//    PImage depthImage = context.depthImage();
+//    depthImage.loadPixels();
+//    dmap1 = context.depthMap();
+//
+//    //Strip out error locations
+//    for (int i = 0; i<context.depthMapSize(); i++)
+//    {
+//      if (dmap1[i] == 0)  //Error value
+//        context.depthImage().pixels[i]=color(0,0,0);
+//
+//      if (dmap1[i] > 800) //Irrelevant depths
+//        context.depthImage().pixels[i]=color(0,0,0);
+//    }
+//
+//    //Save background image
+//    temp = context.depthImage();
+//    beforeTower = temp.get();
+//    fileName = sketchPath + java.io.File.separator + "beforeTower.jpg";
+//    beforeTower.save(fileName);
   }
   else
     dmap1 = context.depthMap();
@@ -140,6 +151,7 @@ void drawBlobsAndEdges(boolean drawBlobs, boolean drawEdges)
   
   if (drawBlobs)
   {
+    textSize(20);
     BlobRect tempBlob;
     for (int i = 0; i<towerContours.size(); i++)
     {
@@ -147,8 +159,10 @@ void drawBlobsAndEdges(boolean drawBlobs, boolean drawEdges)
       stroke(255, 0, 0);
       tempBlob = towerContours.get(i);
       rect(tempBlob.x, tempBlob.y, tempBlob.blobWidth, tempBlob.blobHeight);
+      text(tempBlob.blobHeight, tempBlob.x + 20, tempBlob.y - 30);
     }
   }
+  textSize(15);
   // for (int n=0 ; n<theBlobDetection.getBlobNb() ; n++)
   // {
   //   b=theBlobDetection.getBlob(n);
@@ -194,19 +208,49 @@ ArrayList<BlobRect> mergeBlobs()
   {
     Blob currBlob = theBlobDetection.getBlob(i);
     BlobRect currRect = new BlobRect(currBlob);
-    mergedBlobs.add(currRect);
+    if ((currRect.blobWidth * currRect.blobHeight) > 1200)
+      mergedBlobs.add(currRect);
 
     for (int j = 0; j < mergedBlobs.size(); j++)
     {
       if (rectOverlap(currRect, mergedBlobs.get(j)) && (currRect != mergedBlobs.get(j)))
       {
+        //println(currRect.x, mergedBlobs.get(j).x, currRect.blobWidth, mergedBlobs.get(j).blobWidth, boundingRectangle.blobWidth ); 
+        println(currRect.y, mergedBlobs.get(j).y, currRect.blobWidth, mergedBlobs.get(j).blobHeight, boundingRectangle.blobHeight ); 
+        
         mergedBlobs.remove(currRect);
-        mergedBlobs.remove(j);
+        mergedBlobs.remove(mergedBlobs.get(j));
         mergedBlobs.add(boundingRectangle);
+        
+        
       }
     }
   }
   return mergedBlobs;
+}
+
+public void updateImage(int theValue) {
+    background(150);
+    beforeTower = createImage(640, 40, RGB);
+    PImage depthImage = context.depthImage();
+    depthImage.loadPixels();
+    dmap1 = context.depthMap();
+
+    //Strip out error locations
+    for (int i = 0; i<context.depthMapSize(); i++)
+    {
+      if (dmap1[i] == 0)  //Error value
+        context.depthImage().pixels[i]=color(0,0,0);
+
+      if (dmap1[i] > 800) //Irrelevant depths
+        context.depthImage().pixels[i]=color(0,0,0);
+    }
+
+    //Save background image
+    temp = context.depthImage();
+    beforeTower = temp.get();
+    fileName = sketchPath + java.io.File.separator + "beforeTower.jpg";
+    beforeTower.save(fileName);
 }
 
 public class BlobRect {
@@ -217,10 +261,11 @@ public class BlobRect {
 
   BlobRect(Blob inputBlob)
   {
-    x = inputBlob.xMin*width;
-    y = inputBlob.yMin*height;
-    blobWidth = inputBlob.w*width;
-    blobHeight = inputBlob.h*height;
+    x = inputBlob.xMin*640;
+    y = inputBlob.yMin*480;
+    blobWidth = inputBlob.w*640;
+    //println(inputBlob.w);
+    blobHeight = inputBlob.h*480;
   }
 
   BlobRect(float inputX, float inputY, float inputWidth, float inputHeight)
@@ -245,38 +290,57 @@ boolean rectOverlap(BlobRect A, BlobRect B)
   float boundHeight = 0;
 
   //Horizontal Overlap
-  if (valueInRange(A.x, B.x, B.x + B.blobWidth))
+  if (valueInRange(A.x, B.x, B.x + B.blobWidth + 15))
   {
     xOverlap = true;
     boundX = B.x;
-    boundWidth = (A.x+A.blobWidth) - (B.x);
+    
+    if ((B.x+B.blobWidth)>(A.x+A.blobWidth))
+      boundWidth = B.blobWidth;
+    else
+      boundWidth = (A.blobWidth + A.x - B.x);
   }
-  else if (valueInRange(B.x, A.x, A.x + A.blobWidth))
+  else if (valueInRange(B.x, A.x, A.x + A.blobWidth + 15))
   {
     xOverlap = true;
     boundX = A.x;
-    boundWidth = (B.x + B.blobWidth) - (A.x);
+    
+    if ((A.x+A.blobWidth)>(B.x+B.blobWidth))
+      boundWidth = A.blobWidth;
+    else
+      boundWidth = (B.blobWidth + B.x - A.x );
   }
 
   //Vertical Overlap
-  if (valueInRange(A.y, B.y, B.y + B.blobHeight))
+  if (valueInRange(A.y, B.y, B.y + B.blobHeight + 15))
   {
     yOverlap = true;
     boundY = B.y;
-    boundHeight = (A.y+A.blobHeight) - (B.y);
+    
+    if ((B.y+B.blobHeight)>(A.y+A.blobHeight))
+      boundHeight = B.blobHeight;
+    else
+      boundHeight = ((A.y+A.blobHeight) - (B.y));
 
   }
-  else if (valueInRange(B.y, A.y, A.y + B.blobHeight))
+  else if (valueInRange(B.y, A.y, A.y + A.blobHeight + 15))
   {
     yOverlap = true;
     boundY = A.y;
-    boundHeight = (B.y+B.blobHeight) - (A.y);
+    
+    if ((A.y+A.blobHeight)>(B.y+B.blobHeight))
+      boundHeight = A.blobHeight;
+    else
+      boundHeight = ((B.y+B.blobHeight) - (A.y));
   }
+
 
   //Create new bounding rectangle
   if (xOverlap && yOverlap)
   {
     boundingRectangle = new BlobRect(boundX, boundY, boundWidth, boundHeight);
+    //println(boundHeight,boundWidth);
+     //println(A.x,B.x,boundX,boundWidth); 
     return true;
   }
   else
@@ -284,5 +348,6 @@ boolean rectOverlap(BlobRect A, BlobRect B)
     boundingRectangle = null;
     return false;
   }
-}
 
+  
+}
