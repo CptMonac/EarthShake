@@ -11,8 +11,6 @@ import blobDetection.*;
 import controlP5.*;
 
 
-
-
 OpenCV opencv;
 PImage beforeTower, afterTower, diff, temp;
 SimpleOpenNI  context;
@@ -23,7 +21,8 @@ int[] dmap1,dmap2;
 ArrayList<Contour> contours;
 BlobDetection theBlobDetection;
 BlobRect boundingRectangle;
-ControlP5 guiControls;
+ControlP5 controlP5;
+ArrayList<BlobRect> staleTowers;
 
 void setup()
 {
@@ -44,16 +43,13 @@ void setup()
   temp = context.depthImage();
   beforeTower = temp.get();
   size(beforeTower.width, beforeTower.height);
+  staleTowers = new ArrayList<BlobRect>();
 
   //Initialize openCv
   opencv = new OpenCV(this, beforeTower);
   
   //Draw GUI
-  guiControls = new ControlP5(this);
-  guiControls.addButton("updateImage")
-             .setValue(0)
-             .setPosition(width-92,height-40)
-             .setSize(90,25);
+  setupGUI();
   
 }
 
@@ -62,33 +58,7 @@ void draw()
   
   context.update();                 //Update camera image
 
-  if ((keyPressed) && (key == 'c')) //Take a reference picture if camera key pressed
-  {
-//    background(150);
-//    beforeTower = createImage(640, 40, RGB);
-//    PImage depthImage = context.depthImage();
-//    depthImage.loadPixels();
-//    dmap1 = context.depthMap();
-//
-//    //Strip out error locations
-//    for (int i = 0; i<context.depthMapSize(); i++)
-//    {
-//      if (dmap1[i] == 0)  //Error value
-//        context.depthImage().pixels[i]=color(0,0,0);
-//
-//      if (dmap1[i] > 800) //Irrelevant depths
-//        context.depthImage().pixels[i]=color(0,0,0);
-//    }
-//
-//    //Save background image
-//    temp = context.depthImage();
-//    beforeTower = temp.get();
-//    fileName = sketchPath + java.io.File.separator + "beforeTower.jpg";
-//    beforeTower.save(fileName);
-  }
-  else
-    dmap1 = context.depthMap();
-
+  dmap1 = context.depthMap();
   //Get current depth image
   PImage depthImage = context.depthImage();
   depthImage.loadPixels();
@@ -149,54 +119,55 @@ void drawBlobsAndEdges(boolean drawBlobs, boolean drawEdges)
   EdgeVertex eA, eB;
   ArrayList<BlobRect> towerContours = mergeBlobs();
   
-  if (drawBlobs)
+  if (drawBlobs && staleTowers.isEmpty())
   {
     textSize(20);
+    strokeWeight(2);
+    stroke(255, 0, 0);
     BlobRect tempBlob;
     for (int i = 0; i<towerContours.size(); i++)
     {
-      strokeWeight(2);
-      stroke(255, 0, 0);
       tempBlob = towerContours.get(i);
       rect(tempBlob.x, tempBlob.y, tempBlob.blobWidth, tempBlob.blobHeight);
       text(tempBlob.blobHeight, tempBlob.x + 20, tempBlob.y - 30);
     }
+    //staleTowers = towerContours.clone();
+    staleTowers = towerContours;
+  }
+  else if (drawBlobs && !staleTowers.isEmpty())
+  {
+    textSize(20);
+    strokeWeight(2);
+    stroke(255, 0, 0);
+    BlobRect oldBlob, currBlob;
+    int staleSize = staleTowers.size();
+    for(int i = 0; i<towerContours.size(); i++)
+    {
+      if (i < staleSize)
+      {
+        oldBlob = staleTowers.get(i);
+        currBlob = towerContours.get(i);
+
+        rect(currBlob.x, currBlob.y, currBlob.blobWidth, currBlob.blobHeight);
+        float heightDiff = abs(currBlob.blobHeight - oldBlob.blobHeight);
+        float widthDiff = abs(currBlob.blobWidth - oldBlob.blobWidth);
+        
+        if (heightDiff > 40)
+          text("FALLEN", currBlob.x + 20, currBlob.y - 30);
+        else if (widthDiff > 40)
+          text("FALLEN", currBlob.x + 20, currBlob.y - 30);
+        else 
+          text(currBlob.blobHeight, currBlob.x + 20, currBlob.y - 30);
+      }
+      else 
+      {
+        currBlob = towerContours.get(i);
+        rect(currBlob.x, currBlob.y, currBlob.blobWidth, currBlob.blobHeight);
+        text(currBlob.blobHeight, currBlob.x + 20, currBlob.y - 30);
+      }
+    }
   }
   textSize(15);
-  // for (int n=0 ; n<theBlobDetection.getBlobNb() ; n++)
-  // {
-  //   b=theBlobDetection.getBlob(n);
-  //   if (b!=null)
-  //   {
-  //     // Edges
-  //     if (drawEdges)
-  //     {
-  //       strokeWeight(2);
-  //       stroke(0, 255, 0);
-  //       for (int m=0;m<b.getEdgeNb();m++)
-  //       {
-  //         eA = b.getEdgeVertexA(m);
-  //         eB = b.getEdgeVertexB(m);
-  //         if (eA !=null && eB !=null)
-  //           line(
-  //           eA.x*width, eA.y*height, 
-  //           eB.x*width, eB.y*height
-  //             );
-  //       }
-  //     }
-
-  //     // Blobs
-  //     if (drawBlobs)
-  //     {
-  //       strokeWeight(1);
-  //       stroke(255, 0, 0);
-  //       rect(
-  //       b.xMin*width, b.yMin*height, 
-  //       b.w*width, b.h*height
-  //         );
-  //     }
-  //   }
-  // }
 }
 
 ArrayList<BlobRect> mergeBlobs()
@@ -216,41 +187,14 @@ ArrayList<BlobRect> mergeBlobs()
       if (rectOverlap(currRect, mergedBlobs.get(j)) && (currRect != mergedBlobs.get(j)))
       {
         //println(currRect.x, mergedBlobs.get(j).x, currRect.blobWidth, mergedBlobs.get(j).blobWidth, boundingRectangle.blobWidth ); 
-        println(currRect.y, mergedBlobs.get(j).y, currRect.blobWidth, mergedBlobs.get(j).blobHeight, boundingRectangle.blobHeight ); 
-        
+        //println(currRect.y, mergedBlobs.get(j).y, currRect.blobWidth, mergedBlobs.get(j).blobHeight, boundingRectangle.blobHeight ); 
         mergedBlobs.remove(currRect);
         mergedBlobs.remove(mergedBlobs.get(j));
         mergedBlobs.add(boundingRectangle);
-        
-        
       }
     }
   }
   return mergedBlobs;
-}
-
-public void updateImage(int theValue) {
-    background(150);
-    beforeTower = createImage(640, 40, RGB);
-    PImage depthImage = context.depthImage();
-    depthImage.loadPixels();
-    dmap1 = context.depthMap();
-
-    //Strip out error locations
-    for (int i = 0; i<context.depthMapSize(); i++)
-    {
-      if (dmap1[i] == 0)  //Error value
-        context.depthImage().pixels[i]=color(0,0,0);
-
-      if (dmap1[i] > 800) //Irrelevant depths
-        context.depthImage().pixels[i]=color(0,0,0);
-    }
-
-    //Save background image
-    temp = context.depthImage();
-    beforeTower = temp.get();
-    fileName = sketchPath + java.io.File.separator + "beforeTower.jpg";
-    beforeTower.save(fileName);
 }
 
 public class BlobRect {
