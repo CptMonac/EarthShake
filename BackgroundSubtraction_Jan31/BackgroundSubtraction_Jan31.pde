@@ -23,6 +23,10 @@ BlobDetection theBlobDetection;
 BlobRect boundingRectangle;
 ControlP5 controlP5;
 ArrayList<BlobRect> staleTowers;
+ArrayList<BlobRect> originalTowerLocations;
+boolean gameStarted;
+boolean gameFinished;
+BlobRect losingTower;
 
 void setup()
 {
@@ -44,6 +48,9 @@ void setup()
   beforeTower = temp.get();
   size(beforeTower.width, beforeTower.height);
   staleTowers = new ArrayList<BlobRect>();
+  originalTowerLocations = new ArrayList<BlobRect>();
+  gameStarted = false;
+  gameFinished = false;
 
   //Initialize openCv
   opencv = new OpenCV(this, beforeTower);
@@ -112,14 +119,24 @@ void imageComparison()
   text("before", beforeTower.width/2 + 10, beforeTower.height/2 + 20);
 }
 
-void drawBlobsAndEdges(boolean drawBlobs, boolean drawEdges)
+void drawBlobsAndEdges(boolean drawBlobs, boolean drawEdges )
 {
   noFill();
   Blob b;
   EdgeVertex eA, eB;
   ArrayList<BlobRect> towerContours = mergeBlobs();
   
-  if (drawBlobs && staleTowers.isEmpty())
+  if (drawBlobs && gameFinished)
+  {
+    textSize(26);
+    text("FALLEN", losingTower.x + 20, losingTower.y - 30);
+    controlP5.getController("startDetection").setLock(false);
+    gameStarted = false;
+    int bgcolor = controlP5.getController("updateBackground").getColor().getBackground();
+    controlP5.getController("startDetection").setColorBackground(color(bgcolor));
+    textSize(15);
+  }
+  else if (drawBlobs && !gameStarted)
   {
     textSize(20);
     strokeWeight(2);
@@ -131,33 +148,40 @@ void drawBlobsAndEdges(boolean drawBlobs, boolean drawEdges)
       rect(tempBlob.x, tempBlob.y, tempBlob.blobWidth, tempBlob.blobHeight);
       text(tempBlob.blobHeight, tempBlob.x + 20, tempBlob.y - 30);
     }
-    //staleTowers = towerContours.clone();
-    staleTowers = towerContours;
   }
-  else if (drawBlobs && !staleTowers.isEmpty())
+  else if (drawBlobs && gameStarted)
   {
     textSize(20);
     strokeWeight(2);
     stroke(255, 0, 0);
     BlobRect oldBlob, currBlob;
-    int staleSize = staleTowers.size();
+    int originalTowerCount = originalTowerLocations.size();
+    
     for(int i = 0; i<towerContours.size(); i++)
     {
-      if (i < staleSize)
+      if (i < originalTowerCount)
       {
-        oldBlob = staleTowers.get(i);
+        oldBlob = originalTowerLocations.get(i);
         currBlob = towerContours.get(i);
 
         rect(currBlob.x, currBlob.y, currBlob.blobWidth, currBlob.blobHeight);
-        float heightDiff = abs(currBlob.blobHeight - oldBlob.blobHeight);
-        float widthDiff = abs(currBlob.blobWidth - oldBlob.blobWidth);
+        float heightDiff = (currBlob.blobHeight - oldBlob.blobHeight);
+        float widthDiff = (currBlob.blobWidth - oldBlob.blobWidth);
         
-        if (heightDiff > 40)
+        if (heightDiff < -40)
+        {
+          gameFinished = true;
+          losingTower = currBlob;
           text("FALLEN", currBlob.x + 20, currBlob.y - 30);
-        else if (widthDiff > 40)
+        }
+        else if (widthDiff < -40)
+        {
+          gameFinished = true;
+          losingTower = currBlob;
           text("FALLEN", currBlob.x + 20, currBlob.y - 30);
+        }
         else 
-          text(currBlob.blobHeight, currBlob.x + 20, currBlob.y - 30);
+          text("STANDING", currBlob.x + 20, currBlob.y - 30);
       }
       else 
       {
