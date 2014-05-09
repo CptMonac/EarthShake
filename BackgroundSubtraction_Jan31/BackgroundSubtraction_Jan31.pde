@@ -79,6 +79,9 @@ void draw()
 
     if (dmap2[i] > 800) //Irrelevant depths
       context.depthImage().pixels[i]=color(0,0,0);
+
+    else if (dmap2[i] > 30 && dmap2[i] < 800)
+      context.depthImage().pixels[i] = context.rgbImage().pixels[i];
   }
 
   //Perform background subtraction
@@ -95,7 +98,6 @@ void draw()
       diff.pixels[i]=color(0,0,0);
   }
   imageComparison();
-
 }
 
 void imageComparison()
