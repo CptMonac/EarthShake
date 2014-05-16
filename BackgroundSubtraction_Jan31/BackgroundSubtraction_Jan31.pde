@@ -41,6 +41,7 @@ void setup()
   context.enableDepth();
   context.enableUser();
   context.enableRGB();
+  context.alternativeViewPointDepthToImage(); //Calibrate depth and rgb cameras
   
   //Initialize capture images
   beforeTower = createImage(640, 480, RGB);
@@ -79,8 +80,8 @@ void draw()
 
     if (dmap2[i] > 800) //Irrelevant depths
       context.depthImage().pixels[i]=color(0,0,0);
-
-    else if (dmap2[i] > 30 && dmap2[i] < 800)
+   
+    else if (dmap2[i] > 0 && dmap2[i] < 800)
       context.depthImage().pixels[i] = context.rgbImage().pixels[i];
   }
 
@@ -91,12 +92,12 @@ void draw()
   opencv.diff(afterTower);
   diff = opencv.getSnapshot();
         
-  //Remove error locations
-  for (int i = 0; i < context.depthMapSize(); i++)
-  {
-    if (dmap1[i]==0 || dmap2[i]==0 )
-      diff.pixels[i]=color(0,0,0);
-  }
+   //Remove error locations
+   for (int i = 0; i < context.depthMapSize(); i++)
+   {
+     if (dmap1[i]==0 || dmap2[i]==0 )
+       diff.pixels[i]=color(0,0,0);
+   }
   imageComparison();
 }
 
@@ -113,7 +114,7 @@ void imageComparison()
   theBlobDetection.setThreshold(0.38f);
   theBlobDetection.computeBlobs(diff.pixels);
   drawBlobsAndEdges(true, true);
-
+  
   popMatrix();
   fill(204, 0, 0);
   text("diff", 10, 20);
