@@ -12,7 +12,7 @@ import controlP5.*;
 
 
 OpenCV opencv;
-PImage beforeTower, afterTower, diff, temp;
+PImage beforeTower, afterTower, diff, temp, colorTower;
 SimpleOpenNI  context;
 Mat skinHistogram;
 String prompt;
@@ -69,6 +69,7 @@ void draw()
   dmap1 = context.depthMap();
   //Get current depth image
   PImage depthImage = context.depthImage();
+  colorTower = new PImage(depthImage.getImage());
   depthImage.loadPixels();
   dmap2 = context.depthMap();
 
@@ -76,13 +77,19 @@ void draw()
   for (int i = 0; i<context.depthMapSize(); i++)
   {
     if (dmap2[i] == 0)  //Error value
-      context.depthImage().pixels[i]=color(0,0,0);
+      {
+        context.depthImage().pixels[i]=color(0,0,0);
+        colorTower.pixels[i]=color(100,100,0);
+      }
 
     if (dmap2[i] > 800) //Irrelevant depths
-      context.depthImage().pixels[i]=color(0,0,0);
+      {
+        context.depthImage().pixels[i]=color(0,0,0);
+      }
    
     else if (dmap2[i] > 0 && dmap2[i] < 800)
-      context.depthImage().pixels[i] = context.rgbImage().pixels[i];
+      colorTower.pixels[i] = context.rgbImage().pixels[i];
+ 
   }
 
   //Perform background subtraction
@@ -90,6 +97,7 @@ void draw()
   opencv = new OpenCV(this, beforeTower);
   afterTower = context.depthImage();
   opencv.diff(afterTower);
+  
   diff = opencv.getSnapshot();
         
    //Remove error locations
@@ -107,6 +115,7 @@ void imageComparison()
   scale(0.5);
   image(diff, 0, 0);
   image(afterTower, beforeTower.width, 0);
+  image(colorTower, 0,beforeTower.height);
   image(beforeTower, beforeTower.width, beforeTower.height);
   
   theBlobDetection = new BlobDetection(diff.width, diff.height);
@@ -118,7 +127,8 @@ void imageComparison()
   popMatrix();
   fill(204, 0, 0);
   text("diff", 10, 20);
-  text("after", beforeTower.width/2 + 10, 20);
+  text("after", beforeTower.width/2 + 10, 20); 
+  text("color", 10, beforeTower.height/2 + 20);
   text("before", beforeTower.width/2 + 10, beforeTower.height/2 + 20);
 }
 
