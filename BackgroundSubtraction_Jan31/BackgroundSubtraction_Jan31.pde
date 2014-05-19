@@ -23,7 +23,7 @@ BlobDetection theBlobDetection;
 BlobRect boundingRectangle;
 ControlP5 controlP5;
 ArrayList<BlobRect> staleTowers;
-ArrayList<BlobRect> originalTowerLocations;
+ArrayList<BlobRect> originalTowerLocations; //change
 boolean gameStarted;
 boolean gameFinished;
 BlobRect losingTower;
