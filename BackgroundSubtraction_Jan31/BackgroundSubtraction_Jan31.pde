@@ -45,7 +45,7 @@ void setup()
   context.enableDepth();
   context.enableUser();
   context.enableRGB();
-  context.setMirror(true);
+  //context.setMirror(true);
   context.alternativeViewPointDepthToImage(); //Calibrate depth and rgb cameras
   
   //Initialize capture images
@@ -62,6 +62,7 @@ void setup()
 
   //Initialize openCv
   opencv = new OpenCV(this, beforeTower);
+  opencv.useColor(HSB);
   
   //Draw GUI
   setupGUI();
@@ -99,6 +100,9 @@ void draw()
  
   }
 
+  opencv = new OpenCV(this, colorTower);
+  //opencv.inRange(0,19);
+  //colorTower = opencv.getOutput();
   //Perform background subtraction
   beforeTower = loadImage("beforeTower.jpg");
   opencv = new OpenCV(this, beforeTower);
@@ -131,11 +135,14 @@ void imageComparison()
   theBlobDetection.computeBlobs(diff.pixels);
   drawBlobsAndEdges(true, true);
   
+  
   theColorBlobDetection = new BlobDetection(colorTower.width, colorTower.height);
   theColorBlobDetection.setPosDiscrimination(false);
   theColorBlobDetection.setThreshold(0.38f);
   theColorBlobDetection.computeBlobs(colorTower.pixels);
   drawBlobsAndEdges_c(true, true);
+  
+  
   
   popMatrix();
   fill(204, 0, 0);
@@ -273,7 +280,7 @@ void drawBlobsAndEdges_c(boolean drawBlobs, boolean drawEdges )
     for (int i = 0; i<towerContours.size(); i++)
     {
       tempBlob = towerContours.get(i);
-      rect(tempBlob.x, tempBlob.y, tempBlob.blobWidth, tempBlob.blobHeight);
+      rect(tempBlob.x, tempBlob.y+beforeTower.height, tempBlob.blobWidth, tempBlob.blobHeight);
       text(tempBlob.blobHeight, tempBlob.x + 20, tempBlob.y - 30);
     }
   }
@@ -292,7 +299,7 @@ void drawBlobsAndEdges_c(boolean drawBlobs, boolean drawEdges )
         oldBlob = originalTowerLocations_c.get(i);
         currBlob = towerContours.get(i);
 
-        rect(currBlob.x, currBlob.y, currBlob.blobWidth, currBlob.blobHeight);
+        rect(currBlob.x, currBlob.y+beforeTower.height, currBlob.blobWidth, currBlob.blobHeight);
         float heightDiff = (currBlob.blobHeight - oldBlob.blobHeight);
         float widthDiff = (currBlob.blobWidth - oldBlob.blobWidth);
         
@@ -314,7 +321,7 @@ void drawBlobsAndEdges_c(boolean drawBlobs, boolean drawEdges )
       else 
       {
         currBlob = towerContours.get(i);
-        rect(currBlob.x, currBlob.y, currBlob.blobWidth, currBlob.blobHeight);
+        rect(currBlob.x, currBlob.y+beforeTower.height, currBlob.blobWidth, currBlob.blobHeight);
         text(currBlob.blobHeight, currBlob.x + 20, currBlob.y - 30);
       }
     }
