@@ -20,10 +20,14 @@ String fileName;
 int[] dmap1,dmap2;
 ArrayList<Contour> contours;
 BlobDetection theBlobDetection;
+BlobDetection theColorBlobDetection;
 BlobRect boundingRectangle;
 ControlP5 controlP5;
+ControlP5 controlP5_c;
 ArrayList<BlobRect> staleTowers;
-ArrayList<BlobRect> originalTowerLocations; //change
+ArrayList<BlobRect> originalTowerLocations; 
+ArrayList<BlobRect> staleTowers_c;
+ArrayList<BlobRect> originalTowerLocations_c;
 boolean gameStarted;
 boolean gameFinished;
 BlobRect losingTower;
@@ -41,6 +45,7 @@ void setup()
   context.enableDepth();
   context.enableUser();
   context.enableRGB();
+  context.setMirror(true);
   context.alternativeViewPointDepthToImage(); //Calibrate depth and rgb cameras
   
   //Initialize capture images
@@ -50,6 +55,8 @@ void setup()
   size(beforeTower.width, beforeTower.height);
   staleTowers = new ArrayList<BlobRect>();
   originalTowerLocations = new ArrayList<BlobRect>();
+  staleTowers_c = new ArrayList<BlobRect>();
+  originalTowerLocations_c = new ArrayList<BlobRect>();
   gameStarted = false;
   gameFinished = false;
 
@@ -123,6 +130,12 @@ void imageComparison()
   theBlobDetection.setThreshold(0.38f);
   theBlobDetection.computeBlobs(diff.pixels);
   drawBlobsAndEdges(true, true);
+  
+  theColorBlobDetection = new BlobDetection(colorTower.width, colorTower.height);
+  theColorBlobDetection.setPosDiscrimination(false);
+  theColorBlobDetection.setThreshold(0.38f);
+  theColorBlobDetection.computeBlobs(colorTower.pixels);
+  drawBlobsAndEdges_c(true, true);
   
   popMatrix();
   fill(204, 0, 0);
@@ -232,6 +245,108 @@ ArrayList<BlobRect> mergeBlobs()
     }
   }
   return mergedBlobs;
+}
+
+void drawBlobsAndEdges_c(boolean drawBlobs, boolean drawEdges )
+{
+  noFill();
+  Blob b;
+  EdgeVertex eA, eB;
+  ArrayList<BlobRect> towerContours = mergeBlobs_c();
+  
+  if (drawBlobs && gameFinished)
+  {
+    textSize(26);
+    text("FALLEN", losingTower.x + 20, losingTower.y - 30);
+    controlP5.getController("startDetection").setLock(false);
+    gameStarted = false;
+    int bgcolor = controlP5.getController("updateBackground").getColor().getBackground();
+    controlP5.getController("startDetection").setColorBackground(color(bgcolor));
+    textSize(15);
+  }
+  else if (drawBlobs && !gameStarted)
+  {
+    textSize(20);
+    strokeWeight(2);
+    stroke(255, 0, 0);
+    BlobRect tempBlob;
+    for (int i = 0; i<towerContours.size(); i++)
+    {
+      tempBlob = towerContours.get(i);
+      rect(tempBlob.x, tempBlob.y, tempBlob.blobWidth, tempBlob.blobHeight);
+      text(tempBlob.blobHeight, tempBlob.x + 20, tempBlob.y - 30);
+    }
+  }
+  else if (drawBlobs && gameStarted)
+  {
+    textSize(20);
+    strokeWeight(2);
+    stroke(255, 0, 0);
+    BlobRect oldBlob, currBlob;
+    int originalTowerCount = originalTowerLocations_c.size();
+    
+    for(int i = 0; i<towerContours.size(); i++)
+    {
+      if (i < originalTowerCount)
+      {
+        oldBlob = originalTowerLocations_c.get(i);
+        currBlob = towerContours.get(i);
+
+        rect(currBlob.x, currBlob.y, currBlob.blobWidth, currBlob.blobHeight);
+        float heightDiff = (currBlob.blobHeight - oldBlob.blobHeight);
+        float widthDiff = (currBlob.blobWidth - oldBlob.blobWidth);
+        
+        if (heightDiff < -40)
+        {
+          gameFinished = true;
+          losingTower = currBlob;
+          text("FALLEN", currBlob.x + 20, currBlob.y - 30);
+        }
+        else if (widthDiff < -40)
+        {
+          gameFinished = true;
+          losingTower = currBlob;
+          text("FALLEN", currBlob.x + 20, currBlob.y - 30);
+        }
+        else 
+          text("STANDING", currBlob.x + 20, currBlob.y - 30);
+      }
+      else 
+      {
+        currBlob = towerContours.get(i);
+        rect(currBlob.x, currBlob.y, currBlob.blobWidth, currBlob.blobHeight);
+        text(currBlob.blobHeight, currBlob.x + 20, currBlob.y - 30);
+      }
+    }
+  }
+  textSize(15);
+}
+
+ArrayList<BlobRect> mergeBlobs_c()
+{
+  int blobCount = theColorBlobDetection.getBlobNb();
+  ArrayList<BlobRect> mergedBlobs_c = new ArrayList<BlobRect>();
+
+  for (int i =0; i<theColorBlobDetection.getBlobNb(); i++)
+  {
+    Blob currBlob = theColorBlobDetection.getBlob(i);
+    BlobRect currRect = new BlobRect(currBlob);
+    if ((currRect.blobWidth * currRect.blobHeight) > 1200)
+      mergedBlobs_c.add(currRect);
+
+    for (int j = 0; j < mergedBlobs_c.size(); j++)
+    {
+      if (rectOverlap(currRect, mergedBlobs_c.get(j)) && (currRect != mergedBlobs_c.get(j)))
+      {
+        //println(currRect.x, mergedBlobs.get(j).x, currRect.blobWidth, mergedBlobs.get(j).blobWidth, boundingRectangle.blobWidth ); 
+        //println(currRect.y, mergedBlobs.get(j).y, currRect.blobWidth, mergedBlobs.get(j).blobHeight, boundingRectangle.blobHeight ); 
+        mergedBlobs_c.remove(currRect);
+        mergedBlobs_c.remove(mergedBlobs_c.get(j));
+        mergedBlobs_c.add(boundingRectangle);
+      }
+    }
+  }
+  return mergedBlobs_c;
 }
 
 public class BlobRect {
