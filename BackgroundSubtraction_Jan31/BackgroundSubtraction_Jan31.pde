@@ -11,7 +11,7 @@ import blobDetection.*;
 import controlP5.*;
 
 
-OpenCV opencv, opencv_c;
+OpenCV opencv;
 PImage beforeTower, afterTower, diff, temp, colorTower;
 SimpleOpenNI  context;
 Mat skinHistogram;
@@ -23,6 +23,7 @@ BlobDetection theBlobDetection;
 BlobDetection theColorBlobDetection;
 BlobRect boundingRectangle;
 ControlP5 controlP5;
+ControlP5 controlP5_c;
 ArrayList<BlobRect> staleTowers;
 ArrayList<BlobRect> originalTowerLocations; 
 ArrayList<BlobRect> staleTowers_c;
@@ -99,20 +100,9 @@ void draw()
  
   }
 
-  opencv_c = new OpenCV(this, colorTower);
-  //opencv_c.inRange(92,110); //green
-  //opencv_c.inRange(55,80); //blue
-  //opencv_c.inRange(118,145); //yellow
-  opencv_c.inRange(20,50); //red
-  colorTower = opencv_c.getOutput();
-
-  /*
-  for (int i=0; i<context.depthMapSize(); i++)
-  {
-    if (dmap2[i]>0 && dmap2[i]<800)
-      colorTower.pixels[i] = context.rgbImage().pixels[i];
-  } */
- 
+  opencv = new OpenCV(this, colorTower);
+  //opencv.inRange(0,19);
+  //colorTower = opencv.getOutput();
   //Perform background subtraction
   beforeTower = loadImage("beforeTower.jpg");
   opencv = new OpenCV(this, beforeTower);
@@ -144,12 +134,15 @@ void imageComparison()
   theBlobDetection.setThreshold(0.38f);
   theBlobDetection.computeBlobs(diff.pixels);
   drawBlobsAndEdges(true, true);
- 
+  
+  
   theColorBlobDetection = new BlobDetection(colorTower.width, colorTower.height);
   theColorBlobDetection.setPosDiscrimination(false);
   theColorBlobDetection.setThreshold(0.38f);
   theColorBlobDetection.computeBlobs(colorTower.pixels);
   drawBlobsAndEdges_c(true, true);
+  
+  
   
   popMatrix();
   fill(204, 0, 0);
