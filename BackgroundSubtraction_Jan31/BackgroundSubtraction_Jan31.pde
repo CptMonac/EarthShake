@@ -1,5 +1,4 @@
 import gab.opencv.*;
-import java.awt.Frame;
 import SimpleOpenNI.*;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
@@ -31,9 +30,6 @@ ArrayList<BlobRect> originalTowerLocations_c;
 boolean gameStarted;
 boolean gameFinished;
 BlobRect losingTower;
-towerApplet displayWindow;
-PFrame displayFrame;
-boolean displayTower;
 
 void setup()
 {
@@ -51,9 +47,7 @@ void setup()
   //context.setMirror(true);
   context.alternativeViewPointDepthToImage(); //Calibrate depth and rgb cameras
   //colorMode(HSB, 360);                      //Use HSV Color space
-  displayFrame = new PFrame();                //Set up frame for second window
-  displayTower = false;
-
+ 
   //Initialize capture images
   beforeTower = createImage(640, 480, RGB);
   temp = context.depthImage();
@@ -145,7 +139,6 @@ void imageComparison()
   image(afterTower, beforeTower.width, 0);
   image(colorTower, 0,beforeTower.height);
   image(beforeTower, beforeTower.width, beforeTower.height);
-  displayTower = true;
   
   theBlobDetection = new BlobDetection(diff.width, diff.height);
   theBlobDetection.setPosDiscrimination(false);
@@ -249,6 +242,11 @@ void mouseClicked()
   println(hue(pixelColor) + "\t" + saturation(pixelColor) + "\t" + brightness(pixelColor));
   text("hue:"+hue(pixelColor), 100, 100);
   text("Coords:"+mouseX+","+mouseY, 100, 300);
+  if (hue(pixelColor) > 210)
+  {
+    pixels[mouseY*width + mouseX] = color(255, 165, 0);
+    text("Red", mouseX, mouseY);
+  }
 }
 
 void detectColor(ArrayList<BlobRect> inputTowers)
@@ -257,66 +255,29 @@ void detectColor(ArrayList<BlobRect> inputTowers)
   int pixelValue, offset;
 
   loadPixels();
-  offset = beforeTower.height/2;
+  offset = beforeTower.height;
   
-  // for (int i = 0; i<inputTowers.size(); i++)
-  // {
-  //   tempBlob = inputTowers.get(i);
-  //   rect(tempBlob.x, tempBlob.y+beforeTower.height, tempBlob.blobWidth, tempBlob.blobHeight);
-
-  //   for(int pixelY = int(tempBlob.y +offset); pixelY < tempBlob.blobHeight+offset+tempBlob.y; pixelY++)
-  //   {
-  //     for (int pixelX = int(tempBlob.x); pixelX < tempBlob.blobWidth+tempBlob.x; pixelX++)
-  //     {
-  //       println("Coords:"+pixelX+","+pixelY);
-  //       color pixelColor = pixels[pixelY*width + pixelX];
-  //       if (hue(pixelColor) > 210)
-  //       {
-  //         pixels[pixelY*width + pixelX] = color(255, 165, 0);
-  //         text("Red", pixelX, pixelY);
-  //       }
-  //     }
-  //   }
-  // }
-
-  // for (int i = 0; i<inputTowers.size(); i++)
-  // {
-  //   tempBlob = inputTowers.get(i);
-    
-  //   for (int currYLocation = int(tempBlob.y); currYLocation < tempBlob.blobHeight; currYLocation++)
-  //   {
-  //     for(int currXLocation = int(tempBlob.x); currXLocation < tempBlob.blobWidth; currXLocation++)
-  //     {
-  //       pixelValue = getPixelValue(currXLocation, currYLocation);
-  //       colorTower.pixels[pixelValue] = color(50,50,50);
-  //     }
-  //   }
-  // }
-}
-
-public class PFrame extends Frame {
-  public PFrame()
+  for (int i = 0; i<inputTowers.size(); i++)
   {
-    setBounds(100,100, 640, 480);
-    displayWindow = new towerApplet();
-    add(displayWindow);
-    displayWindow.init();
-    show();
+    tempBlob = inputTowers.get(i);
+    rect(tempBlob.x, tempBlob.y+offset, tempBlob.blobWidth, tempBlob.blobHeight);
+    text(tempBlob.x-20+","+tempBlob.y, tempBlob.x, tempBlob.y+offset - 30);
+    for(int pixelY = int(tempBlob.y/2 +offset/2); pixelY < tempBlob.blobHeight/2+offset/2+tempBlob.y/2; pixelY++)
+    {
+      for (int pixelX = int(tempBlob.x/2); pixelX < tempBlob.blobWidth/2+tempBlob.x/2; pixelX++)
+      {
+        println("Coords:"+pixelX+","+pixelY);
+        color pixelColor = pixels[pixelY*width + pixelX];
+        if (hue(pixelColor) > 210) //Identify Red Hue
+        {
+          //pixels[pixelY*width + pixelX] = color(255, 165, 0);
+          text("Red", pixelX*2, pixelY*2);
+        }
+      }
+    }
   }
 }
 
-public class towerApplet extends PApplet {
-  public void setup()
-  {
-    size(640, 480);
-    frameRate(30);
-  }
-  public void draw()
-  {
-    if (displayTower)
-      image(colorTower, 0, 0);
-  }
-}
 
 ArrayList<BlobRect> mergeBlobs()
 {
