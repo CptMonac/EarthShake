@@ -87,15 +87,15 @@ void draw()
     if (dmap2[i] == 0)  //Error value
       {
         context.depthImage().pixels[i]=color(0,0,0);
-        colorTower.pixels[i]=color(100,100,0);
+        colorTower.pixels[i]=color(255,255,255);
       }
 
-    if (dmap2[i] > 800) //Irrelevant depths
+    if ((dmap2[i] < 600) || (dmap2[i] > 800)) //Irrelevant depths
       {
         context.depthImage().pixels[i]=color(0,0,0);
       }
    
-    else if (dmap2[i] > 0 && dmap2[i] < 800)
+    else if (dmap2[i] > 400 && dmap2[i] < 800)
       colorTower.pixels[i] = context.rgbImage().pixels[i];
  
   }
@@ -270,11 +270,25 @@ void detectColor(ArrayList<BlobRect> inputTowers)
         println("Coords:"+pixelX+","+pixelY);
         color pixelColor = pixels[pixelY*width + pixelX];
         pixelValue = hue(pixelColor);
-        if (pixelValue > 210) //Identify Red Hue
+/*        if (pixelValue > 210 && pixelValue < 256) //Identify Red Hue
         {
           //pixels[pixelY*width + pixelX] = color(255, 165, 0);
           stroke(255,0,0);
           text("Red", pixelX*2, pixelY*2);
+          //fill(255,255,0);
+          //ellipse(pixelX*2, pixelY*2, 2, 2);
+        }*/
+/*        if (pixelValue > 20 && pixelValue < 40) //Identify Yellow hue
+        {
+          ellipse(pixelX*2, pixelY*2, 2, 2);
+        }*/
+/*        if (pixelValue > 60 && pixelValue < 75) //Identify Green hue
+        {
+          ellipse(pixelX*2, pixelY*2, 2, 2);
+        }*/
+        if (pixelValue > 150 && pixelValue < 165) //Identify Blue hue
+        {
+          ellipse(pixelX*2, pixelY*2, 2, 2);
         }
       }
     }
