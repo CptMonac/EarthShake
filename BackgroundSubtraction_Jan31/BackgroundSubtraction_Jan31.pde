@@ -261,7 +261,11 @@ void detectColor(ArrayList<BlobRect> inputTowers)
   for (int i = 0; i<inputTowers.size(); i++)
   {
     tempBlob = inputTowers.get(i);
+    stroke(255,0,0);
+    noFill();
     rect(tempBlob.x, tempBlob.y+offset, tempBlob.blobWidth, tempBlob.blobHeight);
+    stroke(255,0,0);
+    noFill();
     text(tempBlob.x-20+","+tempBlob.y, tempBlob.x, tempBlob.y+offset - 30);
     for(int pixelY = int(tempBlob.y/2 +offset/2); pixelY < tempBlob.blobHeight/2+offset/2+tempBlob.y/2; pixelY++)
     {
@@ -270,24 +274,27 @@ void detectColor(ArrayList<BlobRect> inputTowers)
         println("Coords:"+pixelX+","+pixelY);
         color pixelColor = pixels[pixelY*width + pixelX];
         pixelValue = hue(pixelColor);
-/*        if (pixelValue > 210 && pixelValue < 256) //Identify Red Hue
+        if (pixelValue > 210 && pixelValue < 256) //Identify Red Hue
         {
           //pixels[pixelY*width + pixelX] = color(255, 165, 0);
           stroke(255,0,0);
-          text("Red", pixelX*2, pixelY*2);
+          //text("Red", pixelX*2, pixelY*2);
           //fill(255,255,0);
-          //ellipse(pixelX*2, pixelY*2, 2, 2);
-        }*/
-/*        if (pixelValue > 20 && pixelValue < 40) //Identify Yellow hue
-        {
           ellipse(pixelX*2, pixelY*2, 2, 2);
-        }*/
-/*        if (pixelValue > 60 && pixelValue < 75) //Identify Green hue
+        }
+        else if (pixelValue > 20 && pixelValue < 40) //Identify Yellow hue
         {
+          stroke(255,255,0);
           ellipse(pixelX*2, pixelY*2, 2, 2);
-        }*/
-        if (pixelValue > 150 && pixelValue < 165) //Identify Blue hue
+        }
+        else if (pixelValue > 60 && pixelValue < 75) //Identify Green hue
         {
+          stroke(0,255,0);
+          ellipse(pixelX*2, pixelY*2, 2, 2);
+        }
+        else if (pixelValue > 150 && pixelValue < 165) //Identify Blue hue
+        {
+          stroke(0,0,255);
           ellipse(pixelX*2, pixelY*2, 2, 2);
         }
       }
@@ -298,6 +305,7 @@ void detectColor(ArrayList<BlobRect> inputTowers)
 
 ArrayList<BlobRect> mergeBlobs()
 {
+  stroke(255,0,0);
   int blobCount = theBlobDetection.getBlobNb();
   ArrayList<BlobRect> mergedBlobs = new ArrayList<BlobRect>();
 
