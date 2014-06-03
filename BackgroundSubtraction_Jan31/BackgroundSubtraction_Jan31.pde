@@ -400,8 +400,6 @@ ArrayList<BlobRect> mergeBlobs_c()
     {
       if (rectOverlap(currRect, mergedBlobs_c.get(j)) && (currRect != mergedBlobs_c.get(j)))
       {
-        //println(currRect.x, mergedBlobs.get(j).x, currRect.blobWidth, mergedBlobs.get(j).blobWidth, boundingRectangle.blobWidth ); 
-        //println(currRect.y, mergedBlobs.get(j).y, currRect.blobWidth, mergedBlobs.get(j).blobHeight, boundingRectangle.blobHeight ); 
         mergedBlobs_c.remove(currRect);
         mergedBlobs_c.remove(mergedBlobs_c.get(j));
         mergedBlobs_c.add(boundingRectangle);
