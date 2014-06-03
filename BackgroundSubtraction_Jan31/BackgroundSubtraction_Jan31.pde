@@ -252,7 +252,8 @@ void mouseClicked()
 void detectColor(ArrayList<BlobRect> inputTowers)
 {
   BlobRect tempBlob;
-  int pixelValue, offset;
+  int offset;
+  float pixelValue;
 
   loadPixels();
   offset = beforeTower.height;
@@ -268,9 +269,11 @@ void detectColor(ArrayList<BlobRect> inputTowers)
       {
         println("Coords:"+pixelX+","+pixelY);
         color pixelColor = pixels[pixelY*width + pixelX];
-        if (hue(pixelColor) > 210) //Identify Red Hue
+        pixelValue = hue(pixelColor);
+        if (pixelValue > 210) //Identify Red Hue
         {
           //pixels[pixelY*width + pixelX] = color(255, 165, 0);
+          stroke(255,0,0);
           text("Red", pixelX*2, pixelY*2);
         }
       }
