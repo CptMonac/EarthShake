@@ -46,7 +46,8 @@ void setup()
   context.enableRGB();
   //context.setMirror(true);
   context.alternativeViewPointDepthToImage(); //Calibrate depth and rgb cameras
-  
+  //colorMode(HSB, 360);                      //Use HSV Color space
+ 
   //Initialize capture images
   beforeTower = createImage(640, 480, RGB);
   temp = context.depthImage();
@@ -86,15 +87,15 @@ void draw()
     if (dmap2[i] == 0)  //Error value
       {
         context.depthImage().pixels[i]=color(0,0,0);
-        colorTower.pixels[i]=color(100,100,0);
+        colorTower.pixels[i]=color(255,255,255);
       }
 
-    if (dmap2[i] > 800) //Irrelevant depths
+    if ((dmap2[i] < 600) || (dmap2[i] > 800)) //Irrelevant depths
       {
         context.depthImage().pixels[i]=color(0,0,0);
       }
    
-    else if (dmap2[i] > 0 && dmap2[i] < 800)
+    else if (dmap2[i] > 400 && dmap2[i] < 800)
       colorTower.pixels[i] = context.rgbImage().pixels[i];
  
   }
@@ -104,7 +105,7 @@ void draw()
   //opencv_c.inRange(55,80); //blue
   //opencv_c.inRange(118,145); //yellow
   opencv_c.inRange(20,50); //red
-  colorTower = opencv_c.getOutput();
+  //colorTower = opencv_c.getOutput();
 
   /*
   for (int i=0; i<context.depthMapSize(); i++)
@@ -149,7 +150,7 @@ void imageComparison()
   theColorBlobDetection.setPosDiscrimination(false);
   theColorBlobDetection.setThreshold(0.38f);
   theColorBlobDetection.computeBlobs(colorTower.pixels);
-  drawBlobsAndEdges_c(true, true);
+  //drawBlobsAndEdges_c(true, true);
   
   popMatrix();
   fill(204, 0, 0);
@@ -232,10 +233,79 @@ void drawBlobsAndEdges(boolean drawBlobs, boolean drawEdges )
     }
   }
   textSize(15);
+  detectColor(towerContours);
 }
+
+void mouseClicked()
+{
+  color pixelColor = pixels[mouseY*width + mouseX];
+  println(hue(pixelColor) + "\t" + saturation(pixelColor) + "\t" + brightness(pixelColor));
+  text("hue:"+hue(pixelColor), 100, 100);
+  text("Coords:"+mouseX+","+mouseY, 100, 300);
+  if (hue(pixelColor) > 210)
+  {
+    pixels[mouseY*width + mouseX] = color(255, 165, 0);
+    text("Red", mouseX, mouseY);
+  }
+}
+
+void detectColor(ArrayList<BlobRect> inputTowers)
+{
+  BlobRect tempBlob;
+  int offset;
+  float pixelValue;
+
+  loadPixels();
+  offset = beforeTower.height;
+  
+  for (int i = 0; i<inputTowers.size(); i++)
+  {
+    tempBlob = inputTowers.get(i);
+    stroke(255,0,0);
+    noFill();
+    rect(tempBlob.x, tempBlob.y+offset, tempBlob.blobWidth, tempBlob.blobHeight);
+    stroke(255,0,0);
+    noFill();
+    text(tempBlob.x-20+","+tempBlob.y, tempBlob.x, tempBlob.y+offset - 30);
+    for(int pixelY = int(tempBlob.y/2 +offset/2); pixelY < tempBlob.blobHeight/2+offset/2+tempBlob.y/2; pixelY++)
+    {
+      for (int pixelX = int(tempBlob.x/2); pixelX < tempBlob.blobWidth/2+tempBlob.x/2; pixelX++)
+      {
+        println("Coords:"+pixelX+","+pixelY);
+        color pixelColor = pixels[pixelY*width + pixelX];
+        pixelValue = hue(pixelColor);
+        if (pixelValue > 210 && pixelValue < 256) //Identify Red Hue
+        {
+          //pixels[pixelY*width + pixelX] = color(255, 165, 0);
+          stroke(255,0,0);
+          //text("Red", pixelX*2, pixelY*2);
+          //fill(255,255,0);
+          ellipse(pixelX*2, pixelY*2, 2, 2);
+        }
+        else if (pixelValue > 20 && pixelValue < 40) //Identify Yellow hue
+        {
+          stroke(255,255,0);
+          ellipse(pixelX*2, pixelY*2, 2, 2);
+        }
+        else if (pixelValue > 60 && pixelValue < 75) //Identify Green hue
+        {
+          stroke(0,255,0);
+          ellipse(pixelX*2, pixelY*2, 2, 2);
+        }
+        else if (pixelValue > 150 && pixelValue < 165) //Identify Blue hue
+        {
+          stroke(0,0,255);
+          ellipse(pixelX*2, pixelY*2, 2, 2);
+        }
+      }
+    }
+  }
+}
+
 
 ArrayList<BlobRect> mergeBlobs()
 {
+  stroke(255,0,0);
   int blobCount = theBlobDetection.getBlobNb();
   ArrayList<BlobRect> mergedBlobs = new ArrayList<BlobRect>();
 
@@ -352,8 +422,6 @@ ArrayList<BlobRect> mergeBlobs_c()
     {
       if (rectOverlap(currRect, mergedBlobs_c.get(j)) && (currRect != mergedBlobs_c.get(j)))
       {
-        //println(currRect.x, mergedBlobs.get(j).x, currRect.blobWidth, mergedBlobs.get(j).blobWidth, boundingRectangle.blobWidth ); 
-        //println(currRect.y, mergedBlobs.get(j).y, currRect.blobWidth, mergedBlobs.get(j).blobHeight, boundingRectangle.blobHeight ); 
         mergedBlobs_c.remove(currRect);
         mergedBlobs_c.remove(mergedBlobs_c.get(j));
         mergedBlobs_c.add(boundingRectangle);
