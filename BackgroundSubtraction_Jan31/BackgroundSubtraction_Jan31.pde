@@ -166,7 +166,8 @@ void drawBlobsAndEdges(boolean drawBlobs, boolean drawEdges )
   Blob b;
   EdgeVertex eA, eB;
   ArrayList<BlobRect> towerContours = mergeBlobs();
-  
+  ArrayList<LegoTower> colorContours = detectColor(towerContours);
+
   if (drawBlobs && gameFinished)
   {
     textSize(26);
@@ -183,11 +184,21 @@ void drawBlobsAndEdges(boolean drawBlobs, boolean drawEdges )
     strokeWeight(2);
     stroke(255, 0, 0);
     BlobRect tempBlob;
+    LegoTower tempTower = new LegoTower();
+    
+    //Draw blob outlines
     for (int i = 0; i<towerContours.size(); i++)
     {
       tempBlob = towerContours.get(i);
       rect(tempBlob.x, tempBlob.y, tempBlob.blobWidth, tempBlob.blobHeight);
       text(tempBlob.blobHeight, tempBlob.x + 20, tempBlob.y - 30);
+    }
+
+    //Draw coloured blobs
+    for (int i = 0; i<colorContours.size(); i++)
+    {
+      tempTower = colorContours.get(i);
+      tempTower.drawTower();
     }
   }
   else if (drawBlobs && gameStarted)
@@ -233,7 +244,7 @@ void drawBlobsAndEdges(boolean drawBlobs, boolean drawEdges )
     }
   }
   textSize(15);
-  detectColor(towerContours);
+  //detectColor(towerContours);
 }
 
 void mouseClicked()
@@ -249,7 +260,7 @@ void mouseClicked()
   }
 }
 
-void detectColor(ArrayList<BlobRect> inputTowers)
+ArrayList<LegoTower> detectColor(ArrayList<BlobRect> inputTowers)
 {
   BlobRect tempBlob;
   int offset;
@@ -257,7 +268,9 @@ void detectColor(ArrayList<BlobRect> inputTowers)
 
   loadPixels();
   offset = beforeTower.height;
-  
+  ArrayList<LegoTower> towerBlobs = new ArrayList<LegoTower>();
+  LegoTower tempTower;
+
   for (int i = 0; i<inputTowers.size(); i++)
   {
     tempBlob = inputTowers.get(i);
@@ -267,39 +280,108 @@ void detectColor(ArrayList<BlobRect> inputTowers)
     stroke(255,0,0);
     noFill();
     text(tempBlob.x-20+","+tempBlob.y, tempBlob.x, tempBlob.y+offset - 30);
+    
+    float redOriginX, redOriginY, redFinalX, redFinalY;
+    float greenOriginX, greenOriginY, greenFinalX, greenFinalY;
+    float yellowOriginX, yellowOriginY, yellowFinalX, yellowFinalY;
+    float blueOriginX, blueOriginY, blueFinalX, blueFinalY;
+
+    redOriginY = 0.0;
+    redOriginX = 0.0;
+    redFinalX = redOriginX;
+    redFinalY = redOriginY;
+    greenOriginX = 0.0;
+    greenOriginY = 0.0;
+    greenFinalX = 0.0;
+    greenFinalY = 0.0;
+    yellowOriginY = 0.0;
+    yellowOriginX = 0.0;
+    yellowFinalY = 0.0;
+    yellowFinalX = 0.0;
+    blueOriginY = 0.0;
+    blueOriginX = 0.0;
+    blueFinalY = 0.0;
+    blueFinalX = 0.0;
+    
+    //This assumes that all relevant colors are in clusters of color
     for(int pixelY = int(tempBlob.y/2 +offset/2); pixelY < tempBlob.blobHeight/2+offset/2+tempBlob.y/2; pixelY++)
     {
       for (int pixelX = int(tempBlob.x/2); pixelX < tempBlob.blobWidth/2+tempBlob.x/2; pixelX++)
       {
-        println("Coords:"+pixelX+","+pixelY);
         color pixelColor = pixels[pixelY*width + pixelX];
         pixelValue = hue(pixelColor);
-        if (pixelValue > 210 && pixelValue < 256) //Identify Red Hue
+        if (pixelValue > 210 && pixelValue < 256)    //Identify Red Hue
         {
-          //pixels[pixelY*width + pixelX] = color(255, 165, 0);
-          stroke(255,0,0);
-          //text("Red", pixelX*2, pixelY*2);
-          //fill(255,255,0);
-          ellipse(pixelX*2, pixelY*2, 2, 2);
+          if ((redOriginX <= 0) && (redOriginY <=0))
+          {
+            redOriginX = pixelX*2;
+            redOriginY = pixelY*2;
+          }
+          else 
+          {
+            redFinalX = pixelX*2;
+            redFinalY = pixelY*2;
+          }
+          // stroke(255,0,0);
+          // ellipse(pixelX*2, pixelY*2, 2, 2);
         }
         else if (pixelValue > 20 && pixelValue < 40) //Identify Yellow hue
         {
-          stroke(255,255,0);
-          ellipse(pixelX*2, pixelY*2, 2, 2);
+          if ((yellowOriginX <= 0) && (yellowOriginY <= 0))
+          {
+            yellowOriginX = pixelX*2;
+            yellowOriginY = pixelY*2;
+          }
+          else 
+          {
+            yellowFinalX = pixelX*2;
+            yellowFinalY = pixelY*2;
+          }
+          // stroke(255,255,0);
+          // ellipse(pixelX*2, pixelY*2, 2, 2);
         }
         else if (pixelValue > 60 && pixelValue < 75) //Identify Green hue
         {
-          stroke(0,255,0);
-          ellipse(pixelX*2, pixelY*2, 2, 2);
+          if ((greenOriginX <= 0) && (greenOriginY <= 0))
+          {
+            greenOriginX = pixelX*2;
+            greenOriginY = pixelY*2;
+          }
+          else 
+          {
+            greenFinalX = pixelX*2;
+            greenFinalY = pixelY*2;
+          }
+          // stroke(0,255,0);
+          // ellipse(pixelX*2, pixelY*2, 2, 2);
         }
         else if (pixelValue > 150 && pixelValue < 165) //Identify Blue hue
         {
-          stroke(0,0,255);
-          ellipse(pixelX*2, pixelY*2, 2, 2);
+          if ((blueOriginX <= 0) && (blueOriginY <= 0))
+          {
+            blueOriginX = pixelX*2;
+            blueOriginY = pixelY*2;
+          }
+          else 
+          {
+            blueFinalX = pixelX*2;
+            blueFinalY = pixelY*2;
+          }
+          // stroke(0,0,255);
+          // ellipse(pixelX*2, pixelY*2, 2, 2);
         }
       }
     }
+
+    //Construct colored blobs
+    tempTower = new LegoTower();
+    tempTower.updateRedSegment(redOriginX, redOriginY, redFinalX, redFinalY);
+    tempTower.updateGreenSegment(greenOriginX, greenOriginY, greenFinalX, greenFinalY);
+    tempTower.updateYellowSegment(yellowOriginX, yellowOriginY, yellowFinalX, yellowFinalY);
+    tempTower.updateBlueSegment(blueOriginX, blueOriginY, blueFinalX, blueFinalY);
+    towerBlobs.add(tempTower);
   }
+  return towerBlobs;
 }
 
 
@@ -431,11 +513,65 @@ ArrayList<BlobRect> mergeBlobs_c()
   return mergedBlobs_c;
 }
 
+public class LegoTower {
+  public BlobRect redSegment;
+  public BlobRect blueSegment;
+  public BlobRect greenSegment;
+  public BlobRect yellowSegment;
+
+  LegoTower()
+  {
+    redSegment = new BlobRect();
+    blueSegment = new BlobRect();
+    greenSegment = new BlobRect();
+    yellowSegment = new BlobRect();
+  }
+
+  public void drawTower()
+  {
+    stroke(255,255,0);
+    rect(redSegment.x, redSegment.y, redSegment.blobWidth, redSegment.blobHeight);
+    rect(blueSegment.x, blueSegment.y, blueSegment.blobWidth, blueSegment.blobHeight);
+    rect(greenSegment.x, greenSegment.y, greenSegment.blobWidth, greenSegment.blobHeight);
+    rect(yellowSegment.x, yellowSegment.y, yellowSegment.blobWidth, yellowSegment.blobHeight);
+  }
+
+  public void updateRedSegment(float OriginX, float OriginY, float FinalX, float FinalY)
+  {
+    redSegment.updateBounds(OriginX, OriginY, abs(FinalX - OriginX), abs(FinalY - OriginY));
+  }
+
+  public void updateGreenSegment(float OriginX, float OriginY, float FinalX, float FinalY)
+  {
+    greenSegment.updateBounds(OriginX, OriginY, abs(FinalX - OriginX), abs(FinalY - OriginY));
+  }
+
+  public void updateBlueSegment(float OriginX, float OriginY, float FinalX, float FinalY)
+  {
+    blueSegment.updateBounds(OriginX, OriginY, abs(FinalX - OriginX), abs(FinalY - OriginY));
+  }
+
+  public void updateYellowSegment(float OriginX, float OriginY, float FinalX, float FinalY)
+  {
+    yellowSegment.updateBounds(OriginX, OriginY, abs(FinalX - OriginX), abs(FinalY - OriginY));
+  }
+  
+}
+
+
 public class BlobRect {
   public float x;
   public float y;
   public float blobWidth;
   public float blobHeight;
+
+  BlobRect()
+  {
+    x = 0;
+    y = 0;
+    blobWidth = 0;
+    blobHeight = 0;
+  }
 
   BlobRect(Blob inputBlob)
   {
@@ -447,6 +583,14 @@ public class BlobRect {
   }
 
   BlobRect(float inputX, float inputY, float inputWidth, float inputHeight)
+  {
+    x = inputX;
+    y = inputY;
+    blobWidth = inputWidth;
+    blobHeight = inputHeight;
+  }
+
+  public void updateBounds(float inputX, float inputY, float inputWidth, float inputHeight)
   {
     x = inputX;
     y = inputY;
@@ -526,6 +670,4 @@ boolean rectOverlap(BlobRect A, BlobRect B)
     boundingRectangle = null;
     return false;
   }
-
-  
 }
