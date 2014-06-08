@@ -67,7 +67,7 @@ void draw()
     if (dmap2[i] == 0)  //Error value
       {
         context.depthImage().pixels[i]=color(0,0,0);
-        colorTower.pixels[i]=color(255,255,255);
+        colorTower.pixels[i]=color(0,0,0);
       }
 
     if ((dmap2[i] < 600) || (dmap2[i] > 800)) //Irrelevant depths
