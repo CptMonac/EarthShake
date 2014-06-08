@@ -7,11 +7,14 @@ public class LegoTower
   public BlobRect blueSegment;
   public BlobRect greenSegment;
   public BlobRect yellowSegment;
+  public String colorOrder;
 
   private PVector RedOrigin, RedFinal;
   private PVector GreenOrigin, GreenFinal;
   private PVector YellowOrigin, YellowFinal;
   private PVector BlueOrigin, BlueFinal;
+  private PVector towerOrigin;
+  private float towerWidth, towerHeight;
 
   LegoTower()
   {
@@ -24,9 +27,14 @@ public class LegoTower
   {
     float scaleFactor = 0.5;        //Scale factor to account for mismatched pixel locations -- use as necessary    
     float pixelValue;               //Stores rgb value of selected pixel
-    int offset = beforeTower.height;    //Offset for display in processing window
+    int offset = beforeTower.height;//Offset for display in processing window
     
     //Initialize variables
+    towerOrigin = new PVector(inputTower.x, inputTower.y);
+    towerWidth = inputTower.blobWidth;
+    towerHeight = inputTower.blobHeight;
+    colorOrder = "";
+
     RedOrigin = new PVector(-1, -1);
     RedFinal = new PVector(-1, -1);
     GreenOrigin = new PVector(-1, -1);
@@ -82,22 +90,45 @@ public class LegoTower
     blueSegment = new BlobRect(BlueOrigin.x, BlueOrigin.y, abs(BlueFinal.x - BlueOrigin.x), abs(BlueFinal.y - BlueOrigin.y));
     greenSegment = new BlobRect(GreenOrigin.x, GreenOrigin.y, abs(GreenFinal.x - GreenOrigin.x), abs(GreenFinal.y - GreenOrigin.y));
     yellowSegment = new BlobRect(YellowOrigin.x, YellowOrigin.y, abs(YellowFinal.x - YellowOrigin.x), abs(YellowFinal.y - YellowOrigin.y));
+
+    //Record color order
+    float[] colorOrigins = {RedOrigin.y, BlueOrigin.y, GreenOrigin.y, YellowOrigin.y};
+    colorOrigins = reverse(sort(colorOrigins));
+
+    for(int i = 0; i < colorOrigins.length; i++)
+    {
+      if ((colorOrigins[i] == RedOrigin.y) && (RedOrigin.y >=0))
+        colorOrder+="R";
+      else if ((colorOrigins[i] == BlueOrigin.y) && (BlueOrigin.y >=0))
+        colorOrder+="B";
+      else if ((colorOrigins[i] == GreenOrigin.y) && (GreenOrigin.y >=0))
+        colorOrder+="G";
+      else if ((colorOrigins[i] == YellowOrigin.y) && (YellowOrigin.y >=0))
+        colorOrder+="Y";
+    }
   }
 
   public void drawTower()
   {
+    int offset = beforeTower.height;//Offset for display in processing window
+
     noFill();
+    //Draw red segment
     stroke(255, 0, 0);
-    if (RedOrigin.x > 0)
-      rect(redSegment.x, redSegment.y, redSegment.blobWidth, redSegment.blobHeight);
+    rect(redSegment.x, redSegment.y, redSegment.blobWidth, redSegment.blobHeight);
+    //Draw blue segment
     stroke(0, 0, 255);    
-    if (BlueOrigin.x > 0)
-      rect(blueSegment.x, blueSegment.y, blueSegment.blobWidth, blueSegment.blobHeight);
+    rect(blueSegment.x, blueSegment.y, blueSegment.blobWidth, blueSegment.blobHeight);
+    //Draw green segment
     stroke(0, 255, 0);
-    if (GreenOrigin.x > 0)
-      rect(greenSegment.x, greenSegment.y, greenSegment.blobWidth, greenSegment.blobHeight);
+    rect(greenSegment.x, greenSegment.y, greenSegment.blobWidth, greenSegment.blobHeight);
+    //Draw yellow segment
     stroke(255, 255, 0);
-    if (YellowOrigin.x > 0)
-      rect(yellowSegment.x, yellowSegment.y, yellowSegment.blobWidth, yellowSegment.blobHeight);
+    rect(yellowSegment.x, yellowSegment.y, yellowSegment.blobWidth, yellowSegment.blobHeight);
+    //Draw color order above tower
+    textSize(20);
+    stroke(255, 0, 0);
+    text(colorOrder, towerOrigin.x + 20, towerOrigin.y - 30 + offset);
+    textSize(15);
   }
 }

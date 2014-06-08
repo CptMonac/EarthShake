@@ -16,17 +16,6 @@ void setupGUI()
   ctrl.showArrow();
   ctrl.close();
 
-  Knob cameraAngle = controlP5.addKnob("cameraAngle")
-                              .setRange(0, 30)
-                              .setValue(5)
-                              .setPosition(20,40)
-                              .setRadius(18)
-                              .setNumberOfTickMarks(5)
-                              .setTickMarkLength(4)
-                              .snapToTickMarks(true)
-                              .setDragDirection(Knob.HORIZONTAL);
-
-
   controlWidth = int(textWidth("updateBackground"))+ 8;
   Button updateButton = controlP5.addButton("updateBackground")
                                   .setValue(0)
@@ -39,7 +28,6 @@ void setupGUI()
                                    .setPosition(43, 8)
                                    .setSize(controlWidth, 20);
 
-  cameraAngle.setGroup(ctrl);
   updateButton.setGroup(ctrl);                            
 }
 
@@ -51,52 +39,52 @@ void drawGUI()
 
 public void updateBackground(int inputValue)
 {
-    background(150);
-    beforeTower = createImage(640, 40, RGB);
-    PImage depthImage = context.depthImage();
-    depthImage.loadPixels();
-    dmap1 = context.depthMap();
+  String fileName;
 
-    //Strip out error locations
-    for (int i = 0; i<context.depthMapSize(); i++)
-    {
-      if (dmap1[i] == 0)  //Error value
-        context.depthImage().pixels[i]=color(0,0,0);
+  background(150);
+  beforeTower = createImage(640, 40, RGB);
+  PImage depthImage = context.depthImage();
+  depthImage.loadPixels();
+  dmap1 = context.depthMap();
 
-      if (dmap1[i] > 800) //Irrelevant depths
-        context.depthImage().pixels[i]=color(0,0,0);
-    }
+  //Strip out error locations
+  for (int i = 0; i<context.depthMapSize(); i++)
+  {
+    if (dmap1[i] == 0)  //Error value
+      context.depthImage().pixels[i]=color(0,0,0);
 
-    //Save background image
-    temp = context.depthImage();
-    beforeTower = temp.get();
-    fileName = sketchPath + java.io.File.separator + "beforeTower.jpg";
-    beforeTower.save(fileName);
-}
+    if (dmap1[i] > 800) //Irrelevant depths
+      context.depthImage().pixels[i]=color(0,0,0);
+  }
 
-public void cameraAngle(int inputValue)
-{
-  println("not yet implemented!");
+  //Save background image
+  temp = context.depthImage();
+  beforeTower = temp.get();
+  fileName = sketchPath + java.io.File.separator + "beforeTower.jpg";
+  beforeTower.save(fileName);
 }
 
 public void startDetection(int inputValue)
 {
-  if (!gameStarted && gameFinished)
-  {
-    gameStarted = true;
-    controlP5.getController("startDetection").setLock(true);
-    controlP5.getController("startDetection").setColorBackground(color(112,112,112));
-    originalTowerLocations = mergeBlobs();
-  }
-  else if(!gameStarted)
-    gameStarted = true;
-  else  
-  {
-    controlP5.getController("startDetection").setLock(true);
-    controlP5.getController("startDetection").setColorBackground(color(112,112,112));
-    originalTowerLocations = mergeBlobs();
-  }
-  gameFinished = false;
+  controlP5.getController("startDetection").setLock(true);
+  controlP5.getController("startDetection").setColorBackground(color(112,112,112));
+  
+  // if (!gameStarted && gameFinished)
+  // {
+  //   gameStarted = true;
+  //   controlP5.getController("startDetection").setLock(true);
+  //   controlP5.getController("startDetection").setColorBackground(color(112,112,112));
+  //   //originalTowerLocations = mergeBlobs();
+  // }
+  // else if(!gameStarted)
+  //   gameStarted = true;
+  // else  
+  // {
+  //   controlP5.getController("startDetection").setLock(true);
+  //   controlP5.getController("startDetection").setColorBackground(color(112,112,112));
+  //   //originalTowerLocations = mergeBlobs();
+  // }
+  // gameFinished = false;
 }
 
 
