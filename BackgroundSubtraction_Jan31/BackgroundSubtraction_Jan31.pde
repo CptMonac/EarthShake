@@ -132,11 +132,29 @@ void blobDebugMode()
   {
     stroke(255, 0, 0);
     noFill();
-    
+ 
     //Draw blob tower info
     currBlob = towerContours.get(i);
-    rect(currBlob.x, currBlob.y, currBlob.blobWidth, currBlob.blobHeight);
-    text(currBlob.blobHeight, currBlob.x + 20, currBlob.y - 30);
+    
+    float blobW = currBlob.blobWidth;
+    float blobH = currBlob.blobHeight;
+    float x = currBlob.x;
+    float y = currBlob.y;
+    
+    rect(x, y, blobW, blobH);
+    /*if (i==0)
+    {
+      line(x+10, y, x+blobW-10, y);
+      line(x, y+blobH, x+blobW-30, y+blobH);
+      line(x+10, y, x, y+blobH);
+      line(x+blobW-10, y, x+blobW-20, y+blobH);
+    }
+    else
+    {
+      line(x, y, x+blobW-20, y);
+    }*/
+    
+    text(blobH, x+20, y-30);
 
     //Draw coloured blobs
     for (int j = 0; j<colorContours.size(); j++)
