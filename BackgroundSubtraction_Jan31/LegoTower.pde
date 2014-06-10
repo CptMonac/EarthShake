@@ -212,20 +212,24 @@ public class LegoTower
 
     noFill();
     //Draw red segment
-    fill(255,0,0);
+    //fill(255,0,0);
     stroke(255, 0, 0);
+    strokeWeight(3);
     rect(redSegment.x, redSegment.y, redSegment.blobWidth, redSegment.blobHeight);
     //Draw blue segment
-    fill(0,0,255);
+    //fill(0,0,255);
     stroke(0, 0, 255);    
+    strokeWeight(3);
     rect(blueSegment.x, blueSegment.y, blueSegment.blobWidth, blueSegment.blobHeight);
     //Draw green segment
-    fill(0,255,0);
+    //fill(0,255,0);
     stroke(0, 255, 0);
+    strokeWeight(3);
     rect(greenSegment.x, greenSegment.y, greenSegment.blobWidth, greenSegment.blobHeight);
     //Draw yellow segment
-    fill(255,255,0);
+    //fill(255,255,0);
     stroke(255, 255, 0);
+    strokeWeight(3);
     rect(yellowSegment.x, yellowSegment.y, yellowSegment.blobWidth, yellowSegment.blobHeight);
     //Draw color order above tower
     textSize(20);
@@ -249,13 +253,21 @@ public class LegoTower
   
   public void drawFinal(int oldBlock, int pixelX, int pixelY, float scaleFactor) 
   {
-    if ((oldBlock == 0) && (RedOrigin.x > 0))
-      RedFinal.set(pixelX/scaleFactor, pixelY/scaleFactor);
-    else if ((oldBlock == 1) && (BlueOrigin.x > 0))
-      BlueFinal.set(pixelX/scaleFactor, pixelY/scaleFactor);    
-    else if ((oldBlock == 2) && (GreenOrigin.x > 0))
-      GreenFinal.set(pixelX/scaleFactor, pixelY/scaleFactor); 
-    else if ((oldBlock == 3) && (YellowOrigin.x > 0))
-      YellowFinal.set(pixelX/scaleFactor, pixelY/scaleFactor);
+    if (oldBlock == 0) {
+      if ((RedOrigin.x > 0))
+        RedFinal.set(pixelX/scaleFactor, pixelY/scaleFactor);
+    }
+    else if (oldBlock == 1) {
+      if ((BlueOrigin.x > 0))
+        BlueFinal.set(pixelX/scaleFactor, pixelY/scaleFactor);    
+    }
+    else if (oldBlock == 2) {
+      if ((GreenOrigin.x > 0))
+        GreenFinal.set(pixelX/scaleFactor, pixelY/scaleFactor); 
+    }
+    else if (oldBlock == 3) {
+      if ((YellowOrigin.x > 0))
+        YellowFinal.set(pixelX/scaleFactor, pixelY/scaleFactor);
+    }
   }  
 }
