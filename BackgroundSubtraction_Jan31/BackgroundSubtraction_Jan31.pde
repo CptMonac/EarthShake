@@ -70,12 +70,12 @@ void draw()
         colorTower.pixels[i]=color(0,0,0);
       }
 
-    if ((dmap2[i] < 600) || (dmap2[i] > 800)) //Irrelevant depths
+    if ((dmap2[i] < 600) || (dmap2[i] > 1000)) //Irrelevant depths
       {
         context.depthImage().pixels[i]=color(0,0,0);
       }
    
-    else if (dmap2[i] > 400 && dmap2[i] < 800)
+    else if (dmap2[i] > 400 && dmap2[i] < 1000)
       colorTower.pixels[i] = context.rgbImage().pixels[i];
  
   }
