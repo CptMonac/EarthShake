@@ -326,5 +326,47 @@ public class LegoTower
       if ((YellowOrigin.x > 0))
         YellowFinal.set(pixelX/scaleFactor, pixelY/scaleFactor);
     }
+  }
+
+  public void printChart() 
+  {
+    int yoffset = beforeTower.height;
+    int xoffset = beforeTower.width;
+    
+    textSize(25);
+    stroke(255,0,0);
+    text("width", xoffset+300, yoffset+90);
+    text("height", xoffset+450, yoffset+90);
+    if (towerOrigin.x < (beforeTower.width)*0.5) {
+      text("Tower 1:", xoffset+30, yoffset+120);
+      text("Red:", xoffset+180, yoffset+120);
+      text(redSegment.blobWidth, xoffset+300, yoffset+120);
+      text(redSegment.blobHeight, xoffset+450, yoffset+120);
+      text("Blue:", xoffset+180, yoffset+150);
+      text(blueSegment.blobWidth, xoffset+300, yoffset+150);
+      text(blueSegment.blobHeight, xoffset+450, yoffset+150);
+      text("Green:", xoffset+180, yoffset+180);
+      text(greenSegment.blobWidth, xoffset+300, yoffset+180);
+      text(greenSegment.blobHeight, xoffset+450, yoffset+180);
+      text("Yellow:", xoffset+180, yoffset+210);
+      text(yellowSegment.blobWidth, xoffset+300, yoffset+210);
+      text(yellowSegment.blobHeight, xoffset+450, yoffset+210);
+    }
+    else if (towerOrigin.x > (beforeTower.width)*0.5) {
+      text("Tower 2:", xoffset+30, yoffset+240);    
+      text("Red:", xoffset+180, yoffset+240);
+      text(redSegment.blobWidth, xoffset+300, yoffset+240);
+      text(redSegment.blobHeight, xoffset+450, yoffset+240);
+      text("Blue:", xoffset+180, yoffset+270);
+      text(blueSegment.blobWidth, xoffset+300, yoffset+270);
+      text(blueSegment.blobHeight, xoffset+450, yoffset+270);
+      text("Green:", xoffset+180, yoffset+300);
+      text(greenSegment.blobWidth, xoffset+300, yoffset+300);
+      text(greenSegment.blobHeight, xoffset+450, yoffset+300);
+      text("Yellow:", xoffset+180, yoffset+330);
+      text(yellowSegment.blobWidth, xoffset+300, yoffset+330);
+      text(yellowSegment.blobHeight, xoffset+450, yoffset+330);
+    }
+    textSize(15);
   }  
 }
