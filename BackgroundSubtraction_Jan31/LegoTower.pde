@@ -153,16 +153,7 @@ public class LegoTower
           rowMarker = 3;
         }
       }
-      /*
-      println("before");
-      println("k=0 "+pastSevenRows[0]);
-      println("k=1 "+pastSevenRows[1]);
-      println("k=2 "+pastSevenRows[2]);
-      println("k=3 "+pastSevenRows[3]);
-      println("k=4 "+pastSevenRows[4]);
-      println("k=5 "+pastSevenRows[5]);
-      println("k=6 "+pastSevenRows[6]);
-      */
+
       for (int j=0; j<6; j++) {
         temp = pastSevenRows[j+1];
         pastSevenRows[j] = temp;
@@ -181,22 +172,13 @@ public class LegoTower
         println("rowColor "+rowColor);
         //println(pixelY);
       }
-      /*
-      println("after");
-      println("k=0 "+pastSevenRows[0]);
-      println("k=1 "+pastSevenRows[1]);
-      println("k=2 "+pastSevenRows[2]);
-      println("k=3 "+pastSevenRows[3]);
-      println("k=4 "+pastSevenRows[4]);
-      println("k=5 "+pastSevenRows[5]);
-      println("k=6 "+pastSevenRows[6]);
-      */
+
       for (int k=0; k<7; k++) {
         if (pastSevenRows[k] == currBlock) {
           currBlockRowCount++;
         }
         else {
-          if ((newBlockRowCount == 0)){// && (pastSevenRows[k] != -1)) {
+          if ((newBlockRowCount == 0) && (pastSevenRows[k] != -1)) {
             newBlock = pastSevenRows[k];
             println("newBlock "+newBlock);
             newBlockPosition = k;
@@ -210,24 +192,24 @@ public class LegoTower
         println("newBlock is "+newBlock+", newBlockRowCount "+newBlockRowCount);
       }
       
-      if (currBlock == -1) {
+      if (prevRowColor == -1) {
         drawOrigin(newBlock, xLeft, yLower+int(offset*scaleFactor), scaleFactor);
       }  
       
       if ((currBlockRowCount < newBlockRowCount) && (currBlock != -1)) {
         oldBlock = currBlock;
-        //if (ignoreColor[currBlock] == 0) {
-          drawFinal(oldBlock, newxRight, pixelY-abs(4-newBlockPosition), scaleFactor);
+        if (ignoreColor[currBlock] == 0) {
+          drawFinal(newBlock, newxRight, pixelY-abs(4-newBlockPosition), scaleFactor);
           currBlock = newBlock;
-          drawOrigin(currBlock, xLeft, pixelY-abs(3-newBlockPosition), scaleFactor);
-          println("drew new block "+currBlock);
+          drawOrigin(oldBlock, xLeft, pixelY-abs(3-newBlockPosition), scaleFactor);
+          println("drew new block "+oldBlock);
           println("newBlockRowCount was "+newBlockRowCount);
           println("oldBlockRowCount was "+currBlockRowCount);
           if (newBlockRowCount == 7) {
             for (int p=0; p<7; p++) {
               pastSevenRows[p] = currBlock;
             }
-          //} 
+          } 
         }
         
         if (newBlock != -1)
