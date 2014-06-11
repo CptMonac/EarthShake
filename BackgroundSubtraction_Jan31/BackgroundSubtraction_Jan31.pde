@@ -142,17 +142,6 @@ void blobDebugMode()
     float y = currBlob.y;
     
     rect(x, y, blobW, blobH);
-    /*if (i==0)
-    {
-      line(x+10, y, x+blobW-10, y);
-      line(x, y+blobH, x+blobW-30, y+blobH);
-      line(x+10, y, x, y+blobH);
-      line(x+blobW-10, y, x+blobW-20, y+blobH);
-    }
-    else
-    {
-      line(x, y, x+blobW-20, y);
-    }*/
     
     text(blobH, x+20, y-30);
 
