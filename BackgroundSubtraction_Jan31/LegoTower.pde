@@ -49,7 +49,8 @@ public class LegoTower
     
     int rowMarker, prevRowColor, currRowColor; // 0-R, 1-B, 2-G, 3-Y
     int rowColorInt, oldBlock;
-    int currBlock, currBlockRowCount, newBlockRowCount, newBlock, newBlockPosition;
+    int currBlock; 
+    int currBlockRowCount, newBlockRowCount, newBlock, newBlockPosition;
     int temp;
     String rowColor = "";
     prevRowColor = -1;
@@ -87,9 +88,9 @@ public class LegoTower
         if (pixelValue > 20 && pixelValue < 40)        
         { 
           colorPixelFound = 1;
-          /* fill(255,255,0);
-          text("Y", pixelX*2, pixelY*2);
-          noFill(); */
+//          fill(255,255,0);
+//          text("Y", pixelX*2, pixelY*2);
+//          noFill();
           if (ignoreColor[3] == 0)
              colorCounts[3]++;
         }
@@ -120,9 +121,9 @@ public class LegoTower
         else if (pixelValue > 220 && pixelValue < 256)  
         {
           colorPixelFound = 1;
-          /* fill(255,0,0);
-          text("R", pixelX*2, pixelY*2);
-          noFill(); */
+//          fill(255,0,0);
+//          text("R", pixelX*2, pixelY*2);
+//          noFill();
           if (ignoreColor[0] == 0)
              colorCounts[0]++;
         }
@@ -178,7 +179,7 @@ public class LegoTower
       
       if (rowColor != "") {
         println("rowColor "+rowColor);
-        println(pixelY);
+        //println(pixelY);
       }
       /*
       println("after");
@@ -195,7 +196,7 @@ public class LegoTower
           currBlockRowCount++;
         }
         else {
-          if ((newBlockRowCount == 0) && (pastSevenRows[k] != -1)) {
+          if ((newBlockRowCount == 0)){// && (pastSevenRows[k] != -1)) {
             newBlock = pastSevenRows[k];
             println("newBlock "+newBlock);
             newBlockPosition = k;
@@ -203,35 +204,44 @@ public class LegoTower
           newBlockRowCount++;
         }
       }
-      /*
+      
       if (currBlock!= -1) {
         println("currBlock is "+currBlock+", currBlockRowCount "+currBlockRowCount);
         println("newBlock is "+newBlock+", newBlockRowCount "+newBlockRowCount);
       }
-      */
-      if (prevRowColor == -1) {
+      
+      if (currBlock == -1) {
         drawOrigin(newBlock, xLeft, yLower+int(offset*scaleFactor), scaleFactor);
       }  
       
       if ((currBlockRowCount < newBlockRowCount) && (currBlock != -1)) {
         oldBlock = currBlock;
-        if (ignoreColor[currBlock] == 0) {
-          drawFinal(currBlock, xRight, pixelY-abs(2-newBlockPosition), scaleFactor);
+        //if (ignoreColor[currBlock] == 0) {
+          drawFinal(oldBlock, newxRight, pixelY-abs(4-newBlockPosition), scaleFactor);
           currBlock = newBlock;
-          drawOrigin(oldBlock, xLeft, pixelY-abs(3-newBlockPosition), scaleFactor);
-          println("drew new block "+oldBlock);
+          drawOrigin(currBlock, xLeft, pixelY-abs(3-newBlockPosition), scaleFactor);
+          println("drew new block "+currBlock);
           println("newBlockRowCount was "+newBlockRowCount);
           println("oldBlockRowCount was "+currBlockRowCount);
           if (newBlockRowCount == 7) {
             for (int p=0; p<7; p++) {
               pastSevenRows[p] = currBlock;
             }
-          } 
+          //} 
         }
         
         if (newBlock != -1)
           ignoreColor[newBlock] = 1;
         println("ignoreColor: "+ignoreColor[0]+","+ignoreColor[1]+","+ignoreColor[2]+","+ignoreColor[3]);          
+        
+        //Special case of drawFinal for bottom-most block of each tower
+        int ignoreCt = 0;
+        for (int m=0; m<4; m++) {
+          if (ignoreColor[m]==0)
+            ignoreCt++;
+        }       
+        if (ignoreCt==1)
+          drawFinal(oldBlock, newxRight, yUpper, scaleFactor);
         
       }
 
