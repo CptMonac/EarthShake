@@ -57,7 +57,7 @@ public class LegoTower
     rowMarker = -1;
     int[] ignoreColor = {0, 0, 0, 0};
     int[] colorCounts = {0, 0, 0, 0}; //RBGY
-    int[] pastSevenRows = {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
+    int[] pastSevenRows = {-1, -1, -1, -1, -1, -1, -1};
     
     //Iterate through pixels in input blob and classify them
     int yLower = int(inputTower.y*scaleFactor);
@@ -87,25 +87,21 @@ public class LegoTower
         if (pixelValue > 20 && pixelValue < 40)        
         { 
           colorPixelFound = 1;
-          fill(255,255,0);
+          /* fill(255,255,0);
           text("Y", pixelX*2, pixelY*2);
-          noFill();
-          if (ignoreColor[3] == 1)
-             continue;
-          else       
-            colorCounts[3]++;
+          noFill(); */
+          if (ignoreColor[3] == 0)
+             colorCounts[3]++;
         }
         
         //Identify green hue
         else if (pixelValue > 60 && pixelValue < 75)   
         {
           colorPixelFound = 1;
-          fill(0,255,0);
+          /* fill(0,255,0);
           text("G", pixelX*2, pixelY*2);
-          noFill();
-          if (ignoreColor[2] == 1)
-             continue;
-          else           
+          noFill(); */
+          if (ignoreColor[2] == 0)          
             colorCounts[2]++;
         }
         
@@ -113,26 +109,22 @@ public class LegoTower
         else if (pixelValue > 150 && pixelValue < 165)  
         {
           colorPixelFound = 1;
-          fill(0,0,255);
+          /* fill(0,0,255);
           text("B", pixelX*2, pixelY*2);
-          noFill();
-          if (ignoreColor[1] == 1)
-             continue;
-          else            
-            colorCounts[1]++;
+          noFill(); */
+          if (ignoreColor[1] == 0)
+             colorCounts[1]++;
         }
         
         //Identify red hue
         else if (pixelValue > 220 && pixelValue < 256)  
         {
           colorPixelFound = 1;
-          fill(255,0,0);
+          /* fill(255,0,0);
           text("R", pixelX*2, pixelY*2);
-          noFill();
-          if (ignoreColor[0] == 1)
-             continue;
-          else  
-            colorCounts[0]++;
+          noFill(); */
+          if (ignoreColor[0] == 0)
+             colorCounts[0]++;
         }
         
         if (colorPixelFound == 1)
@@ -142,7 +134,7 @@ public class LegoTower
       rowColorInt = max(colorCounts);
       
       //Find color that had max value
-      if (rowColorInt != 0) {
+      if (rowColorInt > 0) {
         if ((rowColorInt == colorCounts[0])) {
           rowColor = "red";
           rowMarker = 0;
@@ -160,9 +152,19 @@ public class LegoTower
           rowMarker = 3;
         }
       }
+
+      println("before");
+      println("k=0 "+pastSevenRows[0]);
+      println("k=1 "+pastSevenRows[1]);
+      println("k=2 "+pastSevenRows[2]);
+      println("k=3 "+pastSevenRows[3]);
+      println("k=4 "+pastSevenRows[4]);
+      println("k=5 "+pastSevenRows[5]);
+      println("k=6 "+pastSevenRows[6]);
         
       for (int j=0; j<6; j++) {
-        pastSevenRows[j] = pastSevenRows[j+1];
+        temp = pastSevenRows[j+1];
+        pastSevenRows[j] = temp;
       }
       pastSevenRows[6] = rowMarker;
 
@@ -174,37 +176,64 @@ public class LegoTower
       currBlockRowCount = 0;
       newBlockRowCount = 0;
       
+      if (rowColor != "")
+        println("rowColor "+rowColor);
+      
+      println("after");
+      println("k=0 "+pastSevenRows[0]);
+      println("k=1 "+pastSevenRows[1]);
+      println("k=2 "+pastSevenRows[2]);
+      println("k=3 "+pastSevenRows[3]);
+      println("k=4 "+pastSevenRows[4]);
+      println("k=5 "+pastSevenRows[5]);
+      println("k=6 "+pastSevenRows[6]);
+      
       for (int k=0; k<7; k++) {
-        if (pastSevenRows[k] == currBlock)
+        if (pastSevenRows[k] == currBlock) {
           currBlockRowCount++;
+        }
         else {
-          if (newBlockRowCount == 0) {
+          if ((newBlockRowCount == 0) && (pastSevenRows[k] != -1)) {
             newBlock = pastSevenRows[k];
+            println("newBlock "+newBlock);
             newBlockPosition = k;
           }
           newBlockRowCount++;
         }
       }
-      
+      /*
+      if (currBlock!= -1) {
+        println("currBlock is "+currBlock+", currBlockRowCount "+currBlockRowCount);
+        println("newBlock is "+newBlock+", newBlockRowCount "+newBlockRowCount);
+      }
+      */
       if (prevRowColor == -1) {
         drawOrigin(newBlock, xLeft, yLower+int(offset*scaleFactor), scaleFactor);
       }  
       
-      if ((newBlockRowCount > currBlockRowCount) && (currBlock != -1)) {
+      if ((currBlockRowCount < newBlockRowCount) && (currBlock != -1)) {
         oldBlock = currBlock;
         if (ignoreColor[currBlock] == 0) {
-          drawFinal(currBlock, newxRight, pixelY-abs(2-newBlockPosition), scaleFactor);
+          drawFinal(currBlock, xRight, pixelY-abs(2-newBlockPosition), scaleFactor);
           currBlock = newBlock;
           drawOrigin(oldBlock, xLeft, pixelY-abs(3-newBlockPosition), scaleFactor);
-          for (int p=0; p<7; p++) {
-            pastSevenRows[p] = currBlock;
-          }
+          println("drew new block");
+          println("newBlockRowCount was "+newBlockRowCount);
+          println("oldBlockRowCount was "+currBlockRowCount);
+          if (newBlockRowCount == 7) {
+            for (int p=0; p<7; p++) {
+              pastSevenRows[p] = currBlock;
+            }
+          } 
         }
+        
         if (newBlock != -1)
           ignoreColor[newBlock] = 1;
       }
 
     }
+    
+    //println("ignoreColor: "+ignoreColor[0]+","+ignoreColor[1]+","+ignoreColor[2]+","+ignoreColor[3]);
     
     //Classify color segments
     redSegment = new BlobRect(RedOrigin.x, RedOrigin.y, abs(RedFinal.x - RedOrigin.x), abs(RedFinal.y - RedOrigin.y));
@@ -213,18 +242,18 @@ public class LegoTower
     yellowSegment = new BlobRect(YellowOrigin.x, YellowOrigin.y, abs(YellowFinal.x - YellowOrigin.x), abs(YellowFinal.y - YellowOrigin.y));
 
     //Record color order
-    float[] colorOrigins = {RedFinal.y, BlueFinal.y, GreenFinal.y, YellowFinal.y};
+    float[] colorOrigins = {RedOrigin.y, BlueOrigin.y, GreenOrigin.y, YellowOrigin.y};
     colorOrigins = reverse(sort(colorOrigins));
 
     for(int i = 0; i < colorOrigins.length; i++)
     {
-      if ((colorOrigins[i] == RedFinal.y) && (RedFinal.y >=0))
+      if ((colorOrigins[i] == RedOrigin.y) && (RedOrigin.y >=0))
         colorOrder+="R";
-      else if ((colorOrigins[i] == BlueFinal.y) && (BlueFinal.y >=0))
+      else if ((colorOrigins[i] == BlueOrigin.y) && (BlueOrigin.y >=0))
         colorOrder+="B";
-      else if ((colorOrigins[i] == GreenFinal.y) && (GreenFinal.y >=0))
+      else if ((colorOrigins[i] == GreenOrigin.y) && (GreenOrigin.y >=0))
         colorOrder+="G";
-      else if ((colorOrigins[i] == YellowFinal.y) && (YellowFinal.y >=0))
+      else if ((colorOrigins[i] == YellowOrigin.y) && (YellowOrigin.y >=0))
         colorOrder+="Y";
     }
   }
