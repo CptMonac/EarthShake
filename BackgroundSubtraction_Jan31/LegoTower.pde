@@ -58,7 +58,10 @@ public class LegoTower
     rowMarker = -1;
     int[] ignoreColor = {0, 0, 0, 0};
     int[] colorCounts = {0, 0, 0, 0}; //RBGY
+    int[] topLeftPix = {0, 0, 0, 0};
     int[] pastSevenRows = {-1, -1, -1, -1, -1, -1, -1};
+    int blockInitialized = 0;
+    int setInitXFlag = 0;
     
     //Iterate through pixels in input blob and classify them
     int yLower = int(inputTower.y*scaleFactor);
@@ -71,19 +74,24 @@ public class LegoTower
       colorCounts[2] = 0;
       colorCounts[3] = 0;
       
+      if (blockInitialized == 1) {
+        setInitXFlag = 1;
+        blockInitialized = 0;
+      }
       prevRowColor = rowMarker;
       
       int xLeft = int(inputTower.x*scaleFactor);
       int xRight = int((inputTower.blobWidth+inputTower.x)*scaleFactor);
       int newxRight = xRight;
       int colorPixelFound;
+      int newxLeft = xLeft;
       
       for (int pixelX = xLeft; pixelX < xRight; pixelX++)
       {
         color pixelColor = pixels[pixelY*width + pixelX];
         pixelValue = hue(pixelColor);
         colorPixelFound = 0;
-
+        
         //Identify yellow hue
         if (pixelValue > 20 && pixelValue < 40)        
         { 
@@ -92,7 +100,13 @@ public class LegoTower
 //          text("Y", pixelX*2, pixelY*2);
 //          noFill();
           if (ignoreColor[3] == 0)
-             colorCounts[3]++;
+            colorCounts[3]++;
+          if (setInitXFlag == 1) {
+            newxLeft = pixelX;
+            topLeftPix[3] = pixelX;
+            println(newxLeft+" for yellow");
+            setInitXFlag = 0;
+          }
         }
         
         //Identify green hue
@@ -104,6 +118,12 @@ public class LegoTower
           noFill(); */
           if (ignoreColor[2] == 0)          
             colorCounts[2]++;
+          if (setInitXFlag == 1) {
+            newxLeft = pixelX;
+            topLeftPix[2] = pixelX;
+            println(newxLeft+" for green");
+            setInitXFlag = 0;
+          }
         }
         
         //Identify blue hue
@@ -115,6 +135,12 @@ public class LegoTower
           noFill(); */
           if (ignoreColor[1] == 0)
              colorCounts[1]++;
+          if (setInitXFlag == 1) {
+            newxLeft = pixelX;
+            topLeftPix[1] = pixelX;
+            println(newxLeft+" for blue");
+            setInitXFlag = 0;
+          }
         }
         
         //Identify red hue
@@ -126,11 +152,22 @@ public class LegoTower
 //          noFill();
           if (ignoreColor[0] == 0)
              colorCounts[0]++;
+          if (setInitXFlag == 1) {
+            newxLeft = pixelX;
+            topLeftPix[0] = pixelX;
+            println(newxLeft+" for red");
+            setInitXFlag = 0;
+          }        
         }
         
-        if (colorPixelFound == 1)
+        if (colorPixelFound == 1) {
           newxRight = pixelX;
+        }
+          
+        //println("newLeft pre-exiting pixelX loop is "+newxLeft);  
       }
+      
+      //println("newLeft after pixelX loop is "+newxLeft);
       
       rowColorInt = max(colorCounts);
       
@@ -154,6 +191,7 @@ public class LegoTower
         }
       }
 
+      //Shift array up a row
       for (int j=0; j<6; j++) {
         temp = pastSevenRows[j+1];
         pastSevenRows[j] = temp;
@@ -167,11 +205,13 @@ public class LegoTower
       currBlock = prevRowColor;
       currBlockRowCount = 0;
       newBlockRowCount = 0;
-      
+      /*
       if (rowColor != "") {
         println("rowColor "+rowColor);
         //println(pixelY);
-      }
+      } */
+      
+      //println("newLeft midway is "+newxLeft);
 
       for (int k=0; k<7; k++) {
         if (pastSevenRows[k] == currBlock) {
@@ -180,28 +220,33 @@ public class LegoTower
         else {
           if ((newBlockRowCount == 0) && (pastSevenRows[k] != -1)) {
             newBlock = pastSevenRows[k];
-            println("newBlock "+newBlock);
+            //println("newBlock "+newBlock);
             newBlockPosition = k;
           }
           newBlockRowCount++;
         }
       }
-      
+      /*
       if (currBlock!= -1) {
         println("currBlock is "+currBlock+", currBlockRowCount "+currBlockRowCount);
         println("newBlock is "+newBlock+", newBlockRowCount "+newBlockRowCount);
-      }
+      } */
       
-      if (prevRowColor == -1) {
-        drawOrigin(newBlock, xLeft, yLower+int(offset*scaleFactor), scaleFactor);
+      if ((currBlock == -1) && (max(ignoreColor)==0) && (newBlockRowCount==5)) {
+        drawOrigin(newBlock, newxLeft, yLower+int(offset*scaleFactor), scaleFactor);
+        //println("newxLeft seen: "+newxLeft);
+        //println("origin.x seen: "+RedOrigin.x+BlueOrigin.x+GreenOrigin.x+YellowOrigin.x);
+        blockInitialized = 1;
       }  
       
-      if ((currBlockRowCount < newBlockRowCount) && (currBlock != -1)) {
+      if ((newBlockRowCount==5) && (currBlock != -1)) {
         oldBlock = currBlock;
         if (ignoreColor[currBlock] == 0) {
-          drawFinal(newBlock, newxRight, pixelY-abs(4-newBlockPosition), scaleFactor);
+          drawFinal(newBlock, newxRight, pixelY-abs(3-newBlockPosition), scaleFactor);
           currBlock = newBlock;
-          drawOrigin(oldBlock, xLeft, pixelY-abs(3-newBlockPosition), scaleFactor);
+          drawOrigin(oldBlock, newxLeft, pixelY-abs(2-newBlockPosition), scaleFactor);
+          println("newxLeft seen: "+newxLeft);
+          blockInitialized = 1;
           println("drew new block "+oldBlock);
           println("newBlockRowCount was "+newBlockRowCount);
           println("oldBlockRowCount was "+currBlockRowCount);
@@ -261,28 +306,80 @@ public class LegoTower
     noFill();
     
     //Draw red segment
+    if (RedFinal.x > 0) {
     //fill(255,0,0);
     stroke(255, 0, 0);
     //strokeWeight(3);
-    rect(redSegment.x, redSegment.y, redSegment.blobWidth, redSegment.blobHeight);
+    //rect(redSegment.x, redSegment.y, redSegment.blobWidth, redSegment.blobHeight);
+    float Rx1 = RedOrigin.x;
+    println("Rx1 is "+RedOrigin.x);
+    float Ry1 = RedOrigin.y;
+    float Rx2 = RedOrigin.x + redSegment.blobWidth;
+    float Rx3 = RedFinal.x - redSegment.blobWidth;
+    float Ry2 = RedFinal.y;
+    float Rx4 = RedFinal.x;
+    line(Rx1, Ry1, Rx2, Ry1);
+    line(Rx2, Ry1, Rx4, Ry2);
+    line(Rx4, Ry2, Rx3, Ry2);
+    line(Rx3, Ry2, Rx1, Ry1);
+    }
     
     //Draw blue segment
+    if (BlueFinal.x > 0) {
     //fill(0,0,255);
     stroke(0, 0, 255);    
     //strokeWeight(3);
-    rect(blueSegment.x, blueSegment.y, blueSegment.blobWidth, blueSegment.blobHeight);
+    //rect(blueSegment.x, blueSegment.y, blueSegment.blobWidth, blueSegment.blobHeight);
+    float Bx1 = BlueOrigin.x;
+    println("Bx1 is "+BlueOrigin.x);
+    float By1 = BlueOrigin.y;
+    float Bx2 = BlueOrigin.x + blueSegment.blobWidth;
+    float Bx3 = BlueFinal.x - blueSegment.blobWidth;
+    float By2 = BlueFinal.y;
+    float Bx4 = BlueFinal.x;
+    line(Bx1, By1, Bx2, By1);
+    line(Bx2, By1, Bx4, By2);
+    line(Bx4, By2, Bx3, By2);
+    line(Bx3, By2, Bx1, By1);
+    }
     
     //Draw green segment
+    if (GreenFinal.x > 0) {
     //fill(0,255,0);
     stroke(0, 255, 0);
     //strokeWeight(3);
-    rect(greenSegment.x, greenSegment.y, greenSegment.blobWidth, greenSegment.blobHeight);
+    //rect(greenSegment.x, greenSegment.y, greenSegment.blobWidth, greenSegment.blobHeight);
+    float Gx1 = GreenOrigin.x;
+    println("Gx1 is "+GreenOrigin.x);
+    float Gy1 = GreenOrigin.y;
+    float Gx2 = GreenOrigin.x + greenSegment.blobWidth;
+    float Gx3 = GreenFinal.x - greenSegment.blobWidth;
+    float Gy2 = GreenFinal.y;
+    float Gx4 = GreenFinal.x;
+    line(Gx1, Gy1, Gx2, Gy1);
+    line(Gx2, Gy1, Gx4, Gy2);
+    line(Gx4, Gy2, Gx3, Gy2);
+    line(Gx3, Gy2, Gx1, Gy1);
+    }
     
     //Draw yellow segment
+    if (YellowFinal.x > 0) {
     //fill(255,255,0);
     stroke(255, 255, 0);
     //strokeWeight(3);
-    rect(yellowSegment.x, yellowSegment.y, yellowSegment.blobWidth, yellowSegment.blobHeight);
+    //rect(yellowSegment.x, yellowSegment.y, yellowSegment.blobWidth, yellowSegment.blobHeight);
+    float Yx1 = YellowOrigin.x;
+    println("Yx1 is "+YellowOrigin.x);
+    float Yy1 = YellowOrigin.y;
+    float Yx2 = YellowOrigin.x + yellowSegment.blobWidth;
+    float Yx3 = YellowFinal.x - yellowSegment.blobWidth;
+    float Yy2 = YellowFinal.y;
+    float Yx4 = YellowFinal.x;
+    line(Yx1, Yy1, Yx2, Yy1);
+    line(Yx2, Yy1, Yx4, Yy2);
+    line(Yx4, Yy2, Yx3, Yy2);
+    line(Yx3, Yy2, Yx1, Yy1);
+    }
     
     //Draw color order above tower
     textSize(20);
