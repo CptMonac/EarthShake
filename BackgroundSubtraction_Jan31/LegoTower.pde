@@ -50,7 +50,8 @@ public class LegoTower
     int rowMarker, prevRowColor, currRowColor; // 0-R, 1-B, 2-G, 3-Y
     int rowColorInt, oldBlock;
     int currBlock; 
-    int currBlockRowCount, newBlockRowCount, newBlock, newBlockPosition;
+    int currBlockRowCount, newBlockRowCount, newBlock;
+    int newBlockPosition = 0;
     int temp;
     String rowColor = "";
     prevRowColor = -1;
@@ -61,7 +62,9 @@ public class LegoTower
     int[] topLeftPix = {0, 0, 0, 0};
     int[] pastSevenRows = {-1, -1, -1, -1, -1, -1, -1};
     int blockInitialized = 0;
-    int setInitXFlag = 0;
+    int setInitXFlag = 0;      
+    int blockJustDrawn = -1; //updated when origin is set
+    int tempNewBlock = -1;
     
     //Iterate through pixels in input blob and classify them
     int yLower = int(inputTower.y*scaleFactor);
@@ -87,8 +90,6 @@ public class LegoTower
       int newxRight = xRight;
       int colorPixelFound;
       int newxLeft = xLeft;
-      int blockJustDrawn = -1; //updated when origin is set
-      int tempNewBlock = -1;
       
       for (int pixelX = xLeft; pixelX < xRight; pixelX++)
       {
@@ -230,6 +231,8 @@ public class LegoTower
           currBlockRowCount++;
         }
         else if (pastSevenRows[k] == tempNewBlock) {
+          if (newBlockRowCount == 0)
+            newBlockPosition = k;
           newBlockRowCount++;
         }
       }
@@ -254,18 +257,18 @@ public class LegoTower
       //First block of tower
       if ((max(ignoreColor)==0) && (newBlockRowCount==7) && (blockJustDrawn==-1)) {
         newxLeft = topLeftPix[tempNewBlock];
-        drawOrigin(tempNewBlock, xLeft, 3, scaleFactor);
+        drawOrigin(tempNewBlock, xLeft, yLower+int(offset*scaleFactor), scaleFactor);
         blockInitialized = 1;
         blockJustDrawn = tempNewBlock;
       }
         
       //Other blocks
-      else if ((newBlockRowCount==5) && (blockJustDrawn!=-1) && (blockJustDrawn!=tempNewBlock)) {
+      else if ((newBlockRowCount==7) && (blockJustDrawn!=-1) && (blockJustDrawn!=tempNewBlock)) {
         if (ignoreColor[tempNewBlock]==0) {
-          drawFinal(blockJustDrawn, xRight, 3, scaleFactor);
+          drawFinal(blockJustDrawn, newxRight, pixelY-abs(7-newBlockPosition), scaleFactor);
           ignoreColor[blockJustDrawn] = 1;
           newxLeft = topLeftPix[tempNewBlock];
-          drawOrigin(tempNewBlock, xLeft, 3, scaleFactor);
+          drawOrigin(tempNewBlock, xLeft, pixelY-abs(6-newBlockPosition), scaleFactor);
           blockInitialized = 1;
           blockJustDrawn = tempNewBlock;
         }
