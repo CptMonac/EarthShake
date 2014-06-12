@@ -232,7 +232,10 @@ public class LegoTower
         println("newBlock is "+newBlock+", newBlockRowCount "+newBlockRowCount);
       } */
       
-      if ((currBlock == -1) && (max(ignoreColor)==0) && (newBlockRowCount==5)) {
+      
+      
+      if ((currBlock == -1) && (max(ignoreColor)==0) && (newBlockRowCount==7)) {
+        newxLeft = topLeftPix[newBlock];
         drawOrigin(newBlock, newxLeft, yLower+int(offset*scaleFactor), scaleFactor);
         //println("newxLeft seen: "+newxLeft);
         //println("origin.x seen: "+RedOrigin.x+BlueOrigin.x+GreenOrigin.x+YellowOrigin.x);
@@ -240,6 +243,7 @@ public class LegoTower
       }  
       
       if ((newBlockRowCount==5) && (currBlock != -1)) {
+        newxLeft = topLeftPix[currBlock];
         oldBlock = currBlock;
         if (ignoreColor[currBlock] == 0) {
           drawFinal(newBlock, newxRight, pixelY-abs(3-newBlockPosition), scaleFactor);
