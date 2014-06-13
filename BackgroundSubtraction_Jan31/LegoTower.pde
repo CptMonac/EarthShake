@@ -115,6 +115,8 @@ public class LegoTower
             topLeftPix[0] = pixelX;
             //println(newxLeft+" for red");
             setInitXFlag = 0;
+            if (blockJustDrawn==0)
+              drawOrigin(0, pixelX, pixelY-9, scaleFactor);
           }        
         }       
         
@@ -132,6 +134,8 @@ public class LegoTower
             topLeftPix[1] = pixelX;
             //println(newxLeft+" for blue");
             setInitXFlag = 0;
+            if (blockJustDrawn==1)
+              drawOrigin(1, pixelX, pixelY-9, scaleFactor);
           }
         }
         
@@ -149,6 +153,8 @@ public class LegoTower
             topLeftPix[2] = pixelX;
             //println(newxLeft+" for green");
             setInitXFlag = 0;
+            if (blockJustDrawn==2)
+              drawOrigin(2, pixelX, pixelY-9, scaleFactor);
           }
         }
                 
@@ -166,6 +172,8 @@ public class LegoTower
             topLeftPix[3] = pixelX;
             //println(newxLeft+" for yellow");
             setInitXFlag = 0;
+            if (blockJustDrawn==3)
+              drawOrigin(3, pixelX, pixelY-9, scaleFactor);
           }
         }
         
@@ -258,8 +266,9 @@ public class LegoTower
       //First block of tower
       //if ((max(ignoreColor)==0) && (newBlockRowCount==7) && (blockJustDrawn==-1)) {
       if ((max(ignoreColor)==0) && (newBlockRowCount==9) && (blockJustDrawn==-1)) {
+        blockInitialized = 1;
         newxLeft = topLeftPix[tempNewBlock];
-        drawOrigin(tempNewBlock, newxLeft, yLower+int(offset*scaleFactor), scaleFactor);
+        //drawOrigin(tempNewBlock, newxLeft, yLower+int(offset*scaleFactor), scaleFactor);
         println("drawing first block");
         println("newxLeft is "+newxLeft+" for block "+tempNewBlock);
         blockInitialized = 1;
@@ -268,7 +277,7 @@ public class LegoTower
         
       //Other blocks
       //else if ((newCBRC-oldNBRC==1) && (blockJustDrawn!=-1) && (blockJustDrawn!=tempNewBlock)) {
-      else if ((currBlockRowCount < newBlockRowCount) && (blockJustDrawn!=-1) && (blockJustDrawn!=tempNewBlock)) {
+      else if ((newBlockRowCount>=8) && (blockJustDrawn!=-1) && (blockJustDrawn!=tempNewBlock)) {
         
         println("currBlockRowCount: "+currBlockRowCount+" for block "+blockJustDrawn);
         println("newBlockRowCount: "+newBlockRowCount+" for block "+tempNewBlock);
@@ -278,10 +287,10 @@ public class LegoTower
         
         if (ignoreColor[tempNewBlock]==0) {
           //println("newBlockPosition "+newBlockPosition+" for block "+blockJustDrawn);
-          drawFinal(blockJustDrawn, newxRight, pixelY/*-abs(7-newBlockPosition)*/-7, scaleFactor);
+          drawFinal(blockJustDrawn, newxRight, pixelY/*-abs(7-newBlockPosition)*/-8, scaleFactor);
           ignoreColor[blockJustDrawn] = 1;
           
-          drawOrigin(tempNewBlock, xLeft, pixelY/*-abs(6-newBlockPosition)*/-6, scaleFactor);
+          //drawOrigin(tempNewBlock, xLeft, pixelY/*-abs(6-newBlockPosition)*/-6, scaleFactor);
           println("drawing other blocks");
           println("newxLeft is "+newxLeft+" for block "+tempNewBlock);
           blockInitialized = 1;
@@ -294,8 +303,17 @@ public class LegoTower
           if (ignoreColor[m]==0)
             ignoreCt++;
         }       
-        if (ignoreCt==1)
-          drawFinal(blockJustDrawn, newxRight, yUpper, scaleFactor);      
+        if (ignoreCt==1) {
+          drawFinal(blockJustDrawn, newxRight, yUpper, scaleFactor); 
+          if (blockJustDrawn == 1) {
+            println("for bottom blue, origin.x: "+BlueOrigin.x+", origin.y: "+BlueOrigin.y);
+            println("                  final.x: "+BlueFinal.x+",   final.y: "+BlueFinal.y);
+          }
+          else if (blockJustDrawn == 2) {
+            println("for bottom green, origin.x: "+GreenOrigin.x+", origin.y: "+GreenOrigin.y);
+            println("                   final.x: "+GreenFinal.x+",   final.y: "+GreenFinal.y);
+          }
+        }     
       }
       
       println("end legotower functions");
