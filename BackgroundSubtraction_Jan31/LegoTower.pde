@@ -48,16 +48,16 @@ public class LegoTower
     //Load the pixel data for the display window into the pixels[] array
     loadPixels();  
     
-    int rowMarker, prevRowColor, currRowColor; // 0-R, 1-B, 2-G, 3-Y
-    int rowColorInt, oldBlock;
-    int currBlock; 
-    int currBlockRowCount, newBlockRowCount, newBlock;
+    int rowColorInt; // 0-R, 1-B, 2-G, 3-Y
+    int oldBlock;
+    int currBlock, currBlockRowCount;
+    int newBlock, newBlockRowCount;
     int newBlockPosition = 0;
     int temp;
     String rowColor = "";
-    prevRowColor = -1;
-    currRowColor = -1;
-    rowMarker = -1;
+    int prevRowColor = -1;
+    int currRowColor = -1;
+    int rowMarker = -1;
     int[] ignoreColor = {0, 0, 0, 0};
     int[] colorCounts = {0, 0, 0, 0}; //RBGY
     
@@ -67,6 +67,11 @@ public class LegoTower
     int[] topRightPix = {xRight, xRight, xRight, xRight};
     int[] bottomRightPix = {xRight, xRight, xRight, xRight};
     
+    int yUpper = int((inputTower.blobHeight+offset+inputTower.y)*scaleFactor);
+    int yLower = int(inputTower.y*scaleFactor);
+    int[] upperYLimit = {yUpper, yUpper, yUpper, yUpper};
+    int[] lowerYLimit = {yLower, yLower, yLower, yLower};
+    
     int[] pastSevenRows = {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1};
     int blockInitialized = 0;
     int setTopLeftFlag = 0;      
@@ -74,15 +79,13 @@ public class LegoTower
     int tempNewBlock = -1;
     int firstRowFlag = 0;
 
-      currBlockRowCount = 0;
-      newBlockRowCount = 0;
+    currBlockRowCount = 0;
+    newBlockRowCount = 0;
       
     int blockPassed = -1;
     
     //Iterate through pixels in input blob and classify them
-    int yLower = int(inputTower.y*scaleFactor);
     int setY = yLower;
-    int yUpper = int((inputTower.blobHeight+offset+inputTower.y)*scaleFactor);
     for (int pixelY=yLower; pixelY < yUpper; pixelY++)
     {
       //reset count for each color before starting new row
@@ -120,9 +123,11 @@ public class LegoTower
             topLeftPix[0] = pixelX;
             setTopLeftFlag = 0;
             if (permNewBlock==0) {
-              drawOrigin(0, pixelX, pixelY-8, scaleFactor);
+              //drawOrigin(0, pixelX, pixelY-8, scaleFactor);
             }
           }        
+          if (tempNewBlock==0)
+            bottomRightPix[tempNewBlock] = pixelX;
         }       
         
         //Identify blue hue
@@ -139,16 +144,18 @@ public class LegoTower
             topLeftPix[1] = pixelX;
             setTopLeftFlag = 0;
             if (permNewBlock == 1) {
-              drawOrigin(1, pixelX, pixelY-8, scaleFactor);
+              //drawOrigin(1, pixelX, pixelY-8, scaleFactor);
             }
           }
+          if (tempNewBlock==1)
+            bottomRightPix[tempNewBlock] = pixelX;
         }
         
         //Identify green hue
         else if (pixelValue > 60 && pixelValue < 75)   
         {
           colorPixelFound = 1;
-//          fill(0,255,0);
+//          fill(255,255,255);
 //          text("G", pixelX*2, pixelY*2);
 //          noFill();
           if (ignoreColor[2] == 0)          
@@ -158,9 +165,11 @@ public class LegoTower
             topLeftPix[2] = pixelX;
             setTopLeftFlag = 0;
             if (permNewBlock == 2) {
-              drawOrigin(2, pixelX, pixelY-8, scaleFactor);
+              //drawOrigin(2, pixelX, pixelY-8, scaleFactor);
             }
           }
+          if (tempNewBlock==2)
+            bottomRightPix[tempNewBlock] = pixelX;
         }
                 
         //Identify yellow hue
@@ -172,28 +181,28 @@ public class LegoTower
 //          noFill();
           if (ignoreColor[3] == 0)
             colorCounts[3]++;
-          if (firstRowFlag == 1) {
+          if ((setTopLeftFlag == 1) && (firstRowFlag == 1)) {
+            newxLeft = pixelX;
+            topLeftPix[3] = pixelX;
+            setTopLeftFlag = 0;
             if (permNewBlock == 3) {
-              drawOrigin(3, pixelX, pixelY-8, scaleFactor);
-            }
-            if (setTopLeftFlag == 1) {
-              newxLeft = pixelX;
-              topLeftPix[3] = pixelX;
-              setTopLeftFlag = 0;
+              //drawOrigin(3, pixelX, pixelY-8, scaleFactor);
             }
           }
+          if (tempNewBlock==3)
+            bottomRightPix[tempNewBlock] = pixelX;
         }
-        
+        /*
         if (colorPixelFound == 1) {
           newxRight = pixelX;
           if (permNewBlock != -1) {
-            bottomRightPix[permNewBlock] = newxRight;
+            bottomRightPix[tempNewBlock] = pixelX;
             if (firstRowFlag == 1) {
               topRightPix[permNewBlock] = newxRight;
               firstRowFlag = 0;
             }
           }
-        }          
+        }  */        
       }
       
       rowColorInt = max(colorCounts);
@@ -258,7 +267,6 @@ public class LegoTower
       println("newBlockRowCount: "+newBlockRowCount+" for block "+tempNewBlock);
       
       //First block of tower
-      //if ((max(ignoreColor)==0) && (newBlockRowCount==7) && (permNewBlock==-1)) {
       if ((max(ignoreColor)==0) && (newBlockRowCount==9) && (permNewBlock==-1)) {
         blockInitialized = 1;
         newxLeft = topLeftPix[tempNewBlock];
@@ -267,10 +275,11 @@ public class LegoTower
         println("newxLeft is "+newxLeft+" for block "+tempNewBlock);
         //blockInitialized = 1;
         permNewBlock = tempNewBlock;
+        lowerYLimit[permNewBlock] = pixelY;
       }
         
       //Other blocks
-      else if ((newBlockRowCount>=8) && (permNewBlock!=-1) && (permNewBlock!=tempNewBlock)) {
+      else if ((newBlockRowCount>7) && (permNewBlock!=-1) && (permNewBlock!=tempNewBlock)) {
         
         println("currBlockRowCount: "+currBlockRowCount+" for block "+permNewBlock);
         println("newBlockRowCount: "+newBlockRowCount+" for block "+tempNewBlock);
@@ -280,9 +289,9 @@ public class LegoTower
         
         if (ignoreColor[tempNewBlock]==0) {
           //println("newBlockPosition "+newBlockPosition+" for block "+permNewBlock);
-          drawFinal(permNewBlock, bottomRightPix[permNewBlock], pixelY/*-abs(7-newBlockPosition)*/-8, scaleFactor);
+          
+          //drawFinal(permNewBlock, bottomRightPix[permNewBlock], pixelY-8, scaleFactor);
           println("bottomRightPix["+permNewBlock+"] = "+bottomRightPix[permNewBlock]);
-//          drawFinal(permNewBlock, bottomRightPix[permNewBlock], pixelY/*-abs(7-newBlockPosition)*/-8, scaleFactor);
           ignoreColor[permNewBlock] = 1;
           
           //drawOrigin(tempNewBlock, xLeft, pixelY/*-abs(6-newBlockPosition)*/-6, scaleFactor);
@@ -291,6 +300,8 @@ public class LegoTower
           blockInitialized = 1;
           blockPassed = permNewBlock;
           permNewBlock = tempNewBlock;
+          upperYLimit[blockPassed] = pixelY;
+          lowerYLimit[permNewBlock] = pixelY;
         }
         
         //Special case of drawFinal for bottom-most block of each tower
@@ -301,7 +312,7 @@ public class LegoTower
         }       
         if (ignoreCt==1) {
           setY = pixelY;
-          break;
+          continue;
         } /*
           drawOrigin(permNewBlock, topLeftPix[permNewBlock], pixelY-8, scaleFactor);
           drawFinal(permNewBlock, bottomRightPix[permNewBlock], yUpper, scaleFactor); 
@@ -319,10 +330,29 @@ public class LegoTower
       println("end legotower functions");
     }
     
-    //println("ignoreColor: "+ignoreColor[0]+","+ignoreColor[1]+","+ignoreColor[2]+","+ignoreColor[3]);
+    for (int c=0; c<4; c++) {
+      if (permNewBlock!=c) {
+        drawOrigin(c, topLeftPix[c], lowerYLimit[c]-8, scaleFactor);
+        drawFinal(c, bottomRightPix[c], upperYLimit[c]-8, scaleFactor);
+      }
+      else {
+        drawOrigin(permNewBlock, topLeftPix[permNewBlock], setY-8, scaleFactor);
+        drawFinal(permNewBlock, bottomRightPix[permNewBlock], yUpper-1, scaleFactor); 
+      }
+    }
+    /*
+    drawOrigin(1, topLeftPix[1], lowerYLimit[1]-8, scaleFactor);
+    drawFinal(1, bottomRightPix[1], upperYLimit[1]-8, scaleFactor);
+
+    drawOrigin(2, topLeftPix[2], lowerYLimit[2]-8, scaleFactor);
+    drawFinal(2, bottomRightPix[2], upperYLimit[2]-8, scaleFactor);
+
+    drawOrigin(3, topLeftPix[3], lowerYLimit[3]-8, scaleFactor);
+    drawFinal(3, bottomRightPix[3], upperYLimit[3]-8, scaleFactor);
+    
     drawOrigin(permNewBlock, topLeftPix[permNewBlock], setY-8, scaleFactor);
     drawFinal(permNewBlock, bottomRightPix[permNewBlock], yUpper-1, scaleFactor); 
-    
+  */  
     //Classify color segments
     redSegment = new BlobRect(RedOrigin.x, RedOrigin.y, abs(RedFinal.x - RedOrigin.x), abs(RedFinal.y - RedOrigin.y));
     blueSegment = new BlobRect(BlueOrigin.x, BlueOrigin.y, abs(BlueFinal.x - BlueOrigin.x), abs(BlueFinal.y - BlueOrigin.y));
@@ -359,8 +389,9 @@ public class LegoTower
     if (RedFinal.x > 0) {
     //fill(255,0,0);
     stroke(255, 0, 0);
-    //strokeWeight(3);
-    //rect(redSegment.x, redSegment.y, redSegment.blobWidth, redSegment.blobHeight);
+    strokeWeight(3);
+    rect(redSegment.x, redSegment.y, redSegment.blobWidth, redSegment.blobHeight);
+    /*
     float Rx1 = RedOrigin.x;
     //println("Rx1 is "+RedOrigin.x);
     float Ry1 = RedOrigin.y;
@@ -374,15 +405,16 @@ public class LegoTower
     line(Rx1, Ry1, Rx2, Ry1);
     line(Rx2, Ry1, Rx4, Ry2);
     line(Rx4, Ry2, Rx3, Ry2);
-    line(Rx3, Ry2, Rx1, Ry1);
+    line(Rx3, Ry2, Rx1, Ry1); */
     }
     
     //Draw blue segment
     if (BlueFinal.x > 0) {
     //fill(0,0,255);
     stroke(0, 0, 255);    
-    //strokeWeight(3);
-    //rect(blueSegment.x, blueSegment.y, blueSegment.blobWidth, blueSegment.blobHeight);
+    strokeWeight(3);
+    rect(blueSegment.x, blueSegment.y, blueSegment.blobWidth, blueSegment.blobHeight);
+    /*
     float Bx1 = BlueOrigin.x;
     //println("Bx1 is "+BlueOrigin.x);
     float By1 = BlueOrigin.y;
@@ -393,15 +425,16 @@ public class LegoTower
     line(Bx1, By1, Bx2, By1);
     line(Bx2, By1, Bx4, By2);
     line(Bx4, By2, Bx3, By2);
-    line(Bx3, By2, Bx1, By1);
+    line(Bx3, By2, Bx1, By1); */
     }
     
     //Draw green segment
     if (GreenFinal.x > 0) {
     //fill(0,255,0);
     stroke(0, 255, 0);
-    //strokeWeight(3);
-    //rect(greenSegment.x, greenSegment.y, greenSegment.blobWidth, greenSegment.blobHeight);
+    strokeWeight(3);
+    rect(greenSegment.x, greenSegment.y, greenSegment.blobWidth, greenSegment.blobHeight);
+    /*
     float Gx1 = GreenOrigin.x;
     //println("Gx1 is "+GreenOrigin.x);
     float Gy1 = GreenOrigin.y;
@@ -412,15 +445,16 @@ public class LegoTower
     line(Gx1, Gy1, Gx2, Gy1);
     line(Gx2, Gy1, Gx4, Gy2);
     line(Gx4, Gy2, Gx3, Gy2);
-    line(Gx3, Gy2, Gx1, Gy1);
+    line(Gx3, Gy2, Gx1, Gy1); */
     }
     
     //Draw yellow segment
-    //if (YellowFinal.x > 0) {
+    if (YellowFinal.x > 0) {
     //fill(255,255,0);
     stroke(255, 255, 0);
-    //strokeWeight(3);
-    //rect(yellowSegment.x, yellowSegment.y, yellowSegment.blobWidth, yellowSegment.blobHeight);
+    strokeWeight(3);
+    rect(yellowSegment.x, yellowSegment.y, yellowSegment.blobWidth, yellowSegment.blobHeight);
+    /*
     float Yx1 = YellowOrigin.x;
     println("Yx1 is "+YellowOrigin.x);
     float Yy1 = YellowOrigin.y;
@@ -432,8 +466,8 @@ public class LegoTower
     line(Yx1, Yy1, Yx2, Yy1);
     line(Yx2, Yy1, Yx4, Yy2);
     line(Yx4, Yy2, Yx3, Yy2);
-    line(Yx3, Yy2, Yx1, Yy1);
-    //}
+    line(Yx3, Yy2, Yx1, Yy1); */
+    }
     
     //Draw color order above tower
     textSize(20);
