@@ -155,6 +155,37 @@ void blobDebugMode()
   }
 }
 
+void gameMode()
+{
+  ArrayList<BlobRect> towerContours = mergeBlobs();
+  ArrayList<LegoTower> towerObjects = analyzeTower(towerContours);
+  BlobRect currBlob;
+  LegoTower currentTower;
+  
+  for (int i = 0; i < towerContours.size(); i++)
+  {
+    stroke(255, 0, 0);
+    noFill();
+ 
+    //Get tower info
+    currBlob = towerContours.get(i);
+    currentTower = towerObjects.get(i);
+    
+    //Draw blob tower info
+    float blobW = currBlob.blobWidth;
+    float blobH = currBlob.blobHeight;
+    float x = currBlob.x;
+    float y = currBlob.y;
+    
+    rect(x, y, blobW, blobH);
+    
+    //Detect fallen towers
+    float heightDiff = blobH - currentTower.getTowerHeight();
+    if (heightDiff < (currentTower.getTowerHeight()*0.10))    //If fallen a distance of 10% of original height, classify as fallen
+      text("Fallen", x+20, y-30);
+  }
+}
+
 // void drawBlobsAndEdges(boolean drawBlobs, boolean drawEdges )
 // {
 //   noFill();

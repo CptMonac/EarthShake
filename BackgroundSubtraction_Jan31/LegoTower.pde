@@ -523,6 +523,16 @@ public class LegoTower
     else if ((newBlock == 3) && (YellowOrigin.x < 0))
       YellowOrigin.set(pixelX/scaleFactor, pixelY/scaleFactor);
   }
+
+  public float getTowerWidth()
+  {
+    return towerWidth;
+  }
+
+  public float getTowerHeight()
+  {
+    return towerHeight;
+  }
   
   public void drawFinal(int oldBlock, int pixelX, int pixelY, float scaleFactor) 
   {
