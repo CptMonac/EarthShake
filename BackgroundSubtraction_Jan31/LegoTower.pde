@@ -305,7 +305,7 @@ public class LegoTower
           if (ignoreColor[m]==0)
             ignoreCt++;
         }       
-        if (ignoreCt==1) {
+        if ((ignoreCt==1) || (blockInitialized==1)) {
           setY = pixelY;
           continue;
         }     
