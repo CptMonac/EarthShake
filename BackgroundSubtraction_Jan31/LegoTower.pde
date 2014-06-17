@@ -136,9 +136,6 @@ public class LegoTower
             newxLeft = pixelX;
             topLeftPix[0] = pixelX;
             setTopLeftFlag = 0;
-            if (permNewBlock==0) {
-              //drawOrigin(0, pixelX, pixelY-8, scaleFactor);
-            }
           }        
           if (tempNewBlock==0)
             bottomRightPix[tempNewBlock] = pixelX;
@@ -160,9 +157,6 @@ public class LegoTower
             newxLeft = pixelX;
             topLeftPix[1] = pixelX;
             setTopLeftFlag = 0;
-            if (permNewBlock == 1) {
-              //drawOrigin(1, pixelX, pixelY-8, scaleFactor);
-            }
           }
           if (tempNewBlock==1)
             bottomRightPix[tempNewBlock] = pixelX;
@@ -184,9 +178,6 @@ public class LegoTower
             newxLeft = pixelX;
             topLeftPix[2] = pixelX;
             setTopLeftFlag = 0;
-            if (permNewBlock == 2) {
-              //drawOrigin(2, pixelX, pixelY-8, scaleFactor);
-            }
           }
           if (tempNewBlock==2)
             bottomRightPix[tempNewBlock] = pixelX;
@@ -208,9 +199,6 @@ public class LegoTower
             newxLeft = pixelX;
             topLeftPix[3] = pixelX;
             setTopLeftFlag = 0;
-            if (permNewBlock == 3) {
-              //drawOrigin(3, pixelX, pixelY-8, scaleFactor);
-            }
           }
           if (tempNewBlock==3)
             bottomRightPix[tempNewBlock] = pixelX;
@@ -521,7 +509,7 @@ public class LegoTower
     else if ((newBlock == 3) && (YellowOrigin.x < 0))
       YellowOrigin.set(pixelX/scaleFactor, pixelY/scaleFactor);
   }
-
+  
   public float getTowerWidth()
   {
     return towerWidth;

@@ -186,6 +186,7 @@ void gameMode()
   }
 }
 
+
 // void drawBlobsAndEdges(boolean drawBlobs, boolean drawEdges )
 // {
 //   noFill();
