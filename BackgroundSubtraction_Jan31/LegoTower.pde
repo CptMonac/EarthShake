@@ -313,12 +313,12 @@ public class LegoTower
     }
     
     for (int c=0; c<4; c++) {
-      if (permNewBlock!=c) {
+      if ((permNewBlock!=c) && (ignoreColor[c] != 0)) {
         drawOrigin(c, topLeftPix[c], lowerYLimit[c]-7, scaleFactor);
         drawFinal(c, bottomRightPix[c], upperYLimit[c]-8, scaleFactor);
         drawTopRight(c, topRightPix[c], lowerYLimit[c]-7, scaleFactor);
       }
-      else {
+      else if (permNewBlock == c) {
         drawOrigin(permNewBlock, topLeftPix[permNewBlock], setY-7, scaleFactor);
         drawFinal(permNewBlock, bottomRightPix[permNewBlock], yUpper-1, scaleFactor); 
         drawTopRight(c, topRightPix[c], setY-7, scaleFactor);
