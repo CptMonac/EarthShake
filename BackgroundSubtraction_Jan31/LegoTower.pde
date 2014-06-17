@@ -142,6 +142,7 @@ public class LegoTower
           if (tempNewBlock==0)
             bottomRightPix[tempNewBlock] = pixelX;
           if (firstRowFlag==1) {
+            //topRightPix[0] = scanForTopRight(xLeft, xRight, 0, pixelY);
             topRightPix[0] = pixelX;
           }
         }       
@@ -164,6 +165,7 @@ public class LegoTower
           if (tempNewBlock==1)
             bottomRightPix[tempNewBlock] = pixelX;
           if (firstRowFlag==1) {
+            //topRightPix[1] = scanForTopRight(xLeft, xRight, 1, pixelY);
             topRightPix[1] = pixelX;
           }
         }
@@ -186,6 +188,7 @@ public class LegoTower
           if (tempNewBlock==2)
             bottomRightPix[tempNewBlock] = pixelX;
           if (firstRowFlag==1) {
+            //topRightPix[2] = scanForTopRight(xLeft, xRight, 2, pixelY);
             topRightPix[2] = pixelX;
           }
         }
@@ -208,16 +211,16 @@ public class LegoTower
           if (tempNewBlock==3)
             bottomRightPix[tempNewBlock] = pixelX;
           if (firstRowFlag==1) {
+            //topRightPix[3] = scanForTopRight(xLeft, xRight, 3, pixelY);
             topRightPix[3] = pixelX;
           }
         }         
       }
       
       if (colorPixelFound == 1) {
-        if (tempNewBlock != -1) {
-          bottomRightPix[tempNewBlock] = scanForBottomRight(xLeft, xRight, 2, pixelX, pixelY)
-        
-        
+        if (tempNewBlock != -1)
+          bottomRightPix[tempNewBlock] = scanForBottomRight(xLeft, xRight, tempNewBlock, pixelY);
+          
         firstRowFlag = 0; /*
         println("toprRightPix: 0: "+topRightPix[0]);
         println("toprRightPix: 1: "+topRightPix[1]);
@@ -349,13 +352,13 @@ public class LegoTower
   public int scanForTopLeft(int xLeft, int xRight, int blockColor, int pixelLeft, int pixelRow)
   {
     float scaleFactor = 0.5;
-    int topLeftFive[] = {0, 0, 0, 0, 0};
+    int topLeftFive[] = {0, 0, 0};
     int lookingForFirstPixColor;
-    for (int y=0; y < 5; y++)
+    for (int y=0; y < 3; y++)
     {
       lookingForFirstPixColor = 1;
       int pixelY = pixelRow + y;
-      for (int pixelX = pixelLeft; pixelX < xRight; pixelX++) {
+      for (int pixelX = xLeft; pixelX < xRight; pixelX++) {
         color pixelColor = pixels[pixelY*width + pixelX];
         float pixelValue = hue(pixelColor);
         if (lookingForFirstPixColor == 1) {
@@ -366,16 +369,72 @@ public class LegoTower
         }
       }
     }
-    for (int j=0; j<5; j++) {
+    for (int j=0; j<3; j++) {
       if (topLeftFive[j]==0)
         topLeftFive[j] = max(topLeftFive);
     }
     println("scanForTopLeft: 0: "+topLeftFive[0]);
     println("                1: "+topLeftFive[1]);
     println("                2: "+topLeftFive[2]);
-    println("                3: "+topLeftFive[3]);
-    println("                4: "+topLeftFive[4]);    
+    //println("                3: "+topLeftFive[3]);
+    //println("                4: "+topLeftFive[4]);    
     return min(topLeftFive);
+  }
+
+  public int scanForTopRight(int xLeft, int xRight, int blockColor, int pixelRow)
+  {
+    float scaleFactor = 0.5;
+    int topRightFive[] = {0, 0, 0};
+    for (int y=0; y < 3; y++)
+    {
+      int pixelY = pixelRow + y;
+      for (int pixelX = xLeft; pixelX < xRight; pixelX++) {
+        color pixelColor = pixels[pixelY*width + pixelX];
+        float pixelValue = hue(pixelColor);
+        if (pixelColorHue(pixelValue) == blockColor) {
+          topRightFive[y] = pixelX;
+        }
+      }
+    }
+    for (int j=0; j<3; j++) {
+      if (topRightFive[j]==0)
+        topRightFive[j] = min(topRightFive);
+    }
+    println("scanForBottomRight: 0: "+topRightFive[0]);
+    println("                    1: "+topRightFive[1]);
+    println("                    2: "+topRightFive[2]);
+    //println("                    3: "+topRightFive[3]);
+    //println("                4: "+topRightFive[4]);    
+    return max(topRightFive);
+  }
+  
+  public int scanForBottomRight(int xLeft, int xRight, int blockColor, int pixelRow)
+  {
+    float scaleFactor = 0.5;
+    int botRightFive[] = {0, 0, 0, 0, 0};
+    int lookingForFirstPixColor;
+    for (int y=0; y < 5; y++)
+    {
+      lookingForFirstPixColor = 1;
+      int pixelY = pixelRow - y;
+      for (int pixelX = xLeft; pixelX < xRight; pixelX++) {
+        color pixelColor = pixels[pixelY*width + pixelX];
+        float pixelValue = hue(pixelColor);
+        if (pixelColorHue(pixelValue) == blockColor) {
+          botRightFive[y] = pixelX;
+        }
+      }
+    }
+    for (int j=0; j<5; j++) {
+      if (botRightFive[j]==0)
+        botRightFive[j] = min(botRightFive);
+    }
+    println("scanForBottomRight: 0: "+botRightFive[0]);
+    println("                    1: "+botRightFive[1]);
+    println("                    2: "+botRightFive[2]);
+    println("                    3: "+botRightFive[3]);
+    //println("                4: "+botRightFive[4]);    
+    return max(botRightFive);
   }
   
   public int pixelColorHue(float pixelValue) {
@@ -408,8 +467,8 @@ public class LegoTower
     //println("Rx1 is "+RedOrigin.x);
     float Ry1 = RedOrigin.y;
     //println("Ry1 is "+RedOrigin.y);
-    //float Rx2 = RedTopRight.x;
-    float Rx2 = RedOrigin.x + redSegment.blobWidth;
+    float Rx2 = RedTopRight.x;
+    //float Rx2 = RedOrigin.x + redSegment.blobWidth;
     //println("Rx2 is "+Rx2);
     float Rx3 = RedFinal.x - redSegment.blobWidth;
     float Ry2 = RedFinal.y;
@@ -424,7 +483,7 @@ public class LegoTower
     //Draw blue segment
     if (BlueFinal.x > 0) {
     //fill(0,0,255);
-    stroke(0, 0, 255);    
+    stroke(0, 10, 220);    
     strokeWeight(3);
     //rect(blueSegment.x, blueSegment.y, blueSegment.blobWidth, blueSegment.blobHeight);
     
