@@ -280,6 +280,7 @@ public class LegoTower
 
       //First block of tower
       if ((max(ignoreColor)==0) && (newBlockRowCount==9) && (permNewBlock==-1)) {
+        println("in first block of tower "+tempNewBlock);
         blockInitialized = 1;
         newxLeft = topLeftPix[tempNewBlock];
         permNewBlock = tempNewBlock;
@@ -312,14 +313,18 @@ public class LegoTower
       }
     }
     
+    //Set origin, final, and top right coordinates of blocks
     for (int c=0; c<4; c++) {
-      if ((permNewBlock!=c) && (ignoreColor[c] != 0)) {
+      if ((permNewBlock!=c) && (ignoreColor[c] != 0)) { //for blocks that aren't bottom block
         drawOrigin(c, topLeftPix[c], lowerYLimit[c]-7, scaleFactor);
         drawFinal(c, bottomRightPix[c], upperYLimit[c]-8, scaleFactor);
         drawTopRight(c, topRightPix[c], lowerYLimit[c]-7, scaleFactor);
       }
-      else if (permNewBlock == c) {
-        drawOrigin(permNewBlock, topLeftPix[permNewBlock], setY-7, scaleFactor);
+      else if (permNewBlock==c) { //for bottom block
+        if (ignoreColor[c]==0) //special case if there is only one block in tower
+          drawOrigin(permNewBlock, topLeftPix[permNewBlock], lowerYLimit[c]-7, scaleFactor);
+        else //general bottom block
+          drawOrigin(permNewBlock, topLeftPix[permNewBlock], setY-7, scaleFactor);
         drawFinal(permNewBlock, bottomRightPix[permNewBlock], yUpper-1, scaleFactor); 
         drawTopRight(c, topRightPix[c], setY-7, scaleFactor);
       }
@@ -373,11 +378,12 @@ public class LegoTower
       if (topLeftFive[j]==0)
         topLeftFive[j] = max(topLeftFive);
     }
+    /*
     println("scanForTopLeft: 0: "+topLeftFive[0]);
     println("                1: "+topLeftFive[1]);
     println("                2: "+topLeftFive[2]);
     //println("                3: "+topLeftFive[3]);
-    //println("                4: "+topLeftFive[4]);    
+    //println("                4: "+topLeftFive[4]);   */ 
     return min(topLeftFive);
   }
 
@@ -400,11 +406,12 @@ public class LegoTower
       if (topRightFive[j]==0)
         topRightFive[j] = min(topRightFive);
     }
+    /*
     println("scanForBottomRight: 0: "+topRightFive[0]);
     println("                    1: "+topRightFive[1]);
     println("                    2: "+topRightFive[2]);
     //println("                    3: "+topRightFive[3]);
-    //println("                4: "+topRightFive[4]);    
+    //println("                4: "+topRightFive[4]);    */
     return max(topRightFive);
   }
   
@@ -429,11 +436,12 @@ public class LegoTower
       if (botRightFive[j]==0)
         botRightFive[j] = min(botRightFive);
     }
+    /*
     println("scanForBottomRight: 0: "+botRightFive[0]);
     println("                    1: "+botRightFive[1]);
     println("                    2: "+botRightFive[2]);
     println("                    3: "+botRightFive[3]);
-    //println("                4: "+botRightFive[4]);    
+    //println("                4: "+botRightFive[4]);    */
     return max(botRightFive);
   }
   
