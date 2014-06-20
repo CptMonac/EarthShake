@@ -150,7 +150,7 @@ void blobDebugMode()
     {
       currentTower = colorContours.get(j);
       currentTower.drawTower();
-      currentTower.printChart();
+      currentTower.printChart(currBlob);
     }
   }
 }

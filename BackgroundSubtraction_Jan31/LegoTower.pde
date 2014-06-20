@@ -152,15 +152,21 @@ public class LegoTower
 //          fill(255,0,0);
 //          text("R", pixelX*2, pixelY*2);
 //          noFill();
-          if (ignoreColor[0] == 0)
+          if (ignoreColor[0] == 1)
+            continue;
+            
+          if (ignoreColor[0] == 0) {
              colorCounts[0]++;
+             
           if ((firstRowFlag == 1) && (permNewBlock==0)) {
             topLeftPix[0] = scanForTopLeft(xLeft, xRight, 0, pixelX, pixelY);
             setTopLeftFlag = 0;
             topRightPix[0] = scanForTopRight(xLeft, xRight, 0, pixelY);
-          }        
+          }  /*      
           if (tempNewBlock==0)
-            bottomRightPix[tempNewBlock] = scanForBottomRight(xLeft, xRight, 0, pixelY);
+            bottomRightPix[tempNewBlock] = scanForBottomRight(xLeft, xRight, 0, pixelY); */
+          }  
+            
         }       
         
         //Identify blue hue
@@ -178,9 +184,9 @@ public class LegoTower
             topLeftPix[1] = scanForTopLeft(xLeft, xRight, 1, pixelX, pixelY);
             setTopLeftFlag = 0;
             topRightPix[1] = scanForTopRight(xLeft, xRight, 1, pixelY);
-          }
+          } /*
           if (tempNewBlock==1)
-            bottomRightPix[tempNewBlock] = scanForBottomRight(xLeft, xRight, 1, pixelY);
+            bottomRightPix[tempNewBlock] = scanForBottomRight(xLeft, xRight, 1, pixelY); */
         }
         
         //Identify green hue
@@ -198,9 +204,9 @@ public class LegoTower
             topLeftPix[2] = scanForTopLeft(xLeft, xRight, 2, pixelX, pixelY);
             setTopLeftFlag = 0;
             topRightPix[2] = scanForTopRight(xLeft, xRight, 2, pixelY);
-          }
+          } /*
           if (tempNewBlock==2)
-            bottomRightPix[tempNewBlock] = scanForBottomRight(xLeft, xRight, 2, pixelY);
+            bottomRightPix[tempNewBlock] = scanForBottomRight(xLeft, xRight, 2, pixelY); */
         }
                 
         //Identify yellow hue
@@ -212,22 +218,26 @@ public class LegoTower
 //          noFill();
           if (ignoreColor[3] == 0)
             colorCounts[3]++;
+          
           if ((firstRowFlag == 1) && (permNewBlock==3)) {
             newxLeft = pixelX;
             //topLeftPix[3] = pixelX;
             topLeftPix[3] = scanForTopLeft(xLeft, xRight, 3, pixelX, pixelY);
             setTopLeftFlag = 0;
             topRightPix[3] = scanForTopRight(xLeft, xRight, 3, pixelY);
-          }
+          } /*
           if (tempNewBlock==3)
-            bottomRightPix[tempNewBlock] = scanForBottomRight(xLeft, xRight, 3, pixelY);
+            bottomRightPix[tempNewBlock] = scanForBottomRight(xLeft, xRight, 3, pixelY); */
+          
+          
         }         
       }
       
       //If color was found in the row, update bottomRight pixel (here we're at the end of the row)
       if (colorPixelFound == 1) {
-        if (tempNewBlock != -1)
+        /* if (tempNewBlock != -1)
           bottomRightPix[tempNewBlock] = scanForBottomRight(xLeft, xRight, tempNewBlock, pixelY);    
+        */
         firstRowFlag = 0; 
       }
     
@@ -239,18 +249,26 @@ public class LegoTower
         if ((rowColorInt == colorCounts[0])) {
           rowColor = "red";
           rowMarker = 0;
+          if (tempNewBlock==0)
+            bottomRightPix[tempNewBlock] = scanForBottomRight(xLeft, xRight, 0, pixelY);
         }
         else if (rowColorInt == colorCounts[1]) {
           rowColor = "blue";
           rowMarker = 1;
+          if (tempNewBlock==1)
+            bottomRightPix[tempNewBlock] = scanForBottomRight(xLeft, xRight, 1, pixelY);
         }
         else if (rowColorInt == colorCounts[2]) {
           rowColor = "green";
           rowMarker = 2;
+          if (tempNewBlock==2)
+            bottomRightPix[tempNewBlock] = scanForBottomRight(xLeft, xRight, 2, pixelY);
         }
         else if ((rowColorInt == colorCounts[3])) {
           rowColor = "yellow";
           rowMarker = 3;
+          if (tempNewBlock==3)
+            bottomRightPix[tempNewBlock] = scanForBottomRight(xLeft, xRight, 3, pixelY);
         }
       }
   
@@ -393,7 +411,7 @@ public class LegoTower
         if (lookingForFirstPixColor == 1) {
           if (pixelColorHue(pixelValue) == blockColor) {
             topLeftFive[y] = pixelX;
-            if (blockColor==1) {
+            /* if (blockColor==1) {
               fill(255,255,255);
               text("B", pixelX*2, pixelY*2);
               noFill();
@@ -402,7 +420,7 @@ public class LegoTower
               fill(0,255,0);
               text("G", pixelX*2, pixelY*2);
               noFill();
-            }
+            } */
             lookingForFirstPixColor = 0;
           }
         }
@@ -476,11 +494,11 @@ public class LegoTower
     //If a row's value was not set, it was probably an error. 
     //Set its value to the min of array to ignore.
     for (int j=0; j<5; j++) {
-      if ((blockColor==1) && (botRightFive[j]!=0)) {
+      /* if ((blockColor==1) && (botRightFive[j]!=0)) {
         fill(0,255,255);
         text("B", botRightFive[j]*2, (pixelRow-j)*2);
         noFill();
-      }
+      } */
       if (botRightFive[j]==0)
         botRightFive[j] = min(botRightFive);
     }
@@ -676,7 +694,7 @@ public class LegoTower
   }
 
   //Displays debugging chart of towers and blocks' height and width on screen
-  public void printChart() 
+  public void printChart(BlobRect inputTower) 
   {
     int yoffset = beforeTower.height;
     int xoffset = beforeTower.width;
@@ -687,34 +705,38 @@ public class LegoTower
     text("height", xoffset+450, yoffset+90);
     if (towerOrigin.x < (beforeTower.width)*0.5) {
       text("Tower 1:", xoffset+30, yoffset+120);
-      text("Red:", xoffset+180, yoffset+120);
-      text(redSegment.blobWidth, xoffset+300, yoffset+120);
-      text(redSegment.blobHeight, xoffset+450, yoffset+120);
-      text("Blue:", xoffset+180, yoffset+150);
-      text(blueSegment.blobWidth, xoffset+300, yoffset+150);
-      text(blueSegment.blobHeight, xoffset+450, yoffset+150);
-      println("blue left: "+BlueOrigin.x+" and blue right: "+BlueFinal.x);
-      text("Green:", xoffset+180, yoffset+180);
-      text(greenSegment.blobWidth, xoffset+300, yoffset+180);
-      text(greenSegment.blobHeight, xoffset+450, yoffset+180);
-      text("Yellow:", xoffset+180, yoffset+210);
-      text(yellowSegment.blobWidth, xoffset+300, yoffset+210);
-      text(yellowSegment.blobHeight, xoffset+450, yoffset+210);
+      text(inputTower.blobWidth, xoffset+300, yoffset+120);
+      text(inputTower.blobHeight, xoffset+450, yoffset+120);
+      text("Red:", xoffset+180, yoffset+150);
+      text(redSegment.blobWidth, xoffset+300, yoffset+150);
+      text(redSegment.blobHeight, xoffset+450, yoffset+150);
+      text("Blue:", xoffset+180, yoffset+180);
+      text(blueSegment.blobWidth, xoffset+300, yoffset+180);
+      text(blueSegment.blobHeight, xoffset+450, yoffset+180);
+      //println("blue left: "+BlueOrigin.x+" and blue right: "+BlueFinal.x);
+      text("Green:", xoffset+180, yoffset+210);
+      text(greenSegment.blobWidth, xoffset+300, yoffset+210);
+      text(greenSegment.blobHeight, xoffset+450, yoffset+210);
+      text("Yellow:", xoffset+180, yoffset+240);
+      text(yellowSegment.blobWidth, xoffset+300, yoffset+240);
+      text(yellowSegment.blobHeight, xoffset+450, yoffset+240);
     }
     else if (towerOrigin.x > (beforeTower.width)*0.5) {
-      text("Tower 2:", xoffset+30, yoffset+240);    
-      text("Red:", xoffset+180, yoffset+240);
-      text(redSegment.blobWidth, xoffset+300, yoffset+240);
-      text(redSegment.blobHeight, xoffset+450, yoffset+240);
-      text("Blue:", xoffset+180, yoffset+270);
-      text(blueSegment.blobWidth, xoffset+300, yoffset+270);
-      text(blueSegment.blobHeight, xoffset+450, yoffset+270);
-      text("Green:", xoffset+180, yoffset+300);
-      text(greenSegment.blobWidth, xoffset+300, yoffset+300);
-      text(greenSegment.blobHeight, xoffset+450, yoffset+300);
-      text("Yellow:", xoffset+180, yoffset+330);
-      text(yellowSegment.blobWidth, xoffset+300, yoffset+330);
-      text(yellowSegment.blobHeight, xoffset+450, yoffset+330);
+      text("Tower 2:", xoffset+30, yoffset+270); 
+      text(inputTower.blobWidth, xoffset+300, yoffset+270);
+      text(inputTower.blobHeight, xoffset+450, yoffset+270);    
+      text("Red:", xoffset+180, yoffset+300);
+      text(redSegment.blobWidth, xoffset+300, yoffset+300);
+      text(redSegment.blobHeight, xoffset+450, yoffset+300);
+      text("Blue:", xoffset+180, yoffset+330);
+      text(blueSegment.blobWidth, xoffset+300, yoffset+330);
+      text(blueSegment.blobHeight, xoffset+450, yoffset+330);
+      text("Green:", xoffset+180, yoffset+360);
+      text(greenSegment.blobWidth, xoffset+300, yoffset+360);
+      text(greenSegment.blobHeight, xoffset+450, yoffset+360);
+      text("Yellow:", xoffset+180, yoffset+390);
+      text(yellowSegment.blobWidth, xoffset+300, yoffset+390);
+      text(yellowSegment.blobHeight, xoffset+450, yoffset+390);
     }
     textSize(15);
   }  
