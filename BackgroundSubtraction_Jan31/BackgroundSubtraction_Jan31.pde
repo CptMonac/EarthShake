@@ -1,11 +1,13 @@
 import gab.opencv.*;
 import SimpleOpenNI.*;
+import java.util.List;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Size;
 import org.opencv.core.Point;
 import org.opencv.core.Scalar;
 import org.opencv.core.CvType;
+import org.opencv.core.MatOfPoint;
 import org.opencv.imgproc.Imgproc;
 import blobDetection.*;
 import controlP5.*;
@@ -87,14 +89,16 @@ void draw()
   opencv.diff(afterTower);
   
   diff = opencv.getSnapshot();
-        
-   //Remove error locations
-   for (int i = 0; i < context.depthMapSize(); i++)
-   {
-     if (dmap1[i]==0 || dmap2[i]==0 )
-       diff.pixels[i]=color(0,0,0);
+
+  //Remove error locations
+  for (int i = 0; i < context.depthMapSize(); i++)
+  {
+    if (dmap1[i]==0 || dmap2[i]==0 )
+      diff.pixels[i]=color(0,0,0);
    }
   imageComparison();
+  //getHuMoments(afterTower);
+
 }
 
 void imageComparison()
@@ -119,6 +123,39 @@ void imageComparison()
   text("after", beforeTower.width/2 + 10, 20); 
   text("color", 10, beforeTower.height/2 + 20);
   text("before", beforeTower.width/2 + 10, beforeTower.height/2 + 20);
+}
+
+void getHuMoments(PImage srcImage)
+{
+  Mat towerImage = new Mat(height, width, CvType.CV_8UC1, new Scalar(0));;
+  Mat contourHierarchy = new Mat(height, width, CvType.CV_8UC1, new Scalar(0));;
+  List<MatOfPoint> towerContours = new ArrayList<MatOfPoint>();
+  ArrayList<PVector> visibleContours = new ArrayList<PVector>();
+  Contour tempContour;
+
+  opencv.toCv(srcImage, towerImage);
+  Imgproc.findContours(towerImage, towerContours, contourHierarchy, Imgproc.RETR_LIST, Imgproc.CHAIN_APPROX_NONE);
+  
+  println("#Contours:"+towerContours.size());
+  for (int j=0; j<towerContours.size(); j++)
+  {
+    stroke(204,102,0);
+    visibleContours = opencv.matToPVectors(towerContours.get(j));
+    tempContour = new Contour(this, towerContours.get(j));
+
+    pushMatrix();
+    scale(0.5);
+    tempContour.draw();
+    //tempContour.draw();
+    popMatrix();
+    // for(int i =0; i<visibleContours.size(); i++)
+    // {
+    //   PVector currPoint = visibleContours.get(i);
+    //   println(currPoint);
+    //   point(currPoint.x, currPoint.y);
+    // }
+  }
+ 
 }
 
 void blobDebugMode()
