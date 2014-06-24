@@ -447,12 +447,17 @@ public class LegoTower
           drawFinal(c, bottomRightPix[c], yUpper-1, scaleFactor); 
           drawTopRight(c, topRightPix[c], setY-7, scaleFactor);
         }
-        else {
+        else if (ignoreColor[c]==1) {
+          //for first block that is same color as bottom block
+          drawOrigin(c, topLeftPix[c], lowerYLimit[c]-7, scaleFactor);
+          drawFinal(c, bottomRightPix[c], upperYLimit[c]-8, scaleFactor);
+          drawTopRight(c, topRightPix[c], lowerYLimit[c]-7, scaleFactor);          
+          
           //general bottom block
-          drawOrigin(c, topLeftPix[c], setY-7, scaleFactor);
-          drawFinal(c, bottomRightPix[c], yUpper-1, scaleFactor); 
-          drawTopRight(c, topRightPix[c], setY-7, scaleFactor);
-        }
+          drawOrigin(c+4, topLeftPix[c+4], setY-7, scaleFactor);
+          drawFinal(c+4, bottomRightPix[c+4], yUpper-1, scaleFactor); 
+          drawTopRight(c+4, topRightPix[c+4], setY-7, scaleFactor);
+        }  
       }
     }
  
