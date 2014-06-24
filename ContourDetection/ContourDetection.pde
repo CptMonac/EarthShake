@@ -8,6 +8,7 @@ import org.opencv.core.Scalar;
 import org.opencv.core.CvType;
 import org.opencv.core.MatOfPoint;
 import org.opencv.imgproc.Imgproc;
+import java.awt.Rectangle;
 import controlP5.*;
 
 
@@ -16,6 +17,7 @@ PImage srcImage, editedImage;
 SimpleOpenNI  context;
 ControlP5 controlP5;
 ArrayList<Contour> legoTowers;
+ArrayList<Rectangle> originalBoundingBoxes;
 
 void setup()
 {
@@ -41,6 +43,7 @@ void setup()
   //Setup screen elements
   size(srcImage.width, srcImage.height);
   legoTowers = new ArrayList<Contour>();
+  originalBoundingBoxes = new ArrayList<Rectangle>();
   //setupGUI();
   
 }
@@ -56,7 +59,7 @@ void draw()
   opencv = new OpenCV(this, srcImage);
   opencv.gray();
   opencv.threshold(70);
-  image(context.depthImage(),0,0);
+  image(context.rgbImage(),0,0);
   editedImage = opencv.getOutput();
  
   //Find lego towers
@@ -92,26 +95,57 @@ void trackLegoTowers()
     {
       originalContour = legoTowers.get(i);
 
+      ArrayList<Rectangle> currentBoundingBoxes = new ArrayList<Rectangle>();
+      
       for(int j=0; j<filteredContours.size(); j++)
       {
         tempContour = filteredContours.get(j);
-        if (towerMatch(originalContour, tempContour))
+        Rectangle tempBoundingBox = tempContour.getBoundingBox();
+        currentBoundingBoxes.add(tempBoundingBox);
+      }
+      
+      for (int z = 0; z < originalBoundingBoxes.size();z++)
+      {
+        if (currentBoundingBoxes.size() >= originalBoundingBoxes.size())
         {
-          if (abs(originalContour.area() - tempContour.area() ) < 400 )
+          if ((originalBoundingBoxes.get(z).height - currentBoundingBoxes.get(z).height) > 40)
           {
-            text("Standing", originalContour.getBoundingBox().x, originalContour.getBoundingBox().y-10);
+            text("Fallen", currentBoundingBoxes.get(z).x, currentBoundingBoxes.get(z).y-10);
           }
           else 
           {
-            text("Fallen", tempContour.getBoundingBox().x, tempContour.getBoundingBox().y-10);
+             text("Standing", currentBoundingBoxes.get(z).x, currentBoundingBoxes.get(z).y);
           }
-          break;
         }
-       }
+      }
+      
+        
+        
+//        if (towerMatch(originalContour, tempContour))
+//        {
+//          float OriginalBox = originalContour.getBoundingBox().y;
+//          float TempBox = tempContour.getBoundingBox().y;
+//          if (abs(OriginalBox - TempBox ) < 100 )
+//          {
+//            text("Standing", originalContour.getBoundingBox().x, originalContour.getBoundingBox().y-10);
+//          }
+//          else 
+//          {
+//            text("Fallen", tempContour.getBoundingBox().x, tempContour.getBoundingBox().y-10);
+//          }
+//          break;
+//        }
+      // }
     }
   }
   else 
-    legoTowers = extractLegoTowers();
+   {
+     legoTowers = extractLegoTowers();
+      for (Contour contour: legoTowers)
+      {
+        originalBoundingBoxes.add(contour.getBoundingBox());
+      }
+   }
 }
 
 ArrayList<Contour> extractLegoTowers()
@@ -119,26 +153,30 @@ ArrayList<Contour> extractLegoTowers()
   //Find all contours in input image
   ArrayList<Contour> towerContours = opencv.findContours();
   ArrayList<Contour> filteredContours = new ArrayList<Contour>();
-
   //Filter contours to only lego towers
   for (Contour contour: towerContours)
   {
     if(contour.area() > 2000)
     {
       filteredContours.add(contour);
+      
       contour.draw();
       println(contour.area());
       
       //Draw polygon approximation
       stroke(255, 0, 0);
-      beginShape();
-      for (PVector point : contour.getPolygonApproximation().getPoints())
-      {
-        vertex(point.x, point.y);
-      }
-      endShape();
+      
+     
+        beginShape();
+        for (PVector point : contour.getPolygonApproximation().getPoints())
+        {
+          vertex(point.x, point.y);
+        }
+         endShape();
+      
     }
   }
+  
   return filteredContours;
 }
 
