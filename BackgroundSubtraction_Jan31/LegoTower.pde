@@ -396,8 +396,10 @@ public class LegoTower
         
         blockInitialized = 1;
           
-        if (ignoreColor[permNewBlock]==1) 
+        if (ignoreColor[permNewBlock]==1) {
+          if (permNewBlock==2) println("after first green");
           ignoreColor[permNewBlock] = 2;
+        }
         else if (ignoreColor[permNewBlock]==0)
           ignoreColor[permNewBlock] = 1;
   
@@ -426,6 +428,7 @@ public class LegoTower
     for (int c=0; c<4; c++) 
     {
       if (ignoreColor[c] == 2) {
+        println("drawing second for "+c);
         drawOrigin(c+4, topLeftPix[c+4], lowerYLimit[c+4]-7, scaleFactor);
         drawFinal(c+4, bottomRightPix[c+4], upperYLimit[c+4]-8, scaleFactor);
         drawTopRight(c+4, topRightPix[c+4], lowerYLimit[c+4]-7, scaleFactor);
@@ -436,7 +439,7 @@ public class LegoTower
         drawFinal(c, bottomRightPix[c], upperYLimit[c]-8, scaleFactor);
         drawTopRight(c, topRightPix[c], lowerYLimit[c]-7, scaleFactor);
       }
-      else if (permNewBlock==c) { 
+      else if ((permNewBlock==c)  && (ignoreColor[permNewBlock] <= 1)) { 
         //for bottom block
         if (ignoreColor[c]==0) {
           //special case if there is only one block in tower
