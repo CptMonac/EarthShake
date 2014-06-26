@@ -9,17 +9,16 @@ import org.opencv.core.CvType;
 import org.opencv.core.MatOfPoint;
 import org.opencv.imgproc.Imgproc;
 import java.awt.Rectangle;
+import java.util.Map;
 import controlP5.*;
 
 
 OpenCV opencv;
 PImage srcImage, editedImage;
-SimpleOpenNI  context;
+SimpleOpenNI context;
 ControlP5 controlP5;
-ArrayList<Contour> legoTowers;
-ArrayList<Rectangle> originalBoundingBoxes;
-PImage A1, A2, B1, B2, C1, C2, D1, D2, E1, E2, F1, F2, G1, G2;
-PImage M1, M2, M3, M4, towerx; 
+ArrayList<Rectangle> originTowerBounds;
+HashMap<String, Contour> towerDatabase;
 
 void setup()
 {
@@ -44,10 +43,11 @@ void setup()
 
   //Setup screen elements
   size(srcImage.width, srcImage.height);
-  legoTowers = new ArrayList<Contour>();
-  originalBoundingBoxes = new ArrayList<Rectangle>();
-  //setupGUI();
+  towerDatabase = new HashMap<String, Contour>();
+  originTowerBounds = new ArrayList<Rectangle>();
   
+  //Load lego tower types into towerDatabase
+  createContourDatabase();  
 }
 
 void draw()
@@ -84,107 +84,129 @@ void cleanKinectInput()
   }
 }
 
-void trackLegoTowers()
+//Create structure that stores lego tower types with their names
+void createContourDatabase()
 {
-  Contour tempContour, originalContour;
-  ArrayList<Contour> filteredContours;
+  //Load lego towers types into program
+  PImage inputTower;
+  String towerName;
+  ArrayList<Contour> inputContour;
+  ArrayList<String> fileNames = getTowerFileNames();
 
-  if (legoTowers.size() > 0)
+  //Extract contours from input images
+  for(String inputFilename: fileNames)
   {
-    filteredContours = extractLegoTowers();
-    
-    for(int i=0; i<legoTowers.size();i++)
-    {
-      originalContour = legoTowers.get(i);
-      String note = checkDatabase(originalContour);
-
-      ArrayList<Rectangle> currentBoundingBoxes = new ArrayList<Rectangle>();
-      ArrayList<String> noteArray = new ArrayList<String>();
-      
-      for(int j=0; j<filteredContours.size(); j++)
-      {
-        tempContour = filteredContours.get(j);
-        Rectangle tempBoundingBox = tempContour.getBoundingBox();
-        currentBoundingBoxes.add(tempBoundingBox);
-        noteArray.add(checkDatabase(tempContour));
-        //println("checkdatabase says: "+checkDatabase(tempContour));
-        //println("size of noteArray: "+noteArray.size());
-      }
-      
-      for (int z = 0; z < originalBoundingBoxes.size();z++)
-      {
-        if (currentBoundingBoxes.size() >= originalBoundingBoxes.size())
-        {
-          if ((originalBoundingBoxes.get(z).height - currentBoundingBoxes.get(z).height) > 40)
-          {
-            text("Fallen", currentBoundingBoxes.get(z).x, currentBoundingBoxes.get(z).y-10);
-          }
-          else 
-          {
-             text("Standing", currentBoundingBoxes.get(z).x, currentBoundingBoxes.get(z).y-10);
-             //println("for tower "+i+", text is "+note);
-             text(noteArray.get(z), currentBoundingBoxes.get(z).x, currentBoundingBoxes.get(z).y-100);
-          }
-        }
-      }
-              
-//        if (towerMatch(originalContour, tempContour))
-//        {
-//          float OriginalBox = originalContour.getBoundingBox().y;
-//          float TempBox = tempContour.getBoundingBox().y;
-//          if (abs(OriginalBox - TempBox ) < 100 )
-//          {
-//            text("Standing", originalContour.getBoundingBox().x, originalContour.getBoundingBox().y-10);
-//          }
-//          else 
-//          {
-//            text("Fallen", tempContour.getBoundingBox().x, tempContour.getBoundingBox().y-10);
-//          }
-//          break;
-//        }
-      // }
-    }
+    inputTower = loadImage(inputFilename);
+    inputContour = createTowerContour(inputTower);
+    towerName = inputFilename.substring(0,inputFilename.length()-3);
+    towerDatabase.put(towerName, inputContour.get(0));
   }
-  else 
-   {
-     legoTowers = extractLegoTowers();
-      for (Contour contour: legoTowers)
-      {
-        originalBoundingBoxes.add(contour.getBoundingBox());
-      }
-   }
+
+}
+
+ArrayList<String> getTowerFileNames()
+{
+  ArrayList<String> pImgNames = new ArrayList<String>();
+  pImgNames.add("A1_b.png");
+  pImgNames.add("A2_b.png");
+  pImgNames.add("B1_b.png");
+  pImgNames.add("B2_b.png"); 
+  pImgNames.add("C1_b.png"); 
+  pImgNames.add("C2_b.png");
+  pImgNames.add("D1_b.png"); 
+  pImgNames.add("D2_b.png");
+  pImgNames.add("E1_b.png"); 
+  pImgNames.add("E2_b.png");
+  pImgNames.add("F1_b.png"); 
+  pImgNames.add("F2_b.png");
+  pImgNames.add("G1_b.png"); 
+  pImgNames.add("M1_b.png");
+  pImgNames.add("M2_b.png"); 
+  pImgNames.add("M3_b.png");
+  pImgNames.add("M4_b.png"); 
+  pImgNames.add("x_b.png");
+  return pImgNames;                               
+}
+
+ArrayList<Rectangle> recordCurrentSnapshot()
+{
+  ArrayList<Contour> currentTowers;
+  ArrayList<Rectangle> boundingRectangles = new ArrayList<Rectangle>();
+
+  //Extract all contours from current scene
+  currentTowers = extractLegoTowers();
+  for (Contour contour: currentTowers)
+  {
+    boundingRectangles.add(contour.getBoundingBox());
+  }
+  return boundingRectangles;
 }
 
 ArrayList<Contour> extractLegoTowers()
 {
-  //Find all contours in input image
-  ArrayList<Contour> towerContours = opencv.findContours();
-  ArrayList<Contour> filteredContours = new ArrayList<Contour>();
-  //Filter contours to only lego towers
-  for (Contour contour: towerContours)
+  ArrayList<Contour> rawContours;
+  ArrayList<Contour> towerContours = new ArrayList<Contour>();
+
+  //Extract all contours from current scene
+  rawContours =  opencv.findContours();
+  for (Contour contour: rawContours)
   {
+    //Filter out lego towers from scene
     if(contour.area() > 2000)
+      towerContours.add(contour);
+  }
+  return towerContours;
+}
+
+//Creates contours from input depth image
+ArrayList<Contour> createTowerContour(PImage inputDepthImage)
+{
+  //Filter input image
+  opencv = new OpenCV(this, inputDepthImage);
+  opencv.gray();
+  opencv.threshold(70);
+  
+  //Extract contours from filtered image
+  return opencv.findContours();
+}
+
+void trackLegoTowers()
+{
+  ArrayList<Contour> currentTowerContours;
+  ArrayList<LegoTower> currentTowers = new ArrayList<LegoTower>();
+  ArrayList<Rectangle> currentTowerBounds = new ArrayList<Rectangle>();
+  LegoTower tempTower;
+
+  //Record original tower locations
+  if (originTowerBounds.isEmpty())
+    originTowerBounds = recordCurrentSnapshot();
+
+  //Get current status of lego towers
+  currentTowerContours = extractLegoTowers();
+  for (Contour contour: currentTowerContours)
+  {
+    tempTower = new LegoTower(contour);
+    currentTowers.add(tempTower);
+    currentTowerBounds.add(tempTower.towerBounds);
+    tempTower.draw();
+  }
+
+  //Track changes in lego tower status
+  for (int i =0; i < originTowerBounds.size(); i++)
+  {
+    if (currentTowerBounds.size() >= originTowerBounds.size())
     {
-      filteredContours.add(contour);
-      
-      contour.draw();
-      //println(contour.area());
-      
-      //Draw polygon approximation
-      stroke(255, 0, 0);
-      
-     
-        beginShape();
-        for (PVector point : contour.getPolygonApproximation().getPoints())
-        {
-          vertex(point.x, point.y);
-        }
-         endShape();
-      
+      if ((originTowerBounds.get(i).height - currentTowerBounds.get(i).height) > 40)
+      {
+        currentTowers.get(i).towerStatus = "Fallen";
+      }
+      else 
+      {
+        currentTowers.get(i).towerStatus = "Standing";
+      }
+      currentTowers.get(i).draw();
     }
   }
-  
-  return filteredContours;
 }
 
 boolean towerMatch(Contour towerReference, Contour inputTower)
@@ -196,154 +218,4 @@ boolean towerMatch(Contour towerReference, Contour inputTower)
     return true;
   else 
     return false;
-}
-
-void loadPImages()
-{
-  A1 = loadImage("A1_b.png");
-  A2 = loadImage("A2_b.png");
-  B1 = loadImage("B1_b.png");
-  B2 = loadImage("B2_b.png");
-  C1 = loadImage("C1_b.png");
-  C2 = loadImage("C2_b.png");
-  D1 = loadImage("D1_b.png");
-  D2 = loadImage("D2_b.png");
-  E1 = loadImage("E1_b.png");
-  E2 = loadImage("E2_b.png");
-  F1 = loadImage("F1_b.png");
-  F2 = loadImage("F2_b.png");
-  G1 = loadImage("G1_b.png");
-  //G2 = loadImage("G2_b.png");
-  M1 = loadImage("M1_b.png");
-  M2 = loadImage("M2_b.png");
-  M3 = loadImage("M3_b.png");
-  M4 = loadImage("M4_b.png"); 
-  towerx = loadImage("x_b.png");  
-}
-
-ArrayList<PImage> createPImageArray()
-{
-  ArrayList<PImage> database = new ArrayList<PImage>();
-  loadPImages();
-  database.add(A1);  
-  database.add(A2);  
-  database.add(B1);  
-  database.add(B2); 
-  database.add(C1);  
-  database.add(C2);   
-  database.add(D1);  
-  database.add(D2); 
-  database.add(E1);  
-  database.add(E2); 
-  database.add(F1);  
-  database.add(F2);
-  database.add(G1);  
-  //database.add(G2);
-  database.add(M1);  
-  database.add(M2);
-  database.add(M3);  
-  database.add(M4);
-  database.add(towerx);
-  /*
-  println("A1: "+A1);
-  println("db A1? "+database.get(0));
-  println("db A1? "+database.get(17));
-  
-  println("A2: "+A2);
-  println("B1: "+B1);
-  println("B2: "+B2);
-  println("C1: "+C1);
-  println("C2: "+C2);
-  println("D1: "+D1);
-  println("D2: "+D2);
-  println("E1: "+E1);
-  println("E2: "+E2);
-  println("F1: "+F1);
-  println("F2: "+F2);
-  println("G1: "+G1);
-  println("M1: "+M1);
-  println("M2: "+M2);
-  println("M1: "+M1);
-  println("M2: "+M2);  */
-  return database;
-}
-
-ArrayList<String> loadPImgStrings()
-{
-  ArrayList<String> pImgNames = new ArrayList<String>();
-  pImgNames.add("A1");
-  //pImgNames.add("A1");
-  pImgNames.add("A2");
-  //pImgNames.add("A2");
-  pImgNames.add("B1");
-  //pImgNames.add("B1");
-  pImgNames.add("B2"); 
-  //pImgNames.add("B2"); 
-  pImgNames.add("C1"); 
-  //pImgNames.add("C1"); 
-  pImgNames.add("C2");
-  //pImgNames.add("C2"); 
-  pImgNames.add("D1"); 
-  //pImgNames.add("D1"); 
-  pImgNames.add("D2");
-  //pImgNames.add("D2"); 
-  pImgNames.add("E1"); 
-  //pImgNames.add("E1"); 
-  pImgNames.add("E2");
-  //pImgNames.add("E2");
-  pImgNames.add("F1"); 
-  //pImgNames.add("F1"); 
-  pImgNames.add("F2");
-  //pImgNames.add("F2"); 
-  pImgNames.add("G1"); 
-  //pImgNames.add("G1"); 
-  pImgNames.add("M1");
-  //pImgNames.add("M1");
-  pImgNames.add("M2"); 
-  //pImgNames.add("M2");
-  pImgNames.add("M3");
-  //pImgNames.add("M3"); 
-  pImgNames.add("M4"); 
-  //pImgNames.add("M4"); 
-  pImgNames.add("X");
-  //pImgNames.add("X");
-  return pImgNames;                               
-}
-
-ArrayList<Contour> createContourDatabase(ArrayList<PImage> PImgArray)
-{
-  ArrayList<Contour> newContours = new ArrayList<Contour>();
-  ArrayList<Contour> contourDB = new ArrayList<Contour>();
-    
-  for (PImage srcImage: PImgArray)
-  {
-    opencv = new OpenCV(this, srcImage);
-    opencv.gray();
-    opencv.threshold(70);    
-    newContours = extractLegoTowers();
-    //for (Contour contour: newContours)
-    for (int a = 0; a<newContours.size(); a++)
-    {
-      contourDB.add(newContours.get(a));
-    }
-  }
-  return contourDB;
-}
-
-String checkDatabase(Contour tempContour)
-{
-  String note = "no match found :(";
-  ArrayList<PImage> PImgArray = createPImageArray(); 
-  ArrayList<Contour> contourDBList = createContourDatabase(PImgArray);
-  //println("sizeof pimgarray = "+PImgArray.size());
-  //println("sizeof contourDBList = "+contourDBList.size()); 
-  ArrayList<String> pImgNames = loadPImgStrings();
-  for (int c=0; c<contourDBList.size(); c++)
-  {
-    //println("contour "+c+" area = "+contourDBList.get(c).area());
-    if (towerMatch(contourDBList.get(c), tempContour))
-      note = "MATCH! with "+pImgNames.get(c);
-      //note = "MATCH! with: "+contour;
-  }
-  return note;  
 }
