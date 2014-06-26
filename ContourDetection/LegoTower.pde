@@ -37,18 +37,7 @@ public class LegoTower
   //Matches tower to database of lego towers
   void determineTowerType()
   {
-    for(Map.Entry srcTower: towerDatabase.entrySet())
-    {
-      String srcTower_type = srcTower.getKey().toString();
-      Contour srcContour = towerDatabase.get(srcTower_type);
-
-      if (towerMatch(srcContour, legoContour))
-      {
-        towerType = srcTower_type;
-        break;
-      }
-      else 
-        towerType = "Unknown Tower";
-    }
+    towerType = getBestTowerMatch(legoContour);
   }
+
 }

@@ -219,3 +219,25 @@ boolean towerMatch(Contour towerReference, Contour inputTower)
   else 
     return false;
 }
+
+String getBestTowerMatch(Contour inputTower)
+{
+  double highestSimilarity=1000;
+  double currentSimilarity=1000;
+  String towerType="Unknown Tower";
+
+  for(Map.Entry srcTower: towerDatabase.entrySet())
+  {
+    String srcTower_type = srcTower.getKey().toString();
+    Contour srcContour = towerDatabase.get(srcTower_type);
+
+    //Use hu-moments for image which are invariant to translation, rotation, scale, and skew for comparison
+    currentSimilarity = Imgproc.matchShapes(srcContour.pointMat, inputTower.pointMat, Imgproc.CV_CONTOURS_MATCH_I1, 0);
+    if (currentSimilarity < highestSimilarity)
+    {
+      highestSimilarity = currentSimilarity;
+      towerType = srcTower_type;
+    }
+  }
+  return towerType;
+}
