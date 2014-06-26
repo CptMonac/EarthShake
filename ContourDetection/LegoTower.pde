@@ -1,3 +1,4 @@
+@@ -1,43 +1 @@
 public class LegoTower
 {
   public Contour legoContour;
@@ -41,3 +42,4 @@ public class LegoTower
   }
 
 }
+
