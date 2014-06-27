@@ -100,16 +100,17 @@ void createContourDatabase()
   
   String inputFilename;
   //Extract contours from input images
-  for (int f=0; f<filenames.size(); f++)
+  for (int f=0; f<fileNames.size(); f++)
   {
-    inputFilename = filenames.get(f);
+    inputFilename = fileNames.get(f);
     inputTower = loadImage(inputFilename);
     inputContour = createTowerContour(inputTower);
-    newContours.add(inputContour.get(0));
+    if (inputContour.size()>0)
+      newContours.add(inputContour.get(0));
   }
 }
 
-ArrayList<Contour> getTowerFilenames()
+ArrayList<String> getTowerFileNames()
 {
   ArrayList<String> pImgNames = new ArrayList<String>();
   pImgNames.add("A1_b.png");
