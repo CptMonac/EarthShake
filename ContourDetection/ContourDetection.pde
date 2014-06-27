@@ -107,7 +107,7 @@ void trackLegoTowers()
     for(int i=0; i<legoTowers.size();i++)
     {
       originalContour = legoTowers.get(i);
-      String note = checkDatabase(originalContour);
+      //String note = checkDatabase(originalContour);
 
       ArrayList<Rectangle> currentBoundingBoxes = new ArrayList<Rectangle>();
       ArrayList<String> noteArray = new ArrayList<String>();
@@ -118,8 +118,6 @@ void trackLegoTowers()
         Rectangle tempBoundingBox = tempContour.getBoundingBox();
         currentBoundingBoxes.add(tempBoundingBox);
         noteArray.add(getBestTowerMatch(tempContour));
-        //println("checkdatabase says: "+checkDatabase(tempContour));
-        //println("size of noteArray: "+noteArray.size());
       }
       
       for (int z = 0; z < originalBoundingBoxes.size();z++)
@@ -133,7 +131,7 @@ void trackLegoTowers()
           else 
           {
              text("Standing", currentBoundingBoxes.get(z).x, currentBoundingBoxes.get(z).y-10);
-             text(noteArray.get(z), currentBoundingBoxes.get(z).x, currentBoundingBoxes.get(z).y-100);
+             text(noteArray.get(z), currentBoundingBoxes.get(z).x, currentBoundingBoxes.get(z).y-25);
           }
         }
       }
@@ -179,23 +177,6 @@ ArrayList<Contour> extractLegoTowers()
   }
   
   return filteredContours;
-}
-
-boolean towerMatch(Contour towerReference, Contour inputTower)
-{
-  //Use hu-moments for image which are invariant to translation, rotation, scale, and skew for comparison
-  double similarity = Imgproc.matchShapes(towerReference.pointMat, inputTower.pointMat, Imgproc.CV_CONTOURS_MATCH_I1, 0);
-  
-  if (similarity < 1)  //The lower the result, the better the match
-  {
-    println("match similarity: "+similarity);
-    return true;
-  }
-  else 
-  {
-    println("no match: "+similarity);
-    return false;
-  }
 }
 
 void loadPImages()
@@ -244,27 +225,6 @@ ArrayList<PImage> createPImageArray()
   database.add(M3);  
   database.add(M4);
   database.add(towerx);
-  /*
-  println("A1: "+A1);
-  println("db A1? "+database.get(0));
-  println("db A1? "+database.get(17));
-  
-  println("A2: "+A2);
-  println("B1: "+B1);
-  println("B2: "+B2);
-  println("C1: "+C1);
-  println("C2: "+C2);
-  println("D1: "+D1);
-  println("D2: "+D2);
-  println("E1: "+E1);
-  println("E2: "+E2);
-  println("F1: "+F1);
-  println("F2: "+F2);
-  println("G1: "+G1);
-  println("M1: "+M1);
-  println("M2: "+M2);
-  println("M1: "+M1);
-  println("M2: "+M2);  */
   return database;
 }
 
@@ -272,41 +232,23 @@ ArrayList<String> loadPImgStrings()
 {
   ArrayList<String> pImgNames = new ArrayList<String>();
   pImgNames.add("A1");
-  //pImgNames.add("A1");
   pImgNames.add("A2");
-  //pImgNames.add("A2");
   pImgNames.add("B1");
-  //pImgNames.add("B1");
   pImgNames.add("B2"); 
-  //pImgNames.add("B2"); 
   pImgNames.add("C1"); 
-  //pImgNames.add("C1"); 
   pImgNames.add("C2");
-  //pImgNames.add("C2"); 
   pImgNames.add("D1"); 
-  //pImgNames.add("D1"); 
   pImgNames.add("D2");
-  //pImgNames.add("D2"); 
   pImgNames.add("E1"); 
-  //pImgNames.add("E1"); 
   pImgNames.add("E2");
-  //pImgNames.add("E2");
   pImgNames.add("F1"); 
-  //pImgNames.add("F1"); 
   pImgNames.add("F2");
-  //pImgNames.add("F2"); 
   pImgNames.add("G1"); 
-  //pImgNames.add("G1"); 
   pImgNames.add("M1");
-  //pImgNames.add("M1");
   pImgNames.add("M2"); 
-  //pImgNames.add("M2");
   pImgNames.add("M3");
-  //pImgNames.add("M3"); 
   pImgNames.add("M4"); 
-  //pImgNames.add("M4"); 
   pImgNames.add("X");
-  //pImgNames.add("X");
   return pImgNames;                               
 }
 
@@ -348,10 +290,26 @@ String checkDatabase(Contour tempContour)
   return note;  
 }
 
+boolean towerMatch(Contour towerReference, Contour inputTower)
+{
+  //Use hu-moments for image which are invariant to translation, rotation, scale, and skew for comparison
+  double similarity = Imgproc.matchShapes(towerReference.pointMat, inputTower.pointMat, Imgproc.CV_CONTOURS_MATCH_I1, 0);
+  
+  if (similarity < 1)  //The lower the result, the better the match
+  {
+    //println("match similarity: "+similarity);
+    return true;
+  }
+  else 
+  {
+    //println("no match: "+similarity);
+    return false;
+  }
+}
 
 String getBestTowerMatch(Contour inputTower)
 {
-  double highestSimilarity=1000;
+  double bestSimilarity=2;
   double currentSimilarity=1000;
   String towerType="Unknown Tower";
 
@@ -361,10 +319,11 @@ String getBestTowerMatch(Contour inputTower)
 
     //Use hu-moments for image which are invariant to translation, rotation, scale, and skew for comparison
     currentSimilarity = Imgproc.matchShapes(srcContour.pointMat, inputTower.pointMat, Imgproc.CV_CONTOURS_MATCH_I1, 0);
-    if (currentSimilarity < highestSimilarity)
+    if (currentSimilarity < bestSimilarity)
     {
-      highestSimilarity = currentSimilarity;
+      bestSimilarity = currentSimilarity;
       towerType = pImgNames.get(c);
+      println(towerType+" "+bestSimilarity);
     }
   }
   return towerType;
