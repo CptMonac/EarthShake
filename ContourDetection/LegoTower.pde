@@ -10,7 +10,7 @@ public class LegoTower
     legoContour = inputContour;
     towerBounds = legoContour.getBoundingBox();
     determineTowerType();
-    towerStatus = "Unknown status...";
+    towerStatus = "";
   }
 
   void draw()
@@ -31,13 +31,24 @@ public class LegoTower
     text(towerStatus, towerBounds.x, towerBounds.y-15);
 
     //Draw type
-    text(towerType, towerBounds.x, towerBounds.y - 30);
+    text(towerType, towerBounds.x, towerBounds.y-30);
   }
   
   //Matches tower to database of lego towers
   void determineTowerType()
   {
-    towerType = getBestTowerMatch(legoContour);
-  }
+    towerType = getBestTowerMatch(legoContour); /*
+    for (int m=0; m<newContours.size(); m++)
+    {
+      Contour srcContour = newContours.get(m);
 
+      if (towerMatch(srcContour, legoContour))
+      {
+        towerType = fileNames.get(m);
+        break;
+      }
+      else 
+        towerType = "Unknown Tower";
+    } */
+  }
 }

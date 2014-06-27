@@ -15,10 +15,15 @@ import controlP5.*;
 
 OpenCV opencv;
 PImage srcImage, editedImage;
-SimpleOpenNI context;
+SimpleOpenNI  context;
 ControlP5 controlP5;
+//ArrayList<Contour> legoTowers;
+//ArrayList<Rectangle> originalBoundingBoxes;
+//PImage A1, A2, B1, B2, C1, C2, D1, D2, E1, E2, F1, F2, G1, G2;
+//PImage M1, M2, M3, M4, towerx; 
+ArrayList<Contour> newContours;
 ArrayList<Rectangle> originTowerBounds;
-HashMap<String, Contour> towerDatabase;
+ArrayList<String> fileNames;
 
 void setup()
 {
@@ -43,11 +48,12 @@ void setup()
 
   //Setup screen elements
   size(srcImage.width, srcImage.height);
-  towerDatabase = new HashMap<String, Contour>();
+  newContours = new ArrayList<Contour>();
+  fileNames = new ArrayList<String>();
   originTowerBounds = new ArrayList<Rectangle>();
   
-  //Load lego tower types into towerDatabase
-  createContourDatabase();  
+  //Load Lego tower types into towerDatabase
+  createContourDatabase();
 }
 
 void draw()
@@ -84,24 +90,24 @@ void cleanKinectInput()
   }
 }
 
-//Create structure that stores lego tower types with their names
 void createContourDatabase()
 {
   //Load lego towers types into program
   PImage inputTower;
   String towerName;
   ArrayList<Contour> inputContour;
-  ArrayList<String> fileNames = getTowerFileNames();
-
+  fileNames = getTowerFileNames();
+  
+  String inputFilename;
   //Extract contours from input images
-  for(String inputFilename: fileNames)
+  for (int f=0; f<fileNames.size(); f++)
   {
+    inputFilename = fileNames.get(f);
     inputTower = loadImage(inputFilename);
     inputContour = createTowerContour(inputTower);
-    towerName = inputFilename.substring(0,inputFilename.length()-3);
-    towerDatabase.put(towerName, inputContour.get(0));
+    //println(inputFilename);
+    newContours.add(inputContour.get(0));
   }
-
 }
 
 ArrayList<String> getTowerFileNames()
@@ -125,88 +131,7 @@ ArrayList<String> getTowerFileNames()
   pImgNames.add("M3_b.png");
   pImgNames.add("M4_b.png"); 
   pImgNames.add("x_b.png");
-  return pImgNames;                               
-}
-
-ArrayList<Rectangle> recordCurrentSnapshot()
-{
-  ArrayList<Contour> currentTowers;
-  ArrayList<Rectangle> boundingRectangles = new ArrayList<Rectangle>();
-
-  //Extract all contours from current scene
-  currentTowers = extractLegoTowers();
-  for (Contour contour: currentTowers)
-  {
-    boundingRectangles.add(contour.getBoundingBox());
-  }
-  return boundingRectangles;
-}
-
-ArrayList<Contour> extractLegoTowers()
-{
-  ArrayList<Contour> rawContours;
-  ArrayList<Contour> towerContours = new ArrayList<Contour>();
-
-  //Extract all contours from current scene
-  rawContours =  opencv.findContours();
-  for (Contour contour: rawContours)
-  {
-    //Filter out lego towers from scene
-    if(contour.area() > 2000)
-      towerContours.add(contour);
-  }
-  return towerContours;
-}
-
-//Creates contours from input depth image
-ArrayList<Contour> createTowerContour(PImage inputDepthImage)
-{
-  //Filter input image
-  opencv = new OpenCV(this, inputDepthImage);
-  opencv.gray();
-  opencv.threshold(70);
-  
-  //Extract contours from filtered image
-  return opencv.findContours();
-}
-
-void trackLegoTowers()
-{
-  ArrayList<Contour> currentTowerContours;
-  ArrayList<LegoTower> currentTowers = new ArrayList<LegoTower>();
-  ArrayList<Rectangle> currentTowerBounds = new ArrayList<Rectangle>();
-  LegoTower tempTower;
-
-  //Record original tower locations
-  if (originTowerBounds.isEmpty())
-    originTowerBounds = recordCurrentSnapshot();
-
-  //Get current status of lego towers
-  currentTowerContours = extractLegoTowers();
-  for (Contour contour: currentTowerContours)
-  {
-    tempTower = new LegoTower(contour);
-    currentTowers.add(tempTower);
-    currentTowerBounds.add(tempTower.towerBounds);
-    tempTower.draw();
-  }
-
-  //Track changes in lego tower status
-  for (int i =0; i < originTowerBounds.size(); i++)
-  {
-    if (currentTowerBounds.size() >= originTowerBounds.size())
-    {
-      if ((originTowerBounds.get(i).height - currentTowerBounds.get(i).height) > 40)
-      {
-        currentTowers.get(i).towerStatus = "Fallen";
-      }
-      else 
-      {
-        currentTowers.get(i).towerStatus = "Standing";
-      }
-      currentTowers.get(i).draw();
-    }
-  }
+  return pImgNames;
 }
 
 boolean towerMatch(Contour towerReference, Contour inputTower)
@@ -226,18 +151,101 @@ String getBestTowerMatch(Contour inputTower)
   double currentSimilarity=1000;
   String towerType="Unknown Tower";
 
-  for(Map.Entry srcTower: towerDatabase.entrySet())
-  {
-    String srcTower_type = srcTower.getKey().toString();
-    Contour srcContour = towerDatabase.get(srcTower_type);
-
-    //Use hu-moments for image which are invariant to translation, rotation, scale, and skew for comparison
-    currentSimilarity = Imgproc.matchShapes(srcContour.pointMat, inputTower.pointMat, Imgproc.CV_CONTOURS_MATCH_I1, 0);
-    if (currentSimilarity < highestSimilarity)
+  for (int m=0; m<newContours.size(); m++)
     {
-      highestSimilarity = currentSimilarity;
-      towerType = srcTower_type;
+      Contour srcContour = newContours.get(m);
+  
+      //Use hu-moments for image which are invariant to translation, rotation, scale, and skew for comparison
+      currentSimilarity = Imgproc.matchShapes(srcContour.pointMat, inputTower.pointMat, Imgproc.CV_CONTOURS_MATCH_I2, 0);
+      if (currentSimilarity < highestSimilarity)
+      {
+        highestSimilarity = currentSimilarity;
+        towerType = fileNames.get(m);
+      }
+    }
+  return towerType;
+}
+
+//Creates contours from input depth image
+ArrayList<Contour> createTowerContour(PImage inputDepthImage)
+{
+  //Filter input image
+  opencv = new OpenCV(this, inputDepthImage);
+  opencv.gray();
+  opencv.threshold(70);  
+  
+  //Extract contours from filtered image
+  return opencv.findContours();
+}
+
+ArrayList<Rectangle> recordCurrentSnapshot()
+{
+  ArrayList<Contour> currentTowers;
+  ArrayList<Rectangle> boundingRectangles = new ArrayList<Rectangle>();
+  
+  //Extract all contours from current scene
+  currentTowers = extractLegoTowers();
+  for (Contour contour: currentTowers)
+  {
+    boundingRectangles.add(contour.getBoundingBox());
+  }
+  return boundingRectangles;
+}
+
+ArrayList<Contour> extractLegoTowers()
+{
+  ArrayList<Contour> rawContours;
+  ArrayList<Contour> towerContours = new ArrayList<Contour>();
+  
+  //Extract all contours from current scene
+  rawContours = opencv.findContours();
+  for (Contour contour: rawContours)
+  {
+    //Filter out lego towers from scene
+    if (contour.area() > 2000)
+      towerContours.add(contour);
+  }
+  return towerContours;
+}
+
+
+void trackLegoTowers()
+{
+  ArrayList<Contour> currentTowerContours;
+  ArrayList<LegoTower> currentTowers = new ArrayList<LegoTower>();
+  ArrayList<Rectangle> currentTowerBounds = new ArrayList<Rectangle>();
+  LegoTower tempTower;
+  
+  //Record original tower locations
+  if (originTowerBounds.isEmpty())
+    originTowerBounds = recordCurrentSnapshot();
+    
+  //Get current status of Lego towers
+  currentTowerContours = extractLegoTowers();
+  for (Contour contour: currentTowerContours)
+  {
+    tempTower = new LegoTower(contour);
+    currentTowers.add(tempTower);
+    currentTowerBounds.add(tempTower.towerBounds);
+    tempTower.draw();
+  }
+  
+  //Track changes in Lego tower status
+  for(int i=0; i<originTowerBounds.size();i++)
+  { 
+    if (currentTowerBounds.size() >= originTowerBounds.size())
+    {
+      if ((originTowerBounds.get(i).height - currentTowerBounds.get(i).height) > 40)
+      {
+        currentTowers.get(i).towerStatus = "Fallen";
+        //text("Fallen", currentTowerBounds.get(i).x, currentTowerBounds.get(i).y-10);
+      }
+      else 
+      {
+         currentTowers.get(i).towerStatus = "Standing";
+         //text("Standing", currentTowerBounds.get(i).x, currentTowerBounds.get(i).y-10);
+      }
+      currentTowers.get(i).draw();
     }
   }
-  return towerType;
 }
