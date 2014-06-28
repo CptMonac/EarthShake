@@ -120,10 +120,12 @@ void trackLegoTowers()
         noteArray.add(getBestTowerMatch(tempContour));
       }
       
-      for (int z = 0; z < originalBoundingBoxes.size();z++)
+      int count = min(originalBoundingBoxes.size(), currentBoundingBoxes.size());
+      //for (int z = 0; z < originalBoundingBoxes.size();z++)
+      for (int z = 0; z<count; z++)
       {
-        if (currentBoundingBoxes.size() >= originalBoundingBoxes.size())
-        {
+        //if (currentBoundingBoxes.size() >= originalBoundingBoxes.size())
+        //{
           if ((originalBoundingBoxes.get(z).height - currentBoundingBoxes.get(z).height) > 40)
           {
             text("Fallen", currentBoundingBoxes.get(z).x, currentBoundingBoxes.get(z).y-10);
@@ -133,7 +135,7 @@ void trackLegoTowers()
              text("Standing", currentBoundingBoxes.get(z).x, currentBoundingBoxes.get(z).y-10);
              text(noteArray.get(z), currentBoundingBoxes.get(z).x, currentBoundingBoxes.get(z).y-25);
           }
-        }
+        //}
       }
     }
   }
