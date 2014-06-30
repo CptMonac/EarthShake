@@ -28,9 +28,9 @@ void blobDebugMode()
     float x = currBlob.x;
     float y = currBlob.y;
     
-    rect(x, y, blobW, blobH);
+    //rect(x, y, blobW, blobH);
     
-    text(blobH, x, y-50);
+    //text(blobH, x, y-50);
 
     //Draw coloured blobs
     for (int j = 0; j<colorContours.size(); j++)

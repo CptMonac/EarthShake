@@ -71,7 +71,10 @@ void setup()
 void draw()
 {
   //Update camera image
-  context.update();                 
+  context.update();     
+
+  PImage depthImage = context.depthImage();
+  colorTower = new PImage(depthImage.getImage());
   
   //Clean the input image
   cleanKinectInput();
@@ -79,27 +82,14 @@ void draw()
   opencv = new OpenCV(this, srcImage);
   opencv.gray();
   opencv.threshold(70);
+  
   image(context.depthImage(),0,0);
   editedImage = opencv.getOutput();
- 
+
   //Find lego towers
   trackLegoTowers();
   
-  //addColor();
-  /* colorImage = context.depthImage();
-  opencv = new OpenCV(this, colorImage);
-  opencv.gray();
-  opencv.threshold(70); */
-  //image(context.depthImage(),0,0);
-  //editedImage = opencv.getOutput();
-  
-  //addColor();
-  //colorImage = opencv.getOutput();
-  theBlobDetection = new BlobDetection(colorImage.width, colorImage.height);
-  theBlobDetection.setPosDiscrimination(false);
-  theBlobDetection.setThreshold(0.38f);
-  theBlobDetection.computeBlobs(colorImage.pixels);
-  blobDebugMode(); 
+  imageComparison();
 }
 
 void cleanKinectInput()
@@ -115,6 +105,9 @@ void cleanKinectInput()
 
     if ((inputDepthMap[i]< 600) || (inputDepthMap[i] > 1000)) //Irrelevant depths
       context.depthImage().pixels[i] = color(0,0,0);
+
+    else if ((inputDepthMap[i] > 400) && (inputDepthMap[i] < 1000))
+      colorTower.pixels[i] = context.rgbImage().pixels[i];
   }
 }
 
@@ -129,6 +122,22 @@ void addColor()
     if ((inputDepthMap[i] > 400) && (inputDepthMap[i] < 1000))
       context.depthImage().pixels[i] = context.rgbImage().pixels[i];
   }  
+}
+
+void imageComparison() 
+{
+  pushMatrix();
+  scale(0.5);
+  image(colorTower, 0, 0);
+  
+  theBlobDetection = new BlobDetection(colorTower.width, colorTower.height);
+  theBlobDetection.setPosDiscrimination(false);
+  theBlobDetection.setThreshold(0.38f);
+  theBlobDetection.computeBlobs(colorTower.pixels);
+  blobDebugMode(); 
+  
+  popMatrix();
+  fill(204,0,0);
 }
 
 void trackLegoTowers()
