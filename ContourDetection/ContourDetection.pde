@@ -13,7 +13,7 @@ import controlP5.*;
 
 
 OpenCV opencv;
-PImage srcImage, editedImage;
+PImage srcImage, editedImage,colorImage;
 SimpleOpenNI  context;
 ControlP5 controlP5;
 ArrayList<Contour> legoTowers;
@@ -85,10 +85,20 @@ void draw()
   //Find lego towers
   trackLegoTowers();
   
-  theBlobDetection = new BlobDetection(srcImage.width, srcImage.height);
+  //addColor();
+  /* colorImage = context.depthImage();
+  opencv = new OpenCV(this, colorImage);
+  opencv.gray();
+  opencv.threshold(70); */
+  //image(context.depthImage(),0,0);
+  //editedImage = opencv.getOutput();
+  
+  //addColor();
+  //colorImage = opencv.getOutput();
+  theBlobDetection = new BlobDetection(colorImage.width, colorImage.height);
   theBlobDetection.setPosDiscrimination(false);
   theBlobDetection.setThreshold(0.38f);
-  theBlobDetection.computeBlobs(srcImage.pixels);
+  theBlobDetection.computeBlobs(colorImage.pixels);
   blobDebugMode(); 
 }
 
@@ -106,6 +116,19 @@ void cleanKinectInput()
     if ((inputDepthMap[i]< 600) || (inputDepthMap[i] > 1000)) //Irrelevant depths
       context.depthImage().pixels[i] = color(0,0,0);
   }
+}
+
+void addColor()
+{
+  int[] inputDepthMap = context.depthMap();
+  context.depthImage().loadPixels();
+
+  //Remove erroneous pixels
+  for (int i=0; i<context.depthMapSize();i++)
+  {   
+    if ((inputDepthMap[i] > 400) && (inputDepthMap[i] < 1000))
+      context.depthImage().pixels[i] = context.rgbImage().pixels[i];
+  }  
 }
 
 void trackLegoTowers()
