@@ -84,6 +84,12 @@ void draw()
  
   //Find lego towers
   trackLegoTowers();
+  
+  theBlobDetection = new BlobDetection(srcImage.width, srcImage.height);
+  theBlobDetection.setPosDiscrimination(false);
+  theBlobDetection.setThreshold(0.38f);
+  theBlobDetection.computeBlobs(srcImage.pixels);
+  blobDebugMode(); 
 }
 
 void cleanKinectInput()
