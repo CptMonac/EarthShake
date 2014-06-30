@@ -19,7 +19,7 @@ ControlP5 controlP5;
 ArrayList<Contour> legoTowers;
 ArrayList<Rectangle> originalBoundingBoxes;
 PImage A1, A2, B1, B2, C1, C2, D1, D2, E1, E2, F1, F2, G1, G2;
-PImage M1, M2, M3, M4, towerx; 
+PImage M1, M2, M3, M4, towerx, start; 
 
 
 ArrayList<PImage> PImgArray;
@@ -51,12 +51,11 @@ void setup()
   size(srcImage.width, srcImage.height);
   legoTowers = new ArrayList<Contour>();
   originalBoundingBoxes = new ArrayList<Rectangle>();
-  //setupGUI();
   
   PImgArray = createPImageArray(); 
   contourDBList = createContourDatabase(PImgArray);
-  //println("sizeof pimgarray = "+PImgArray.size());
-  //println("sizeof contourDBList = "+contourDBList.size()); 
+  println("sizeof pimgarray = "+PImgArray.size());
+  println("sizeof contourDBList = "+contourDBList.size()); 
   pImgNames = loadPImgStrings();
   
 }
@@ -120,12 +119,13 @@ void trackLegoTowers()
         noteArray.add(getBestTowerMatch(tempContour));
       }
       
-      int count = min(originalBoundingBoxes.size(), currentBoundingBoxes.size());
-      //for (int z = 0; z < originalBoundingBoxes.size();z++)
-      for (int z = 0; z<count; z++)
+      //count works for 2 to 1 but not 1 to 2
+      //int count = min(originalBoundingBoxes.size(), currentBoundingBoxes.size());
+      for (int z = 0; z < originalBoundingBoxes.size();z++)
+      //for (int z = 0; z<count; z++)
       {
-        //if (currentBoundingBoxes.size() >= originalBoundingBoxes.size())
-        //{
+        if (currentBoundingBoxes.size() >= originalBoundingBoxes.size())
+        {
           if ((originalBoundingBoxes.get(z).height - currentBoundingBoxes.get(z).height) > 40)
           {
             text("Fallen", currentBoundingBoxes.get(z).x, currentBoundingBoxes.get(z).y-10);
@@ -135,7 +135,7 @@ void trackLegoTowers()
              text("Standing", currentBoundingBoxes.get(z).x, currentBoundingBoxes.get(z).y-10);
              text(noteArray.get(z), currentBoundingBoxes.get(z).x, currentBoundingBoxes.get(z).y-25);
           }
-        //}
+        }
       }
     }
   }
@@ -154,10 +154,11 @@ ArrayList<Contour> extractLegoTowers()
   //Find all contours in input image
   ArrayList<Contour> towerContours = opencv.findContours();
   ArrayList<Contour> filteredContours = new ArrayList<Contour>();
+  
   //Filter contours to only lego towers
   for (Contour contour: towerContours)
   {
-    if(contour.area() > 2000)
+    if(contour.area() > 1500)
     {
       filteredContours.add(contour);
       
@@ -202,6 +203,7 @@ void loadPImages()
   M3 = loadImage("M3_b.png");
   M4 = loadImage("M4_b.png"); 
   towerx = loadImage("x_b.png");  
+  start = loadImage("start.png");
 }
 
 ArrayList<PImage> createPImageArray()
@@ -227,6 +229,7 @@ ArrayList<PImage> createPImageArray()
   database.add(M3);  
   database.add(M4);
   database.add(towerx);
+  database.add(start);
   return database;
 }
 
@@ -251,6 +254,7 @@ ArrayList<String> loadPImgStrings()
   pImgNames.add("M3");
   pImgNames.add("M4"); 
   pImgNames.add("X");
+  pImgNames.add("start");
   return pImgNames;                               
 }
 
@@ -258,7 +262,8 @@ ArrayList<Contour> createContourDatabase(ArrayList<PImage> PImgArray)
 {
   ArrayList<Contour> newContours = new ArrayList<Contour>();
   ArrayList<Contour> contourDB = new ArrayList<Contour>();
-    
+  
+  println("in create contour "+PImgArray.size());  
   for (PImage srcImage: PImgArray)
   {
     opencv = new OpenCV(this, srcImage);
@@ -273,7 +278,7 @@ ArrayList<Contour> createContourDatabase(ArrayList<PImage> PImgArray)
   }
   return contourDB;
 }
-
+/*
 String checkDatabase(Contour tempContour)
 {
   String note = "no match found :(";
@@ -308,14 +313,15 @@ boolean towerMatch(Contour towerReference, Contour inputTower)
     return false;
   }
 }
-
+*/
 String getBestTowerMatch(Contour inputTower)
 {
   double bestSimilarity=2;
   double currentSimilarity=1000;
   String towerType="Unknown Tower";
 
-  for(int c=0; c<contourDBList.size(); c++)
+  println(contourDBList.size());
+  for(int c=0; c < contourDBList.size(); c++)
   {
     Contour srcContour = contourDBList.get(c);
 
