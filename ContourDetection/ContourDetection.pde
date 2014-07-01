@@ -33,6 +33,8 @@ PImage towerx, towerx_left, towerx_right, start;
 ArrayList<PImage> PImgArray;
 ArrayList<Contour> contourDBList;
 ArrayList<String> pImgNames;
+String[] currentTowerColors;
+ArrayList<String> towerColors;
 
 void setup()
 {
@@ -134,7 +136,8 @@ void imageComparison()
   theBlobDetection.setPosDiscrimination(false);
   theBlobDetection.setThreshold(0.38f);
   theBlobDetection.computeBlobs(srcImage.pixels);
-  blobDebugMode(); 
+  currentTowerColors = blobDebugMode(); 
+  //currentTowerColors = reverse(currentTowerColors);
   
   popMatrix();
   fill(204,0,0);
@@ -162,7 +165,8 @@ void trackLegoTowers()
         tempContour = filteredContours.get(j);
         Rectangle tempBoundingBox = tempContour.getBoundingBox();
         currentBoundingBoxes.add(tempBoundingBox);
-        noteArray.add(getBestTowerMatch(tempContour));
+        if (j < originalBoundingBoxes.size())
+          noteArray.add(getBestTowerMatch(tempContour, currentTowerColors[j]));
       }
       
       //count works for 2 to 1 but not 1 to 2
@@ -180,7 +184,7 @@ void trackLegoTowers()
           {
             text("Standing", currentBoundingBoxes.get(z).x, currentBoundingBoxes.get(z).y-10);
             text(noteArray.get(z), currentBoundingBoxes.get(z).x, currentBoundingBoxes.get(z).y-40);
-            //text(colorOrder, currentBoundingBoxes.get(z).x, currentBoundingBoxes.get(z).y-25);
+            //text(towerColors[z], currentBoundingBoxes.get(z).x, currentBoundingBoxes.get(z).y-25);
           }
         }
       }
@@ -413,6 +417,66 @@ ArrayList<String> loadPImgStrings()
   return pImgNames;                               
 }
 
+ArrayList<String> loadTowerColors() 
+{
+  ArrayList<String> towerColors = new ArrayList<String>();
+  towerColors.add("RYGB"); //A1
+  towerColors.add("RYGB"); //A1
+  towerColors.add("RYGB"); //A1
+  towerColors.add("RYGB"); //A2
+  towerColors.add("RYGB"); //A2
+  towerColors.add("RYGB"); //A2
+  towerColors.add("YRGB"); //B1
+  towerColors.add("YRGB"); //B1
+  towerColors.add("YRGB"); //B1
+  towerColors.add("rGRYB"); //B2
+  towerColors.add("rGRYB"); //B2
+  towerColors.add("rGRYB"); //B2
+  towerColors.add("RGYB"); //C1
+  towerColors.add("RGYB"); //C1
+  towerColors.add("RGYB"); //C1
+  towerColors.add("RYGB"); //C2
+  towerColors.add("RYGB"); //C2
+  towerColors.add("RYGB"); //C2
+  towerColors.add("GYRB"); //D1
+  towerColors.add("GYRB"); //D1
+  towerColors.add("GYRB"); //D1
+  towerColors.add("BYGR"); //D2
+  towerColors.add("BYGR"); //D2
+  towerColors.add("BYGR"); //D2
+  towerColors.add("yBrYRG, rBRG, BrYRG"); //E1
+  towerColors.add("yBrYRG, rBRG, BrYRG"); //E1
+  towerColors.add("yBrYRG, rBRG, BrYRG"); //E1
+  towerColors.add("rYRG, BrYRG, yBrYRG"); //E2
+  towerColors.add("rYRG, BrYRG, yBrYRG"); //E2
+  towerColors.add("rYRG, BrYRG, yBrYRG"); //E2
+  towerColors.add("BGRY"); //F1
+  towerColors.add("BGRY"); //F1
+  towerColors.add("BGRY"); //F1
+  towerColors.add("BGRY"); //F2
+  towerColors.add("BGRY"); //F2
+  towerColors.add("BGRY"); //F2
+  towerColors.add("YGRB"); //G1
+  towerColors.add("YGRB"); //G1
+  towerColors.add("YGRB"); //G1
+  towerColors.add("YGBR"); //M1
+  towerColors.add("YGBR"); //M1
+  towerColors.add("YGBR"); //M1
+  towerColors.add("BYRG"); //M2
+  towerColors.add("BYRG"); //M2
+  towerColors.add("BYRG"); //M2
+  towerColors.add("GYRB"); //M3
+  towerColors.add("GYRB"); //M3
+  towerColors.add("GYRB"); //M3
+  towerColors.add("yBYRG"); //M4
+  towerColors.add("yBYRG"); //M4
+  towerColors.add("yBYRG"); //M4
+  towerColors.add("GYBR"); //X
+  towerColors.add("GYBR"); //X
+  towerColors.add("GYBR"); //X
+  return towerColors;
+}
+
 ArrayList<Contour> createContourDatabase(ArrayList<PImage> PImgArray)
 {
   ArrayList<Contour> newContours = new ArrayList<Contour>();
@@ -433,47 +497,13 @@ ArrayList<Contour> createContourDatabase(ArrayList<PImage> PImgArray)
   }
   return contourDB;
 }
-/*
-String checkDatabase(Contour tempContour)
-{
-  String note = "no match found :(";
 
-  for (int c=0; c<contourDBList.size(); c++)
-  {
-    println(pImgNames.get(c));
-    //println("contour "+c+" area = "+contourDBList.get(c).area());
-    if (towerMatch(contourDBList.get(c), tempContour)) {
-      println("match with "+pImgNames.get(c));
-      note = "MATCH! with "+pImgNames.get(c);
-      break;
-      //note = "MATCH! with: "+contour;
-    }  
-  }
-  return note;  
-}
-
-boolean towerMatch(Contour towerReference, Contour inputTower)
-{
-  //Use hu-moments for image which are invariant to translation, rotation, scale, and skew for comparison
-  double similarity = Imgproc.matchShapes(towerReference.pointMat, inputTower.pointMat, Imgproc.CV_CONTOURS_MATCH_I1, 0);
-  
-  if (similarity < 1)  //The lower the result, the better the match
-  {
-    //println("match similarity: "+similarity);
-    return true;
-  }
-  else 
-  {
-    //println("no match: "+similarity);
-    return false;
-  }
-}
-*/
-String getBestTowerMatch(Contour inputTower)
+String getBestTowerMatch(Contour inputTower, String inputColor)
 {
   double bestSimilarity=2;
   double currentSimilarity=1000;
   String towerType="Unknown Tower";
+  towerColors = loadTowerColors();
 
   println(contourDBList.size());
   for(int c=0; c < contourDBList.size(); c++)
@@ -482,11 +512,21 @@ String getBestTowerMatch(Contour inputTower)
 
     //Use hu-moments for image which are invariant to translation, rotation, scale, and skew for comparison
     currentSimilarity = Imgproc.matchShapes(srcContour.pointMat, inputTower.pointMat, Imgproc.CV_CONTOURS_MATCH_I2, 0);
+    //println(pImgNames.get(c) + currentSimilarity);
     if (currentSimilarity < bestSimilarity)
     {
-      bestSimilarity = currentSimilarity;
-      towerType = pImgNames.get(c);
-      println(towerType+" "+bestSimilarity);
+      if (currentSimilarity < 0.10)
+      {
+        bestSimilarity = currentSimilarity;
+        towerType = pImgNames.get(c);
+        println("low "+towerType+" "+bestSimilarity);
+      }
+      if ((currentSimilarity > 0.10) && (inputColor.equals(towerColors.get(c))==true))
+      {  
+        bestSimilarity = currentSimilarity;
+        towerType = pImgNames.get(c);
+        println("high "+towerType+" "+bestSimilarity);
+      }
     }
   }
   return towerType;

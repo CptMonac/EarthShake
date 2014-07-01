@@ -9,12 +9,13 @@ BlobDetection theBlobDetection;
 BlobRect boundingRectangle;
 String colorOrder;
 
-void blobDebugMode()
+String[] blobDebugMode()
 {
   ArrayList<BlobRect> towerContours = mergeBlobs();
   println(towerContours.size());
   ArrayList<LegoTower> colorContours = analyzeTower(towerContours);
   println(colorContours.size());
+  String[] colorTowers = new String[colorContours.size()];
   BlobRect currBlob;
   LegoTower currentTower;
 
@@ -34,19 +35,27 @@ void blobDebugMode()
     //rect(x, y, blobW, blobH);
     
     //text(colorOrder, x, y-50);
-
+  }
     //Draw coloured blobs
+    println(colorContours.size());
     for (int j = 0; j<colorContours.size(); j++)
     {
       currentTower = colorContours.get(j);
       currentTower.drawTower();
       colorOrder = currentTower.towerColor();
-      text(colorOrder, x, y-50);
+      textSize(40);
+      if  (j==0)
+        text(colorOrder, 200, 300);
+      else if (j==1)
+        text(colorOrder, 400, 300);
+      textSize(15);
       println(colorOrder);
-      colorOrder = "";
+      colorTowers[j] = colorOrder;
+      //colorOrder = "";
       //currentTower.printChart(currBlob);
     }
-  }
+  //}
+  return colorTowers;
 }
 
 ArrayList<LegoTower> analyzeTower(ArrayList<BlobRect> inputTowers)

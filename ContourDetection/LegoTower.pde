@@ -481,7 +481,8 @@ public class LegoTower
     float[] colorOrigins = {RedOrigin.y, BlueOrigin.y, GreenOrigin.y, YellowOrigin.y, 
                             Red2Origin.y, Blue2Origin.y, Green2Origin.y, Yellow2Origin.y};
     colorOrigins = reverse(sort(colorOrigins));
-
+    colorOrder = "";
+    
     for(int i = 0; i < colorOrigins.length; i++)
     {
       if ((colorOrigins[i] == RedOrigin.y) && (RedOrigin.y >=0))
