@@ -123,7 +123,7 @@ public class LegoTower
     int[] bottomRightPix = {xRight, xRight, xRight, xRight, xRight, xRight, xRight, xRight};
     
     //Variables for y values
-    int yUpper = int(srcImage.height*scaleFactor);//int((inputTower.blobHeight+offset+inputTower.y)*scaleFactor);
+    int yUpper = int((inputTower.y+inputTower.blobHeight)*scaleFactor);//int((inputTower.blobHeight+offset+inputTower.y)*scaleFactor);
     int yLower = int(inputTower.y*scaleFactor);
     int[] upperYLimit = {yUpper, yUpper, yUpper, yUpper, yUpper, yUpper, yUpper, yUpper};
     int[] lowerYLimit = {yLower, yLower, yLower, yLower, yLower, yLower, yLower, yLower};
@@ -428,7 +428,7 @@ public class LegoTower
     for (int c=0; c<4; c++) 
     {
       if (ignoreColor[c] == 2) {
-        println("drawing second for "+c);
+        //println("drawing second for "+c);
         drawOrigin(c+4, topLeftPix[c+4], lowerYLimit[c+4]-7, scaleFactor);
         drawFinal(c+4, bottomRightPix[c+4], upperYLimit[c+4]-8, scaleFactor);
         drawTopRight(c+4, topRightPix[c+4], lowerYLimit[c+4]-7, scaleFactor);
@@ -470,7 +470,13 @@ public class LegoTower
     greenSegment2 = new BlobRect(Green2Origin.x, Green2Origin.y, abs(Green2Final.x - Green2Origin.x), abs(Green2Final.y - Green2Origin.y));
     yellowSegment = new BlobRect(YellowOrigin.x, YellowOrigin.y, abs(YellowFinal.x - YellowOrigin.x), abs(YellowFinal.y - YellowOrigin.y));
     yellowSegment2 = new BlobRect(Yellow2Origin.x, Yellow2Origin.y, abs(Yellow2Final.x - Yellow2Origin.x), abs(Yellow2Final.y - Yellow2Origin.y));
-
+    
+    //return colorOrder;
+        
+  }
+  
+  public String towerColor()
+  {
     //Record color order
     float[] colorOrigins = {RedOrigin.y, BlueOrigin.y, GreenOrigin.y, YellowOrigin.y, 
                             Red2Origin.y, Blue2Origin.y, Green2Origin.y, Yellow2Origin.y};
@@ -494,8 +500,8 @@ public class LegoTower
         colorOrder+="g";
       else if ((colorOrigins[i] == Yellow2Origin.y) && (Yellow2Origin.y >= 0))
         colorOrder+="y";
-    }
-        
+    }    
+    return colorOrder;
   }
   
   //Scans first three lines of a block to determine its topLeft x and y coordinates
@@ -810,10 +816,10 @@ public class LegoTower
     }    
     
     //Draw color order above tower
-    textSize(20);
+    textSize(25);
     noFill();
     stroke(255, 0, 0);
-    text(colorOrder, srcImage.width/2 + 20, srcImage.height + 50);
+    text(colorOrder, towerOrigin.x + 20, towerOrigin.y - 10);
     textSize(15);
   }
   

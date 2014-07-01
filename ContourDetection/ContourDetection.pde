@@ -130,10 +130,10 @@ void imageComparison()
   scale(0.5);
   image(colorTower, 0, 0);
   
-  theBlobDetection = new BlobDetection(colorTower.width, colorTower.height);
+  theBlobDetection = new BlobDetection(srcImage.width, srcImage.height);
   theBlobDetection.setPosDiscrimination(false);
   theBlobDetection.setThreshold(0.38f);
-  theBlobDetection.computeBlobs(colorTower.pixels);
+  theBlobDetection.computeBlobs(srcImage.pixels);
   blobDebugMode(); 
   
   popMatrix();
@@ -179,7 +179,8 @@ void trackLegoTowers()
           else 
           {
             text("Standing", currentBoundingBoxes.get(z).x, currentBoundingBoxes.get(z).y-10);
-            text(noteArray.get(z), currentBoundingBoxes.get(z).x, currentBoundingBoxes.get(z).y-25);
+            text(noteArray.get(z), currentBoundingBoxes.get(z).x, currentBoundingBoxes.get(z).y-40);
+            //text(colorOrder, currentBoundingBoxes.get(z).x, currentBoundingBoxes.get(z).y-25);
           }
         }
       }

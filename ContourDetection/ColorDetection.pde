@@ -7,11 +7,14 @@ PImage beforeTower, afterTower, diff, temp, colorTower;
 //SimpleOpenNI  context;
 BlobDetection theBlobDetection;
 BlobRect boundingRectangle;
+String colorOrder;
 
 void blobDebugMode()
 {
   ArrayList<BlobRect> towerContours = mergeBlobs();
+  println(towerContours.size());
   ArrayList<LegoTower> colorContours = analyzeTower(towerContours);
+  println(colorContours.size());
   BlobRect currBlob;
   LegoTower currentTower;
 
@@ -30,13 +33,17 @@ void blobDebugMode()
     
     //rect(x, y, blobW, blobH);
     
-    //text(blobH, x, y-50);
+    //text(colorOrder, x, y-50);
 
     //Draw coloured blobs
     for (int j = 0; j<colorContours.size(); j++)
     {
       currentTower = colorContours.get(j);
       currentTower.drawTower();
+      colorOrder = currentTower.towerColor();
+      text(colorOrder, x, y-50);
+      println(colorOrder);
+      colorOrder = "";
       //currentTower.printChart(currBlob);
     }
   }
