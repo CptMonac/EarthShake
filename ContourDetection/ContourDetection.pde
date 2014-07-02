@@ -89,9 +89,10 @@ void draw()
   editedImage = opencv.getOutput();
 
   //Find lego towers
+  imageComparison();
   trackLegoTowers();
   
-  imageComparison();
+  
 }
 
 void cleanKinectInput()
@@ -141,7 +142,6 @@ void trackLegoTowers()
     for(int i=0; i<legoTowers.size();i++)
     {
       originalContour = legoTowers.get(i);
-      //String note = checkDatabase(originalContour);
 
       ArrayList<Rectangle> currentBoundingBoxes = new ArrayList<Rectangle>();
       ArrayList<String> noteArray = new ArrayList<String>();
@@ -151,32 +151,44 @@ void trackLegoTowers()
         tempContour = filteredContours.get(j);
         Rectangle tempBoundingBox = tempContour.getBoundingBox();
         currentBoundingBoxes.add(tempBoundingBox);
-        if (j > 0) {
-          text("right", tempBoundingBox.x, tempBoundingBox.y);
+        //if (j > 0) {
+        //  text("right", tempBoundingBox.x, tempBoundingBox.y);
+          //noteArray.add(getBestTowerMatch(tempContour, currentTowerColors[filteredContours.size()-1-j]));
+//        }
+//        else {
+//          text("left", tempBoundingBox.x, tempBoundingBox.y);
+        if ((j < 2) && (filteredContours.size() <= 2)) {
           noteArray.add(getBestTowerMatch(tempContour, currentTowerColors[filteredContours.size()-1-j]));
+          //println(j+" "+noteArray.get(j));
         }
-        else {
-          text("left", tempBoundingBox.x, tempBoundingBox.y);
-          noteArray.add(getBestTowerMatch(tempContour, currentTowerColors[j]));
-        }
+//        }
       }
       
-      //count works for 2 to 1 but not 1 to 2
-      //int count = min(originalBoundingBoxes.size(), currentBoundingBoxes.size());
       for (int z = 0; z < originalBoundingBoxes.size();z++)
-      //for (int z = 0; z<count; z++)
       {
         if (currentBoundingBoxes.size() >= originalBoundingBoxes.size())
         {
           if ((originalBoundingBoxes.get(z).height - currentBoundingBoxes.get(z).height) > 40)
           {
-            text("Fallen", currentBoundingBoxes.get(z).x, currentBoundingBoxes.get(z).y-10);
+            if (z==0 || z==1)
+              text("Fallen", currentBoundingBoxes.get(z).x, currentBoundingBoxes.get(z).y-10);
           }
           else 
           {
-            text("Standing", currentBoundingBoxes.get(z).x, currentBoundingBoxes.get(z).y-10);
-            text(noteArray.get(z), currentBoundingBoxes.get(z).x, currentBoundingBoxes.get(z).y-40);
-            //text(towerColors[z], currentBoundingBoxes.get(z).x, currentBoundingBoxes.get(z).y-25);
+            if (z==0) {
+              text("Standing", 167, 320);
+              text(noteArray.get(0), 167, 290);
+              //text(currentTowerColors[0], 167, 305);
+            }
+            else if (z==1) {
+              text("Standing", 320, 320);
+              text(noteArray.get(1), 320, 290);
+              //text(currentTowerColors[1], 320, 305);
+            }
+            //println(currentBoundingBoxes.get(z).x + " y " + currentBoundingBoxes.get(z).y);
+            //text("Standing", currentBoundingBoxes.get(z).x, currentBoundingBoxes.get(z).y-10);
+            //text(noteArray.get(z), currentBoundingBoxes.get(z).x, currentBoundingBoxes.get(z).y-40);
+            //text(currentTowerColors[z], currentBoundingBoxes.get(z).x, currentBoundingBoxes.get(z).y-25);
           }
         }
       }

@@ -56,7 +56,7 @@ String[] blobDebugMode()
       //currentTower.printChart(currBlob);
     }
   //}
-  //colorTowers = reverse(colorTowers);
+  colorTowers = reverse(colorTowers);
   return colorTowers;
 }
 
