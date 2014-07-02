@@ -1,3 +1,4 @@
+//*************************************************** COLOR DETECTION
 import java.util.List;
 import blobDetection.*;
 
@@ -31,11 +32,11 @@ String[] blobDebugMode()
     float blobH = currBlob.blobHeight;
     float x = currBlob.x;
     float y = currBlob.y;
-    
+  }  
     //rect(x, y, blobW, blobH);
     
     //text(colorOrder, x, y-50);
-  }
+  
     //Draw coloured blobs
     println(colorContours.size());
     for (int j = 0; j<colorContours.size(); j++)
@@ -44,7 +45,7 @@ String[] blobDebugMode()
       currentTower.drawTower();
       colorOrder = currentTower.towerColor();
       textSize(40);
-      if  (j==0)
+      if (j==0)
         text(colorOrder, 200, 300);
       else if (j==1)
         text(colorOrder, 400, 300);
@@ -55,6 +56,7 @@ String[] blobDebugMode()
       //currentTower.printChart(currBlob);
     }
   //}
+  //colorTowers = reverse(colorTowers);
   return colorTowers;
 }
 
@@ -95,8 +97,6 @@ ArrayList<BlobRect> mergeBlobs()
     {
       if (rectOverlap(currRect, mergedBlobs.get(j)) && (currRect != mergedBlobs.get(j)))
       {
-        //println(currRect.x, mergedBlobs.get(j).x, currRect.blobWidth, mergedBlobs.get(j).blobWidth, boundingRectangle.blobWidth ); 
-        //println(currRect.y, mergedBlobs.get(j).y, currRect.blobWidth, mergedBlobs.get(j).blobHeight, boundingRectangle.blobHeight ); 
         mergedBlobs.remove(currRect);
         mergedBlobs.remove(mergedBlobs.get(j));
         mergedBlobs.add(boundingRectangle);
