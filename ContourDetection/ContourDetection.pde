@@ -159,33 +159,34 @@ void trackLegoTowers()
         currentBoundingBoxes.add(tempBoundingBox);
         
         if ((filteredContours.size() <= 2) && (currentTowerColors.length==filteredContours.size())) {
-          //error arm
-          noteArray.add(getBestTowerMatch(tempContour, currentTowerColors[j]));
-          //error when adding blocks with arm currentTowerColors smaller than filtered
-        
-
-          //if (originalBoundingBoxes.get(j).height - currentBoundingBoxes.get(j).height > 40)
-          if ((currentBoundingBoxes.get(j).height < 50) && (noteArray.get(j)=="Unknown Tower"))
-          {
-            if (j==0)
-              text("Fallen", 167, 320);
-            else if (j==1)
-              text("Fallen", 400, 320);
-          }
           
+          noteArray.add(getBestTowerMatch(tempContour, currentTowerColors[j]));    
+          String note = getBestTowerMatch(tempContour, currentTowerColors[j]);
+              
+          text(note, 400, 50+(50*j));
+          text(currentBoundingBoxes.get(j).height, 400, 75+(50*j));
+          
+          //if (originalBoundingBoxes.get(j).height - currentBoundingBoxes.get(j).height > 40)
+          if (currentBoundingBoxes.get(j).height < 50) 
+          {
+            if (note!="Unknown Tower")
+              text("Fallen", 400, 320);
+            else
+              text("Fallen", 167, 320);
+          }
           else 
           {
             if (j==0) {
               text("Standing", 167, 320);
-              if (noteArray.size() > 0)
-                text(noteArray.get(0), 167, 290);
-                text(currentTowerColors[0], 167, 305);
+              //if (noteArray.size() > 0)
+              text(note, 167, 290);
+              text(currentTowerColors[0], 167, 305);
             }
             else if (j==1) {
               text("Standing", 400, 320);
-              if (noteArray.size() >= 2)
-                text(noteArray.get(1), 400, 290);
-                text(currentTowerColors[1], 400, 305);
+              //if (noteArray.size() >= 2)
+              text(note, 400, 290);
+              text(currentTowerColors[1], 400, 305);
             }
           }
         
