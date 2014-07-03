@@ -165,7 +165,7 @@ void trackLegoTowers()
         
 
           //if (originalBoundingBoxes.get(j).height - currentBoundingBoxes.get(j).height > 40)
-          if (currentBoundingBoxes.get(j).height < 50)
+          if ((currentBoundingBoxes.get(j).height < 50) && (noteArray.get(j)=="Unknown Tower"))
           {
             if (j==0)
               text("Fallen", 167, 320);
@@ -486,8 +486,8 @@ ArrayList<String> loadTowerColors()
   towerColors.add("GRY"); //F1
   towerColors.add("BGRY"); //F1
   towerColors.add("BGRY"); //F1
-  towerColors.add("BGRY"); //F2
-  towerColors.add("BGRY"); //F2
+  towerColors.add("gBGRY"); //F2
+  towerColors.add("GRY"); //F2
   towerColors.add("BGRY"); //F2
   towerColors.add("YGRB"); //G1
   towerColors.add("YGRB"); //G1

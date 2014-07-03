@@ -22,22 +22,19 @@ String[] blobDebugMode()
   
   //Draw coloured blobs
   println(colorContours.size());
-  for (int j = 0; j<colorContours.size(); j++) //j<2; j++)
+  for (int j = 0; j<colorContours.size(); j++)
   {
-    //if (colorContours.size()>0 && colorContours.size()<2) {
-      currentTower = colorContours.get(j);
-      currentTower.drawTower();
-      colorOrder = currentTower.towerColor();
-      textSize(40);
-      if (j==0)
-        text(colorOrder, 200, 300);
-      else if (j==1)
-        text(colorOrder, 400, 300);
-      textSize(15);
-      println(colorOrder);
-      colorTowers[j] = colorOrder;
-    //}
-
+    currentTower = colorContours.get(j);
+    currentTower.drawTower();
+    colorOrder = currentTower.towerColor();
+    textSize(40);
+    if (j==0)
+      text(colorOrder, 200, 300);
+    else if (j==1)
+      text(colorOrder, 400, 300);
+    textSize(15);
+    println(colorOrder);
+    colorTowers[j] = colorOrder;
   }
   //colorTowers = reverse(colorTowers);
   return colorTowers;
