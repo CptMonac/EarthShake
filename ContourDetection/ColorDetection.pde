@@ -19,45 +19,27 @@ String[] blobDebugMode()
   String[] colorTowers = new String[colorContours.size()];
   BlobRect currBlob;
   LegoTower currentTower;
-
-  for (int i = 0; i < towerContours.size(); i++)
-  {
-    stroke(255, 0, 0);
-    noFill();
- 
-    //Draw blob tower info
-    currBlob = towerContours.get(i);
-    
-    float blobW = currBlob.blobWidth;
-    float blobH = currBlob.blobHeight;
-    float x = currBlob.x;
-    float y = currBlob.y;
-  }  
-    //rect(x, y, blobW, blobH);
-    
-    //text(colorOrder, x, y-50);
   
-    //Draw coloured blobs
-    println(colorContours.size());
-    for (int j = 0; j<colorContours.size(); j++) //j<2; j++)
-    {
-      //if (colorContours.size()>0 && colorContours.size()<2) {
-        currentTower = colorContours.get(j);
-        currentTower.drawTower();
-        colorOrder = currentTower.towerColor();
-        textSize(40);
-        if (j==0)
-          text(colorOrder, 200, 300);
-        else if (j==1)
-          text(colorOrder, 400, 300);
-        textSize(15);
-        println(colorOrder);
-        colorTowers[j] = colorOrder;
-      //}
+  //Draw coloured blobs
+  println(colorContours.size());
+  for (int j = 0; j<colorContours.size(); j++) //j<2; j++)
+  {
+    //if (colorContours.size()>0 && colorContours.size()<2) {
+      currentTower = colorContours.get(j);
+      currentTower.drawTower();
+      colorOrder = currentTower.towerColor();
+      textSize(40);
+      if (j==0)
+        text(colorOrder, 200, 300);
+      else if (j==1)
+        text(colorOrder, 400, 300);
+      textSize(15);
+      println(colorOrder);
+      colorTowers[j] = colorOrder;
+    //}
 
-    }
-  //}
-  colorTowers = reverse(colorTowers);
+  }
+  //colorTowers = reverse(colorTowers);
   return colorTowers;
 }
 

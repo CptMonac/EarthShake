@@ -135,6 +135,12 @@ void trackLegoTowers()
   Contour tempContour, originalContour;
   ArrayList<Contour> filteredContours;
 
+      legoTowers = extractLegoTowers();
+      for (Contour contour: legoTowers)
+      {
+        originalBoundingBoxes.add(contour.getBoundingBox());
+      }
+
   if (legoTowers.size() > 0)
   {
     filteredContours = extractLegoTowers();
@@ -152,9 +158,9 @@ void trackLegoTowers()
         Rectangle tempBoundingBox = tempContour.getBoundingBox();
         currentBoundingBoxes.add(tempBoundingBox);
         
-        if (filteredContours.size() <= 2) {
+        if ((filteredContours.size() <= 2) && (currentTowerColors.length==filteredContours.size())) {
           //error arm
-          noteArray.add(getBestTowerMatch(tempContour, currentTowerColors[filteredContours.size()-1-j]));
+          noteArray.add(getBestTowerMatch(tempContour, currentTowerColors[j]));
           //error when adding blocks with arm currentTowerColors smaller than filtered
         
 
@@ -173,13 +179,13 @@ void trackLegoTowers()
               text("Standing", 167, 320);
               if (noteArray.size() > 0)
                 text(noteArray.get(0), 167, 290);
-              //text(currentTowerColors[0], 167, 305);
+                text(currentTowerColors[0], 167, 305);
             }
             else if (j==1) {
               text("Standing", 400, 320);
               if (noteArray.size() >= 2)
                 text(noteArray.get(1), 400, 290);
-              //text(currentTowerColors[1], 400, 305);
+                text(currentTowerColors[1], 400, 305);
             }
           }
         
@@ -216,7 +222,7 @@ void trackLegoTowers()
         } 
       } */
     }
-  }
+  } /*
   else 
    {
      legoTowers = extractLegoTowers();
@@ -224,7 +230,7 @@ void trackLegoTowers()
       {
         originalBoundingBoxes.add(contour.getBoundingBox());
       }
-   }
+   } */
 }
 
 ArrayList<Contour> extractLegoTowers()
@@ -450,9 +456,9 @@ ArrayList<String> loadTowerColors()
   towerColors.add("RYGB"); //A1
   towerColors.add("RYGB"); //A1
   towerColors.add("RYGB"); //A1
-  towerColors.add("RYGB"); //A2
-  towerColors.add("RYGB"); //A2
-  towerColors.add("RYGB"); //A2
+  towerColors.add("RYBG"); //A2
+  towerColors.add("RYBG"); //A2
+  towerColors.add("RYBG"); //A2
   towerColors.add("YRGB"); //B1
   towerColors.add("YRGB"); //B1
   towerColors.add("YRGB"); //B1
@@ -477,7 +483,7 @@ ArrayList<String> loadTowerColors()
   towerColors.add("rYRG"); //E2
   towerColors.add("BrYRG"); //E2
   towerColors.add("yBrYRG"); //E2
-  towerColors.add("BGRY"); //F1
+  towerColors.add("GRY"); //F1
   towerColors.add("BGRY"); //F1
   towerColors.add("BGRY"); //F1
   towerColors.add("BGRY"); //F2
@@ -546,18 +552,18 @@ String getBestTowerMatch(Contour inputTower, String inputColor)
       
     if (currentSimilarity < bestSimilarity)
     {
+      if (/* (currentSimilarity > 0.10) && */(inputColor.equals(towerColors.get(c))==true))
+      {  
+        bestSimilarity = currentSimilarity;
+        towerType = pImgNames.get(c);
+        println("****** high "+towerType+" "+bestSimilarity);
+      } /*
       if (currentSimilarity < 0.10)
       {
         bestSimilarity = currentSimilarity;
         towerType = pImgNames.get(c);
         println("****** low "+towerType+" "+bestSimilarity);
-      }
-      if ((currentSimilarity > 0.10) && (inputColor.equals(towerColors.get(c))==true))
-      {  
-        bestSimilarity = currentSimilarity;
-        towerType = pImgNames.get(c);
-        println("****** high "+towerType+" "+bestSimilarity);
-      }
+      } */
     }
   }
   if (towerType=="Unknown Tower")
