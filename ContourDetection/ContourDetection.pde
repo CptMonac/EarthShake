@@ -145,6 +145,11 @@ void trackLegoTowers()
   {
     filteredContours = extractLegoTowers();
 
+    Boolean leftDown = false;
+    Boolean rightDown = false;
+    Boolean hasLeft = false;
+    Boolean hasRight = false;
+
     for(int i=0; i<legoTowers.size();i++)
     {
       originalContour = legoTowers.get(i);
@@ -154,45 +159,94 @@ void trackLegoTowers()
       
       for(int j=0; j<filteredContours.size(); j++)
       {
+        //leftDown = false;
+        //rightDown = false;
+        
         tempContour = filteredContours.get(j);
         Rectangle tempBoundingBox = tempContour.getBoundingBox();
         currentBoundingBoxes.add(tempBoundingBox);
+        
+        if (currentBoundingBoxes.get(j).x < srcImage.width/2)
+          hasLeft = true;
+        if (currentBoundingBoxes.get(j).y > srcImage.width/2)
+          hasRight = true;
         
         if ((filteredContours.size() <= 2) && (currentTowerColors.length==filteredContours.size())) {
           
           noteArray.add(getBestTowerMatch(tempContour, currentTowerColors[j]));    
           String note = getBestTowerMatch(tempContour, currentTowerColors[j]);
               
-          text(note, 400, 50+(50*j));
+          text(noteArray.get(j), 400, 50+(50*j));
           text(currentBoundingBoxes.get(j).height, 400, 75+(50*j));
           
           //if (originalBoundingBoxes.get(j).height - currentBoundingBoxes.get(j).height > 40)
           if (currentBoundingBoxes.get(j).height < 50) 
           {
-            if (note!="Unknown Tower")
-              text("Fallen", 400, 320);
-            else
-              text("Fallen", 167, 320);
-          }
+            if (note!="Unknown Tower" && j==0) {
+              //text("Fallen", 400, 320);
+              rightDown = true;
+            }
+            else if (j==1)
+              rightDown = true;
+            else {
+              //text("Fallen", 167, 320);
+              leftDown = true;
+            }
+          }/*
           else 
           {
-            if (j==0) {
+            if ((leftDown==false)&&(hasLeft==true)){// && (j==0)) {
               text("Standing", 167, 320);
-              //if (noteArray.size() > 0)
               text(note, 167, 290);
               text(currentTowerColors[0], 167, 305);
             }
-            else if (j==1) {
+            if ((rightDown==false)&&(hasRight==true)){// && (j==1)) {
               text("Standing", 400, 320);
-              //if (noteArray.size() >= 2)
               text(note, 400, 290);
               text(currentTowerColors[1], 400, 305);
             }
-          }
+          }*/
         
         }
 
       }
+      
+      if (leftDown==true)
+        text("Fallen", 167, 320);
+      if (rightDown==true)
+        text("Fallen", 400, 320);
+        
+      if (noteArray.size()==1) 
+      {
+        if ((leftDown==false) && (hasLeft==true)) 
+        {
+          text("Standing", 167, 320);
+          text(noteArray.get(0), 167, 290);
+          text(currentTowerColors[0], 167, 305);
+        }
+        else if ((rightDown==false) && (hasRight==true))
+        {
+          text("Standing", 167, 320);
+          text(noteArray.get(0), 167, 290);
+          text(currentTowerColors[0], 167, 305);
+        } 
+      }
+      else if (noteArray.size()==2)
+      {
+        if (leftDown==false)
+        {
+          text("Standing", 167, 320);
+          text(noteArray.get(0), 167, 290);
+          text(currentTowerColors[0], 167, 305);
+        }
+        if (rightDown==false)
+        {
+          text("Standing", 400, 320);
+          text(noteArray.get(1), 400, 290);
+          text(currentTowerColors[1], 400, 305);
+        }
+      }
+      
       /*
       for (int z = 0; z < originalBoundingBoxes.size();z++)
       {
