@@ -149,10 +149,8 @@ void trackLegoTowers()
     Boolean rightDown = false;
     Boolean hasLeft = false;
     Boolean hasRight = false;
-
-    for(int i=0; i<legoTowers.size();i++)
-    {
-      originalContour = legoTowers.get(i);
+    Boolean leftStanding = false;
+    Boolean rightStanding = false;
 
       ArrayList<Rectangle> currentBoundingBoxes = new ArrayList<Rectangle>();
       ArrayList<String> noteArray = new ArrayList<String>();
@@ -166,10 +164,20 @@ void trackLegoTowers()
         Rectangle tempBoundingBox = tempContour.getBoundingBox();
         currentBoundingBoxes.add(tempBoundingBox);
         
-        if (currentBoundingBoxes.get(j).x < srcImage.width/2)
+        int currentx = currentBoundingBoxes.get(j).x;
+        int currenty = currentBoundingBoxes.get(j).y;
+        
+        if (currentx < srcImage.width/2) {
           hasLeft = true;
-        if (currentBoundingBoxes.get(j).x > srcImage.width/2)
+          if (currenty > 50)
+            leftStanding = true;
+        }
+        if (currentx > srcImage.width/2) {
           hasRight = true;
+          if (currenty > 50) {
+            rightStanding = true;
+          }
+        }
         
         if ((filteredContours.size() <= 2) && (currentTowerColors.length==filteredContours.size())) {
           
@@ -182,17 +190,17 @@ void trackLegoTowers()
           //if (originalBoundingBoxes.get(j).height - currentBoundingBoxes.get(j).height > 40)
           if (currentBoundingBoxes.get(j).height < 50) 
           {
-            if ((j==0) && (note!="Unknown Tower") && (hasRight==true))
-              rightDown = true;
-            if ((j==0) && (note=="Unknown Tower") && (hasLeft==true))
-              leftDown = true;
-            else if (filteredContours.size()==1) 
+            if (filteredContours.size()==1) 
             {
               if (hasLeft==true)
                 leftDown = true;
               else if (hasRight==true)
                 rightDown = true;
             }
+            else if ((j==0) && (note!="Unknown Tower") && (hasRight==true))
+              rightDown = true;
+            else if ((j==0) && (note=="Unknown Tower") && (hasLeft==true))
+              leftDown = true;
             else if (j==1)
               rightDown = true;
           }
@@ -203,6 +211,11 @@ void trackLegoTowers()
         text("Fallen", 167, 320);
       if (rightDown==true)
         text("Fallen", 400, 320);
+        
+      if (leftStanding==true)
+        text("LEFT STANDING", 167, 270);
+      if (rightStanding==true)
+        text("RIGHT STANDING", 400, 270);
         
       if (noteArray.size()==1) 
       {
@@ -236,7 +249,6 @@ void trackLegoTowers()
       }
     }
   }
-}
 
 ArrayList<Contour> extractLegoTowers()
 {
@@ -476,9 +488,9 @@ ArrayList<String> loadTowerColors()
   towerColors.add("RYGB"); //C2
   towerColors.add("RYGB"); //C2
   towerColors.add("RYGB"); //C2
-  towerColors.add("GYRB"); //D1
-  towerColors.add("GYRB"); //D1
-  towerColors.add("GYRB"); //D1
+  towerColors.add("YGRB"); //D1
+  towerColors.add("YGRB"); //D1
+  towerColors.add("YGRB"); //D1
   towerColors.add("BYGR"); //D2
   towerColors.add("BYGR"); //D2
   towerColors.add("BYGR"); //D2
@@ -488,9 +500,9 @@ ArrayList<String> loadTowerColors()
   towerColors.add("rYRG"); //E2
   towerColors.add("BrYRG"); //E2
   towerColors.add("yBrYRG"); //E2
-  towerColors.add("GRY"); //F1
-  towerColors.add("BGRY"); //F1
-  towerColors.add("BGRY"); //F1
+  towerColors.add("GYR"); //F1
+  towerColors.add("BGYR"); //F1
+  towerColors.add("BGYR"); //F1
   towerColors.add("gBGRY"); //F2
   towerColors.add("GRY"); //F2
   towerColors.add("BGRY"); //F2
@@ -553,7 +565,7 @@ String getBestTowerMatch(Contour inputTower, String inputColor)
     //Use hu-moments for image which are invariant to translation, rotation, scale, and skew for comparison
     currentSimilarity = Imgproc.matchShapes(srcContour.pointMat, inputTower.pointMat, Imgproc.CV_CONTOURS_MATCH_I2, 0);
     
-    if (pImgNames.get(c)=="D1" || pImgNames.get(c)=="G1")
+    if (pImgNames.get(c)=="D1" || pImgNames.get(c)=="M3")
       println(pImgNames.get(c) + " " + towerColors.get(c) + " " + currentSimilarity);
       
     if (currentSimilarity < bestSimilarity)
@@ -563,11 +575,20 @@ String getBestTowerMatch(Contour inputTower, String inputColor)
         bestSimilarity = currentSimilarity;
         towerType = pImgNames.get(c);
         println("****** high "+towerType+" "+bestSimilarity);
+        if (pImgNames.get(c)=="D1")
+          text(currentSimilarity + " " + pImgNames.get(c), 450, 50);
+        if (pImgNames.get(c)=="M3")
+          text(currentSimilarity + " " + pImgNames.get(c), 450, 150);
       }
     }
   }
-  if (towerType=="Unknown Tower")
+  /*
+  if (towerType=="Unknown Tower") {
     println("unknowntower");
+    inputTower.draw();
+    stroke(255,255,255);
+    strokeWeight(10);
+  } */
   
   return towerType;
 }
