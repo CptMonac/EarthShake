@@ -168,7 +168,7 @@ void trackLegoTowers()
         
         if (currentBoundingBoxes.get(j).x < srcImage.width/2)
           hasLeft = true;
-        if (currentBoundingBoxes.get(j).y > srcImage.width/2)
+        if (currentBoundingBoxes.get(j).x > srcImage.width/2)
           hasRight = true;
         
         if ((filteredContours.size() <= 2) && (currentTowerColors.length==filteredContours.size())) {
@@ -182,33 +182,21 @@ void trackLegoTowers()
           //if (originalBoundingBoxes.get(j).height - currentBoundingBoxes.get(j).height > 40)
           if (currentBoundingBoxes.get(j).height < 50) 
           {
-            if (note!="Unknown Tower" && j==0) {
-              //text("Fallen", 400, 320);
+            if ((j==0) && (note!="Unknown Tower") && (hasRight==true))
               rightDown = true;
+            if ((j==0) && (note=="Unknown Tower") && (hasLeft==true))
+              leftDown = true;
+            else if (filteredContours.size()==1) 
+            {
+              if (hasLeft==true)
+                leftDown = true;
+              else if (hasRight==true)
+                rightDown = true;
             }
             else if (j==1)
               rightDown = true;
-            else {
-              //text("Fallen", 167, 320);
-              leftDown = true;
-            }
-          }/*
-          else 
-          {
-            if ((leftDown==false)&&(hasLeft==true)){// && (j==0)) {
-              text("Standing", 167, 320);
-              text(note, 167, 290);
-              text(currentTowerColors[0], 167, 305);
-            }
-            if ((rightDown==false)&&(hasRight==true)){// && (j==1)) {
-              text("Standing", 400, 320);
-              text(note, 400, 290);
-              text(currentTowerColors[1], 400, 305);
-            }
-          }*/
-        
+          }
         }
-
       }
       
       if (leftDown==true)
@@ -220,15 +208,15 @@ void trackLegoTowers()
       {
         if ((leftDown==false) && (hasLeft==true)) 
         {
-          text("Standing", 167, 320);
+          text("Standing L", 167, 320);
           text(noteArray.get(0), 167, 290);
           text(currentTowerColors[0], 167, 305);
         }
         else if ((rightDown==false) && (hasRight==true))
         {
-          text("Standing", 167, 320);
-          text(noteArray.get(0), 167, 290);
-          text(currentTowerColors[0], 167, 305);
+          text("Standing R", 400, 320);
+          text(noteArray.get(0), 400, 290);
+          text(currentTowerColors[0], 400, 305);
         } 
       }
       else if (noteArray.size()==2)
