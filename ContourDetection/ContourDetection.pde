@@ -135,11 +135,11 @@ void trackLegoTowers()
   Contour tempContour, originalContour;
   ArrayList<Contour> filteredContours;
 
-      legoTowers = extractLegoTowers();
-      for (Contour contour: legoTowers)
-      {
-        originalBoundingBoxes.add(contour.getBoundingBox());
-      }
+  legoTowers = extractLegoTowers();
+  for (Contour contour: legoTowers)
+  {
+    originalBoundingBoxes.add(contour.getBoundingBox());
+  }
 
   if (legoTowers.size() > 0)
   {
@@ -234,46 +234,8 @@ void trackLegoTowers()
           text(currentTowerColors[1], 400, 305);
         }
       }
-      
-      /*
-      for (int z = 0; z < originalBoundingBoxes.size();z++)
-      {
-        if (currentBoundingBoxes.size() >= originalBoundingBoxes.size())
-        {
-          if ((originalBoundingBoxes.get(z).height - currentBoundingBoxes.get(z).height) > 40)
-          {
-            if (z==0 || z==1)
-              text("Fallen", currentBoundingBoxes.get(z).x, currentBoundingBoxes.get(z).y-10);
-          }
-          else 
-          {
-            if (z==0) {
-              text("Standing", 167, 320);
-              text(noteArray.get(0), 167, 290);
-              //text(currentTowerColors[0], 167, 305);
-            }
-            else if (z==1) {
-              text("Standing", 320, 320);
-              text(noteArray.get(1), 320, 290);
-              //text(currentTowerColors[1], 320, 305);
-            }
-            //println(currentBoundingBoxes.get(z).x + " y " + currentBoundingBoxes.get(z).y);
-            //text("Standing", currentBoundingBoxes.get(z).x, currentBoundingBoxes.get(z).y-10);
-            //text(noteArray.get(z), currentBoundingBoxes.get(z).x, currentBoundingBoxes.get(z).y-40);
-            //text(currentTowerColors[z], currentBoundingBoxes.get(z).x, currentBoundingBoxes.get(z).y-25);
-          }
-        } 
-      } */
     }
-  } /*
-  else 
-   {
-     legoTowers = extractLegoTowers();
-      for (Contour contour: legoTowers)
-      {
-        originalBoundingBoxes.add(contour.getBoundingBox());
-      }
-   } */
+  }
 }
 
 ArrayList<Contour> extractLegoTowers()
@@ -285,7 +247,7 @@ ArrayList<Contour> extractLegoTowers()
   //Filter contours to only lego towers
   for (Contour contour: towerContours)
   {
-    if(contour.area() > 2000)
+    if(contour.area() > 1500)
     {
       filteredContours.add(contour);
       
@@ -550,6 +512,7 @@ ArrayList<String> loadTowerColors()
   towerColors.add("GYBR"); //X
   towerColors.add("GYBR"); //X
   towerColors.add("GYBR"); //X
+  towerColors.add(":)"); //start
   return towerColors;
 }
 
@@ -595,18 +558,12 @@ String getBestTowerMatch(Contour inputTower, String inputColor)
       
     if (currentSimilarity < bestSimilarity)
     {
-      if (/* (currentSimilarity > 0.10) && */(inputColor.equals(towerColors.get(c))==true))
+      if ((inputColor.equals(towerColors.get(c))==true))
       {  
         bestSimilarity = currentSimilarity;
         towerType = pImgNames.get(c);
         println("****** high "+towerType+" "+bestSimilarity);
-      } /*
-      if (currentSimilarity < 0.10)
-      {
-        bestSimilarity = currentSimilarity;
-        towerType = pImgNames.get(c);
-        println("****** low "+towerType+" "+bestSimilarity);
-      } */
+      }
     }
   }
   if (towerType=="Unknown Tower")
