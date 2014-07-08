@@ -103,11 +103,15 @@ void cleanKinectInput()
   //Remove erroneous pixels
   for (int i=0; i<context.depthMapSize();i++)
   {
-    if (inputDepthMap[i] == 0)  //Error depth map value
+    if (inputDepthMap[i] == 0) { //Error depth map value 
       context.depthImage().pixels[i] = color(0,0,0);
+      colorTower.pixels[i] = color(0,0,0);
+    }
 
-    if ((inputDepthMap[i]< 600) || (inputDepthMap[i] > 1000)) //Irrelevant depths
+    if ((inputDepthMap[i]< 600) || (inputDepthMap[i] > 1000)) { //Irrelevant depths
       context.depthImage().pixels[i] = color(0,0,0);
+      colorTower.pixels[i] = color(0,0,0);
+    }
 
     else if ((inputDepthMap[i] > 400) && (inputDepthMap[i] < 1000))
       colorTower.pixels[i] = context.rgbImage().pixels[i];
@@ -127,7 +131,7 @@ void imageComparison()
   currentTowerColors = blobDebugMode(); 
   
   popMatrix();
-  fill(204,0,0);
+  //fill(204,0,0);
 }
 
 void trackLegoTowers()
@@ -157,24 +161,21 @@ void trackLegoTowers()
       
       for(int j=0; j<filteredContours.size(); j++)
       {
-        //leftDown = false;
-        //rightDown = false;
-        
         tempContour = filteredContours.get(j);
         Rectangle tempBoundingBox = tempContour.getBoundingBox();
         currentBoundingBoxes.add(tempBoundingBox);
         
         int currentx = currentBoundingBoxes.get(j).x;
-        int currenty = currentBoundingBoxes.get(j).y;
+        int currenth = currentBoundingBoxes.get(j).height;
         
         if (currentx < srcImage.width/2) {
           hasLeft = true;
-          if (currenty > 50)
+          if (currenth > 100)
             leftStanding = true;
         }
         if (currentx > srcImage.width/2) {
           hasRight = true;
-          if (currenty > 50) {
+          if (currenth > 100) {
             rightStanding = true;
           }
         }
@@ -182,13 +183,13 @@ void trackLegoTowers()
         if ((filteredContours.size() <= 2) && (currentTowerColors.length==filteredContours.size())) {
           
           noteArray.add(getBestTowerMatch(tempContour, currentTowerColors[j]));    
-          String note = getBestTowerMatch(tempContour, currentTowerColors[j]);
+          //String note = getBestTowerMatch(tempContour, currentTowerColors[j]);
               
           text(noteArray.get(j), 400, 50+(50*j));
           text(currentBoundingBoxes.get(j).height, 400, 75+(50*j));
           
           //if (originalBoundingBoxes.get(j).height - currentBoundingBoxes.get(j).height > 40)
-          if (currentBoundingBoxes.get(j).height < 50) 
+          if (currentBoundingBoxes.get(j).height < 100) 
           {
             if (filteredContours.size()==1) 
             {
@@ -197,9 +198,9 @@ void trackLegoTowers()
               else if (hasRight==true)
                 rightDown = true;
             }
-            else if ((j==0) && (note!="Unknown Tower") && (hasRight==true))
+            else if ((j==0) && (noteArray.get(0)!="Unknown Tower") && (hasRight==true))
               rightDown = true;
-            else if ((j==0) && (note=="Unknown Tower") && (hasLeft==true))
+            else if ((j==0) && (noteArray.get(0)=="Unknown Tower") && (hasLeft==true))
               leftDown = true;
             else if (j==1)
               rightDown = true;
@@ -224,12 +225,14 @@ void trackLegoTowers()
           text("Standing L", 167, 320);
           text(noteArray.get(0), 167, 290);
           text(currentTowerColors[0], 167, 305);
+          //call getbesttowermatch
         }
         else if ((rightDown==false) && (hasRight==true))
         {
           text("Standing R", 400, 320);
           text(noteArray.get(0), 400, 290);
           text(currentTowerColors[0], 400, 305);
+          //call besttowermatch
         } 
       }
       else if (noteArray.size()==2)
@@ -247,6 +250,7 @@ void trackLegoTowers()
           text(currentTowerColors[1], 400, 305);
         }
       }
+      
     }
   }
 
@@ -565,7 +569,7 @@ String getBestTowerMatch(Contour inputTower, String inputColor)
     //Use hu-moments for image which are invariant to translation, rotation, scale, and skew for comparison
     currentSimilarity = Imgproc.matchShapes(srcContour.pointMat, inputTower.pointMat, Imgproc.CV_CONTOURS_MATCH_I2, 0);
     
-    if (pImgNames.get(c)=="D1" || pImgNames.get(c)=="M3")
+    if (pImgNames.get(c)=="D1" || pImgNames.get(c)=="G1")
       println(pImgNames.get(c) + " " + towerColors.get(c) + " " + currentSimilarity);
       
     if (currentSimilarity < bestSimilarity)
