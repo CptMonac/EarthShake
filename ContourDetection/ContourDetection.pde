@@ -492,9 +492,9 @@ ArrayList<String> loadTowerColors()
   towerColors.add("RYGB"); //C2
   towerColors.add("RYGB"); //C2
   towerColors.add("RYGB"); //C2
-  towerColors.add("YGRB"); //D1
-  towerColors.add("YGRB"); //D1
-  towerColors.add("YGRB"); //D1
+  towerColors.add("YRBG"); //D1
+  towerColors.add("YRBG"); //D1
+  towerColors.add("YRBG"); //D1
   towerColors.add("BYGR"); //D2
   towerColors.add("BYGR"); //D2
   towerColors.add("BYGR"); //D2
@@ -569,7 +569,7 @@ String getBestTowerMatch(Contour inputTower, String inputColor)
     //Use hu-moments for image which are invariant to translation, rotation, scale, and skew for comparison
     currentSimilarity = Imgproc.matchShapes(srcContour.pointMat, inputTower.pointMat, Imgproc.CV_CONTOURS_MATCH_I2, 0);
     
-    if (pImgNames.get(c)=="D1" || pImgNames.get(c)=="G1")
+    if (pImgNames.get(c)=="F1" || pImgNames.get(c)=="G1")
       println(pImgNames.get(c) + " " + towerColors.get(c) + " " + currentSimilarity);
       
     if (currentSimilarity < bestSimilarity)
