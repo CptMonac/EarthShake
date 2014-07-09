@@ -13,7 +13,7 @@ import controlP5.*;
 
 
 OpenCV opencv;
-PImage srcImage, editedImage,colorImage;
+PImage srcImage, editedImage, colorImage, screen1;
 SimpleOpenNI  context;
 ControlP5 controlP5;
 ArrayList<Contour> legoTowers;
@@ -29,12 +29,16 @@ PImage M1, M1_left, M1_right, M2, M2_left, M2_right;
 PImage M3, M3_left, M3_right, M4, M4_left, M4_right;
 PImage towerx, towerx_left, towerx_right, start; 
 
-
 ArrayList<PImage> PImgArray;
 ArrayList<Contour> contourDBList;
 ArrayList<String> pImgNames;
 String[] currentTowerColors;
 ArrayList<String> towerColors;
+
+import com.shigeodayo.pframe.*;
+
+SecondApplet secondApplet = null;
+PFrame secondFrame = null;
 
 void setup()
 {
@@ -67,6 +71,10 @@ void setup()
   println("sizeof pimgarray = "+PImgArray.size());
   println("sizeof contourDBList = "+contourDBList.size()); 
   pImgNames = loadPImgStrings();
+
+  secondApplet = new SecondApplet();
+  secondFrame = new PFrame(secondApplet, 210, 10);
+  secondFrame.setTitle("Second Frame"); 
   
 }
 
@@ -93,6 +101,20 @@ void draw()
   trackLegoTowers();
   
   
+}
+
+// second Processing applet
+private class SecondApplet extends PApplet {
+  
+  void setup() {
+    size(780, 500);
+    background(0,0,0);
+  }  
+  
+  void draw() {
+    screen1 = loadImage("screen1.jpg");
+    image(screen1, 0, 0);
+  }
 }
 
 void cleanKinectInput()
