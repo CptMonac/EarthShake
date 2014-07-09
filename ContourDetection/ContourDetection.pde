@@ -62,7 +62,8 @@ void setup()
   opencv = new OpenCV(this, srcImage);
 
   //Setup screen elements
-  size(srcImage.width, srcImage.height);
+  size((srcImage.width+780), (srcImage.height+20));
+  
   legoTowers = new ArrayList<Contour>();
   originalBoundingBoxes = new ArrayList<Rectangle>();
   
@@ -71,11 +72,14 @@ void setup()
   println("sizeof pimgarray = "+PImgArray.size());
   println("sizeof contourDBList = "+contourDBList.size()); 
   pImgNames = loadPImgStrings();
-
+  
+  screen1 = loadImage("screen1.jpg");
+  
+/*
   secondApplet = new SecondApplet();
   secondFrame = new PFrame(secondApplet, 210, 10);
   secondFrame.setTitle("Second Frame"); 
-  
+*/  
 }
 
 void draw()
@@ -85,6 +89,7 @@ void draw()
 
   PImage depthImage = context.depthImage();
   colorTower = new PImage(depthImage.getImage());
+  size(colorTower.width, colorTower.height);
   
   //Clean the input image
   cleanKinectInput();
@@ -93,13 +98,13 @@ void draw()
   opencv.gray();
   opencv.threshold(70);
   
+  
   image(context.depthImage(),0,0);
   editedImage = opencv.getOutput();
 
   //Find lego towers
-  imageComparison();
   trackLegoTowers();
-  
+  imageComparison();
   
 }
 
@@ -142,7 +147,10 @@ void cleanKinectInput()
 
 void imageComparison() 
 {
-  pushMatrix();
+  //pushMatrix();
+  
+  image(screen1, 960, 0);
+  
   scale(0.5);
   image(colorTower, 0, 0);
   
@@ -152,8 +160,7 @@ void imageComparison()
   theBlobDetection.computeBlobs(srcImage.pixels);
   currentTowerColors = blobDebugMode(); 
   
-  popMatrix();
-  //fill(204,0,0);
+  //popMatrix();
 }
 
 void trackLegoTowers()
@@ -177,6 +184,9 @@ void trackLegoTowers()
     Boolean hasRight = false;
     Boolean leftStanding = false;
     Boolean rightStanding = false;
+
+    for (int i=0; i<legoTowers.size(); i++) 
+    {    
 
       ArrayList<Rectangle> currentBoundingBoxes = new ArrayList<Rectangle>();
       ArrayList<String> noteArray = new ArrayList<String>();
@@ -271,10 +281,10 @@ void trackLegoTowers()
           text(noteArray.get(1), 400, 290);
           text(currentTowerColors[1], 400, 305);
         }
-      }
-      
+      } 
     }
   }
+}
 
 ArrayList<Contour> extractLegoTowers()
 {

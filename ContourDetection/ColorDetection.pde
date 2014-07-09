@@ -65,7 +65,7 @@ ArrayList<BlobRect> mergeBlobs()
   stroke(255,0,0);
   int blobCount = theBlobDetection.getBlobNb();
   ArrayList<BlobRect> mergedBlobs = new ArrayList<BlobRect>();
-
+  println(theBlobDetection.getBlobNb());
   for (int i =0; i<theBlobDetection.getBlobNb(); i++)
   {
     Blob currBlob = theBlobDetection.getBlob(i);
@@ -83,6 +83,7 @@ ArrayList<BlobRect> mergeBlobs()
       }
     }
   }
+  println("mergedBlobs "+mergedBlobs.size());
   return mergedBlobs;
 }
 

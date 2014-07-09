@@ -118,6 +118,7 @@ public class LegoTower
     //Variables for x values
     int xLeft = int(inputTower.x*scaleFactor);
     int xRight = int((inputTower.blobWidth+inputTower.x)*scaleFactor);
+    println("xLeft "+xLeft+" and xRight "+xRight);
     int[] topLeftPix = {xLeft, xLeft, xLeft, xLeft, xLeft, xLeft, xLeft, xLeft};
     int[] topRightPix = {xRight, xRight, xRight, xRight, xRight, xRight, xRight, xRight};
     int[] bottomRightPix = {xRight, xRight, xRight, xRight, xRight, xRight, xRight, xRight};
@@ -125,6 +126,7 @@ public class LegoTower
     //Variables for y values
     int yUpper = int((inputTower.y+inputTower.blobHeight)*scaleFactor);//int((inputTower.blobHeight+offset+inputTower.y)*scaleFactor);
     int yLower = int(inputTower.y*scaleFactor);
+    println("yLower "+yLower+" and yUpper "+yUpper);
     int[] upperYLimit = {yUpper, yUpper, yUpper, yUpper, yUpper, yUpper, yUpper, yUpper};
     int[] lowerYLimit = {yLower, yLower, yLower, yLower, yLower, yLower, yLower, yLower};
     
@@ -427,6 +429,7 @@ public class LegoTower
     //Set origin, final, and top right coordinates of blocks
     for (int c=0; c<4; c++) 
     {
+      
       if (ignoreColor[c] == 2) {
         //println("drawing second for "+c);
         drawOrigin(c+4, topLeftPix[c+4], lowerYLimit[c+4]-7, scaleFactor);
@@ -434,12 +437,14 @@ public class LegoTower
         drawTopRight(c+4, topRightPix[c+4], lowerYLimit[c+4]-7, scaleFactor);
       }
       if ((permNewBlock!=c) && (ignoreColor[c] != 0)) { 
+        println("setting o/f");
         //for blocks that aren't bottom block
         drawOrigin(c, topLeftPix[c], lowerYLimit[c]-7, scaleFactor);
         drawFinal(c, bottomRightPix[c], upperYLimit[c]-8, scaleFactor);
         drawTopRight(c, topRightPix[c], lowerYLimit[c]-7, scaleFactor);
       }
       else if ((permNewBlock==c)  && (ignoreColor[permNewBlock] <= 1)) { 
+        println("setting o/f");
         //for bottom block
         if (ignoreColor[c]==0) {
           //special case if there is only one block in tower
@@ -642,6 +647,7 @@ public class LegoTower
     
     //Draw red segment
     if (RedFinal.x > 0) {
+      println("drawing red");
       //fill(255,0,0);
       stroke(255, 0, 0);
       strokeWeight(3);
@@ -690,6 +696,7 @@ public class LegoTower
     
     //Draw blue segment
     if (BlueFinal.x > 0) {
+      println("drawing blue");
       //fill(0,0,255);
       stroke(0, 10, 220);    
       strokeWeight(3);
@@ -732,6 +739,7 @@ public class LegoTower
     
     //Draw green segment
     if (GreenFinal.x > 0) {
+      println("drawing green");
       //fill(0,255,0);
       stroke(0, 255, 0);
       strokeWeight(3);
@@ -774,6 +782,7 @@ public class LegoTower
     
     //Draw yellow segment
     if (YellowFinal.x > 0) {
+      println("drawing yellow");
       //fill(255,255,0);
       stroke(255, 255, 0);
       strokeWeight(3);
