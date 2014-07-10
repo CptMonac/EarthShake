@@ -3,7 +3,7 @@ import SimpleOpenNI.*;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Size;
-import org.opencv.core.Point;
+//import org.opencv.core.Point;
 import org.opencv.core.Scalar;
 import org.opencv.core.CvType;
 import org.opencv.core.MatOfPoint;
@@ -36,9 +36,13 @@ String[] currentTowerColors;
 ArrayList<String> towerColors;
 
 import com.shigeodayo.pframe.*;
+import java.awt.Frame;
+import java.awt.MouseInfo;
+import java.awt.Point;
 
-SecondApplet secondApplet = null;
+//SecondApplet secondApplet = null;
 PFrame secondFrame = null;
+SecondApplet s;
 
 void setup()
 {
@@ -62,7 +66,7 @@ void setup()
   opencv = new OpenCV(this, srcImage);
 
   //Setup screen elements
-  size((srcImage.width+780), (srcImage.height)+20);
+  size((srcImage.width), (srcImage.height));
   
   legoTowers = new ArrayList<Contour>();
   originalBoundingBoxes = new ArrayList<Rectangle>();
@@ -74,6 +78,10 @@ void setup()
   pImgNames = loadPImgStrings();
   
   screen1 = loadImage("screen1.jpg");
+  
+  PFrame f = new PFrame();
+  frame.setTitle("first window");
+  
   /*
   secondApplet = new SecondApplet();
   secondFrame = new PFrame(secondApplet, 210, 10);
@@ -89,10 +97,9 @@ void draw()
   
   PImage depthImage = context.depthImage();
   colorTower = new PImage(depthImage.getImage());
-  //PImage(colorTower.width, colorTower.height);
-  resize(colorTower.width, colorTower.height);
+  //resize(colorTower.width, colorTower.height);
   
-  resize(srcImage.width+780, srcImage.height+20);
+  //resize(srcImage.width+780, srcImage.height+20);
   
   //Clean the input image
   cleanKinectInput();
@@ -109,7 +116,7 @@ void draw()
   trackLegoTowers();
   imageComparison();
 }
-
+/*
 // second Processing applet
 private class SecondApplet extends PApplet {
   
@@ -122,6 +129,27 @@ private class SecondApplet extends PApplet {
     //screen1 = loadImage("screen1.jpg");
     image(screen1, 0, 0);
     //image(colorTower, 0, 0);
+  }
+} */
+
+public class PFrame extends Frame {
+  public PFrame() {
+    setBounds(0, 0, 780, 500);
+    s = new SecondApplet();
+    add(s);
+    s.init();
+    show();
+    setTitle("second");
+  }
+}
+
+public class SecondApplet extends PApplet {
+  public void setup() {
+    size(780, 500);
+    PImage screen1 = loadImage("screen1.jpg");
+  }
+  public void draw() {
+    image(screen1, 0, 0);
   }
 }
 
@@ -156,6 +184,7 @@ void imageComparison()
   image(colorTower, 0, 0);
 
   theBlobDetection = new BlobDetection(srcImage.width, srcImage.height);
+  println("WxH "+srcImage.width+"x"+srcImage.height);
   theBlobDetection.setPosDiscrimination(false);
   theBlobDetection.setThreshold(0.38f);
   theBlobDetection.computeBlobs(srcImage.pixels);
