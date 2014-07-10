@@ -13,7 +13,7 @@ import controlP5.*;
 
 
 OpenCV opencv;
-PImage srcImage, editedImage, colorImage, screen1;
+PImage srcImage, srcImage2, editedImage, colorImage, screen1;
 SimpleOpenNI  context;
 ControlP5 controlP5;
 ArrayList<Contour> legoTowers;
@@ -44,7 +44,7 @@ import java.awt.Point;
 PFrame secondFrame = null;
 SecondApplet s;
 
-void setup()
+void setKinectElements() 
 {
   context = new SimpleOpenNI(this);
   if(context.isInit() == false)
@@ -58,7 +58,12 @@ void setup()
   context.enableUser();
   context.enableRGB();
   //Calibrate depth and rgb cameras
-  context.alternativeViewPointDepthToImage(); 
+  context.alternativeViewPointDepthToImage();
+}
+
+void setup()
+{
+  setKinectElements();
   
   //Initialize image variable
   srcImage = context.depthImage();
@@ -97,7 +102,7 @@ void draw()
   
   PImage depthImage = context.depthImage();
   colorTower = new PImage(depthImage.getImage());
-  //resize(colorTower.width, colorTower.height);
+  resize(colorTower.width, colorTower.height);
   
   //resize(srcImage.width+780, srcImage.height+20);
   
@@ -109,13 +114,14 @@ void draw()
   opencv.threshold(70);
   
   image(context.depthImage(),0,0);
-  image(screen1, srcImage.width, 0);
+  //image(screen1, srcImage.width, 0);
   editedImage = opencv.getOutput();
 
   //Find lego towers
   trackLegoTowers();
   imageComparison();
 }
+
 /*
 // second Processing applet
 private class SecondApplet extends PApplet {
@@ -131,27 +137,6 @@ private class SecondApplet extends PApplet {
     //image(colorTower, 0, 0);
   }
 } */
-
-public class PFrame extends Frame {
-  public PFrame() {
-    setBounds(0, 0, 780, 500);
-    s = new SecondApplet();
-    add(s);
-    s.init();
-    show();
-    setTitle("second");
-  }
-}
-
-public class SecondApplet extends PApplet {
-  public void setup() {
-    size(780, 500);
-    PImage screen1 = loadImage("screen1.jpg");
-  }
-  public void draw() {
-    image(screen1, 0, 0);
-  }
-}
 
 void cleanKinectInput()
 {
