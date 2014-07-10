@@ -36,7 +36,10 @@ public class SecondApplet extends PApplet {
     //Update camera image
     //context.update();
     
-    PImage clone = colorTower.get();   
+    //PImage clone = colorTower.get();   
+    //scale(0.5);
+    //image(clone, 500, 200);
+    
     /*
     PImage depthImage = context.depthImage();
     colorTower2 = new PImage(depthImage.getImage());
@@ -49,8 +52,6 @@ public class SecondApplet extends PApplet {
     
     PImage editedImage = opencv.getOutput();
     */
-    scale(0.5);
-    image(clone, 500, 200);
     
     //Find legotowers
     //trackLegoTowers();

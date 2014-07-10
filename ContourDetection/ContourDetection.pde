@@ -3,7 +3,7 @@ import SimpleOpenNI.*;
 import org.opencv.core.Core;
 import org.opencv.core.Mat;
 import org.opencv.core.Size;
-//import org.opencv.core.Point;
+import org.opencv.core.Point;
 import org.opencv.core.Scalar;
 import org.opencv.core.CvType;
 import org.opencv.core.MatOfPoint;
@@ -38,7 +38,7 @@ ArrayList<String> towerColors;
 import com.shigeodayo.pframe.*;
 import java.awt.Frame;
 import java.awt.MouseInfo;
-import java.awt.Point;
+//import java.awt.Point;
 
 //SecondApplet secondApplet = null;
 PFrame secondFrame = null;
