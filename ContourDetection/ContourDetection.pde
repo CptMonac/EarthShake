@@ -62,7 +62,7 @@ void setup()
   opencv = new OpenCV(this, srcImage);
 
   //Setup screen elements
-  size((srcImage.width+780), (srcImage.height+20));
+  size((srcImage.width+780), (srcImage.height)+20);
   
   legoTowers = new ArrayList<Contour>();
   originalBoundingBoxes = new ArrayList<Rectangle>();
@@ -74,12 +74,11 @@ void setup()
   pImgNames = loadPImgStrings();
   
   screen1 = loadImage("screen1.jpg");
-  
-/*
+  /*
   secondApplet = new SecondApplet();
   secondFrame = new PFrame(secondApplet, 210, 10);
   secondFrame.setTitle("Second Frame"); 
-*/  
+  */
 }
 
 void draw()
@@ -87,9 +86,13 @@ void draw()
   //Update camera image
   context.update();     
 
+  
   PImage depthImage = context.depthImage();
   colorTower = new PImage(depthImage.getImage());
-  size(colorTower.width, colorTower.height);
+  //PImage(colorTower.width, colorTower.height);
+  resize(colorTower.width, colorTower.height);
+  
+  resize(srcImage.width+780, srcImage.height+20);
   
   //Clean the input image
   cleanKinectInput();
@@ -98,14 +101,13 @@ void draw()
   opencv.gray();
   opencv.threshold(70);
   
-  
   image(context.depthImage(),0,0);
+  image(screen1, srcImage.width, 0);
   editedImage = opencv.getOutput();
 
   //Find lego towers
   trackLegoTowers();
   imageComparison();
-  
 }
 
 // second Processing applet
@@ -117,8 +119,9 @@ private class SecondApplet extends PApplet {
   }  
   
   void draw() {
-    screen1 = loadImage("screen1.jpg");
+    //screen1 = loadImage("screen1.jpg");
     image(screen1, 0, 0);
+    //image(colorTower, 0, 0);
   }
 }
 
@@ -147,20 +150,18 @@ void cleanKinectInput()
 
 void imageComparison() 
 {
-  //pushMatrix();
-  
-  image(screen1, 960, 0);
-  
+  pushMatrix();
+
   scale(0.5);
   image(colorTower, 0, 0);
-  
+
   theBlobDetection = new BlobDetection(srcImage.width, srcImage.height);
   theBlobDetection.setPosDiscrimination(false);
   theBlobDetection.setThreshold(0.38f);
   theBlobDetection.computeBlobs(srcImage.pixels);
   currentTowerColors = blobDebugMode(); 
   
-  //popMatrix();
+  popMatrix();
 }
 
 void trackLegoTowers()
