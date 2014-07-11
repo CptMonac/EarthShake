@@ -35,16 +35,6 @@ String[] currentTowerColors;
 ArrayList<String> towerColors;
 /*** VARIABLES end *********************************************/
 
-import com.shigeodayo.pframe.*;
-import java.awt.Frame;
-import java.awt.MouseInfo;
-//import java.awt.Point;
-
-//SecondApplet secondApplet = null;
-PFrame secondFrame = null;
-SecondApplet s;
-
-
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import javax.swing.*;
@@ -71,6 +61,8 @@ void setKinectElements()
 
 void setup()
 {
+
+
   setKinectElements();
   
   //Initialize image variable
@@ -79,7 +71,7 @@ void setup()
   opencv = new OpenCV(this, srcImage);
 
   //Setup screen elements
-  size((srcImage.width), (srcImage.height), P3D);
+  size(640+780, 480+20);
   
   legoTowers = new ArrayList<Contour>();
   originalBoundingBoxes = new ArrayList<Rectangle>();
@@ -92,7 +84,7 @@ void setup()
   
   screen1 = loadImage("screen1.jpg");
   
-  frame.setSize(640,480);
+  frame.setSize(400,400);
   frame.setTitle("debug window");
   
   view2 = new ImagePanel((BufferedImage)viewport2.getNative());
@@ -100,15 +92,6 @@ void setup()
   v2.setSize(780,500);
   v2.add(view2);
   v2.show();
-  
-  /*
-  PFrame f = new PFrame();
-  frame.setTitle("first window");
-
-  secondApplet = new SecondApplet();
-  secondFrame = new PFrame(secondApplet, 210, 10);
-  secondFrame.setTitle("Second Frame"); 
-  */
 }
 
 void draw()
@@ -118,7 +101,7 @@ void draw()
   
   PImage depthImage = context.depthImage();
   colorTower = new PImage(depthImage.getImage());
-  resize(colorTower.width, colorTower.height);
+  //resize(colorTower.width, colorTower.height);
     
   //Clean the input image
   cleanKinectInput();
@@ -127,16 +110,18 @@ void draw()
   opencv.gray();
   opencv.threshold(70);
   
-  image(context.depthImage(),0,0);
-  editedImage = opencv.getOutput();
+  pushMatrix();
+    translate(0, 0);
+    image(context.depthImage(),0,0);
+    editedImage = opencv.getOutput();
+  popMatrix();
   
-//  pushMatrix();
-//  translate(600,200,0);
-  image(screen1, 0, 0);
-//  popMatrix();
+  pushMatrix();
+    translate(640, 0);
+    image(screen1, 0, 0);
+  popMatrix();
   
-//  viewport2 = get(400,0,400,400);
-  viewport2 = screen1;
+  viewport2 = get(640,0,780,500);
   view2.setImage((BufferedImage)viewport2.getNative());
 
   //Find lego towers
