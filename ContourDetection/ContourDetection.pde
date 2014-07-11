@@ -48,6 +48,8 @@ SecondApplet s;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import javax.swing.*;
+ImagePanel view2;
+PImage viewport2 = new PImage(780,500,RGB);
 
 
 void setKinectElements() 
@@ -77,7 +79,7 @@ void setup()
   opencv = new OpenCV(this, srcImage);
 
   //Setup screen elements
-  size((srcImage.width), (srcImage.height));
+  size((srcImage.width), (srcImage.height), P3D);
   
   legoTowers = new ArrayList<Contour>();
   originalBoundingBoxes = new ArrayList<Rectangle>();
@@ -90,9 +92,19 @@ void setup()
   
   screen1 = loadImage("screen1.jpg");
   
+  frame.setSize(640,480);
+  frame.setTitle("debug window");
+  
+  view2 = new ImagePanel((BufferedImage)viewport2.getNative());
+  JFrame v2 = new JFrame("gorilla window");
+  v2.setSize(780,500);
+  v2.add(view2);
+  v2.show();
+  
+  /*
   PFrame f = new PFrame();
   frame.setTitle("first window");
-  /*
+
   secondApplet = new SecondApplet();
   secondFrame = new PFrame(secondApplet, 210, 10);
   secondFrame.setTitle("Second Frame"); 
@@ -117,6 +129,15 @@ void draw()
   
   image(context.depthImage(),0,0);
   editedImage = opencv.getOutput();
+  
+//  pushMatrix();
+//  translate(600,200,0);
+  image(screen1, 0, 0);
+//  popMatrix();
+  
+//  viewport2 = get(400,0,400,400);
+  viewport2 = screen1;
+  view2.setImage((BufferedImage)viewport2.getNative());
 
   //Find lego towers
   trackLegoTowers();
