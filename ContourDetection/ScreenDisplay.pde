@@ -1,3 +1,5 @@
+import controlP5.*;
+ControlP5 controlP5;
 
 public class PFrame extends Frame {
   public PFrame() {
@@ -29,16 +31,17 @@ public class SecondApplet extends PApplet {
     println("sizeof pimgarray = "+PImgArray.size());
     println("sizeof contourDBList = "+contourDBList.size()); 
     ArrayList<String> pImgNames = loadPImgStrings(); */
+    setupGUI();
   }
   public void draw() {
     image(screen1, 0, 0);
     
     //Update camera image
     //context.update();
-    
-    //PImage clone = colorTower.get();   
-    //scale(0.5);
-    //image(clone, 500, 200);
+
+//    PImage clone = colorTower.get();   
+//    scale(0.5);
+//    image(clone, 500, 200);
     
     /*
     PImage depthImage = context.depthImage();

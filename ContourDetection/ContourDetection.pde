@@ -9,13 +9,12 @@ import org.opencv.core.CvType;
 import org.opencv.core.MatOfPoint;
 import org.opencv.imgproc.Imgproc;
 import java.awt.Rectangle;
-import controlP5.*;
 
-
+/*** VARIABLES start *******************************************/
 OpenCV opencv;
 PImage srcImage, srcImage2, editedImage, colorImage, screen1;
 SimpleOpenNI  context;
-ControlP5 controlP5;
+
 ArrayList<Contour> legoTowers;
 ArrayList<Rectangle> originalBoundingBoxes;
 PImage A1, A1_left, A1_right, A2, A2_left, A2_right;
@@ -34,6 +33,7 @@ ArrayList<Contour> contourDBList;
 ArrayList<String> pImgNames;
 String[] currentTowerColors;
 ArrayList<String> towerColors;
+/*** VARIABLES end *********************************************/
 
 import com.shigeodayo.pframe.*;
 import java.awt.Frame;
@@ -43,6 +43,12 @@ import java.awt.MouseInfo;
 //SecondApplet secondApplet = null;
 PFrame secondFrame = null;
 SecondApplet s;
+
+
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import javax.swing.*;
+
 
 void setKinectElements() 
 {
@@ -86,7 +92,6 @@ void setup()
   
   PFrame f = new PFrame();
   frame.setTitle("first window");
-  
   /*
   secondApplet = new SecondApplet();
   secondFrame = new PFrame(secondApplet, 210, 10);
@@ -98,14 +103,11 @@ void draw()
 {
   //Update camera image
   context.update();     
-
   
   PImage depthImage = context.depthImage();
   colorTower = new PImage(depthImage.getImage());
   resize(colorTower.width, colorTower.height);
-  
-  //resize(srcImage.width+780, srcImage.height+20);
-  
+    
   //Clean the input image
   cleanKinectInput();
   srcImage = context.depthImage();
@@ -114,29 +116,12 @@ void draw()
   opencv.threshold(70);
   
   image(context.depthImage(),0,0);
-  //image(screen1, srcImage.width, 0);
   editedImage = opencv.getOutput();
 
   //Find lego towers
   trackLegoTowers();
   imageComparison();
 }
-
-/*
-// second Processing applet
-private class SecondApplet extends PApplet {
-  
-  void setup() {
-    size(780, 500);
-    background(0,0,0);
-  }  
-  
-  void draw() {
-    //screen1 = loadImage("screen1.jpg");
-    image(screen1, 0, 0);
-    //image(colorTower, 0, 0);
-  }
-} */
 
 void cleanKinectInput()
 {
