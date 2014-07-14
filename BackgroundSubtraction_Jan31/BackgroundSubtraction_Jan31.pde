@@ -41,7 +41,7 @@ void setup()
   beforeTower = createImage(640, 480, RGB);
   temp = context.depthImage();
   beforeTower = temp.get();
-  size(beforeTower.width, beforeTower.height);
+  size(beforeTower.width+200, beforeTower.height);
 
   //Initialize openCv
   opencv = new OpenCV(this, beforeTower);
@@ -357,8 +357,12 @@ ArrayList<BlobRect> mergeBlobs()
   {
     Blob currBlob = theBlobDetection.getBlob(i);
     BlobRect currRect = new BlobRect(currBlob);
-    if ((currRect.blobWidth * currRect.blobHeight) > 1200)
+    if ((currRect.blobWidth * currRect.blobHeight) > 1200) {
       mergedBlobs.add(currRect);
+      stroke(255,255,255);
+      noFill();
+      rect(currRect.x, currRect.y, currRect.blobWidth, currRect.blobHeight);
+    }
 
     for (int j = 0; j < mergedBlobs.size(); j++)
     {

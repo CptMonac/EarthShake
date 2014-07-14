@@ -38,6 +38,10 @@ ArrayList<String> towerColors;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import javax.swing.*;
+/*
+ImagePanel view2;
+PImage viewport2 = new PImage(640,480,RGB);
+*/
 ImagePanel view2;
 PImage viewport2 = new PImage(780,500,RGB);
 
@@ -71,7 +75,7 @@ void setup()
   opencv = new OpenCV(this, srcImage);
 
   //Setup screen elements
-  size(640+780, 480+20);
+  size(640, 480);
   
   legoTowers = new ArrayList<Contour>();
   originalBoundingBoxes = new ArrayList<Rectangle>();
@@ -84,14 +88,20 @@ void setup()
   
   screen1 = loadImage("screen1.jpg");
   
-  frame.setSize(400,400);
+  frame.setSize(640,480);
   frame.setTitle("debug window");
-  
+  /*
   view2 = new ImagePanel((BufferedImage)viewport2.getNative());
-  JFrame v2 = new JFrame("gorilla window");
-  v2.setSize(780,500);
+  JFrame v2 = new JFrame("color tower");
+  v2.setSize(640,480);
   v2.add(view2);
   v2.show();
+  */
+  view2 = new ImagePanel((BufferedImage)viewport2.getNative());
+  JFrame v2 = new JFrame("gorilla");
+  v2.setSize(780,500);
+  v2.add(view2);
+  v2.show();  
 }
 
 void draw()
@@ -101,7 +111,7 @@ void draw()
   
   PImage depthImage = context.depthImage();
   colorTower = new PImage(depthImage.getImage());
-  //resize(colorTower.width, colorTower.height);
+  resize(colorTower.width, colorTower.height);
     
   //Clean the input image
   cleanKinectInput();
@@ -115,18 +125,23 @@ void draw()
     image(context.depthImage(),0,0);
     editedImage = opencv.getOutput();
   popMatrix();
-  
+    
   pushMatrix();
     translate(640, 0);
     image(screen1, 0, 0);
   popMatrix();
   
+  /*
+  viewport2 = get(640,0,640,480);
+  view2.setImage((BufferedImage)viewport2.getNative());
+  */
+  
   viewport2 = get(640,0,780,500);
   view2.setImage((BufferedImage)viewport2.getNative());
 
-  //Find lego towers
-  trackLegoTowers();
-  imageComparison();
+    //Find lego towers
+    trackLegoTowers();
+    imageComparison();    
 }
 
 void cleanKinectInput()
@@ -156,13 +171,14 @@ void imageComparison()
 {
   pushMatrix();
 
-  scale(0.5);
+  //scale(0.5);
   image(colorTower, 0, 0);
 
   theBlobDetection = new BlobDetection(srcImage.width, srcImage.height);
   println("WxH "+srcImage.width+"x"+srcImage.height);
   theBlobDetection.setPosDiscrimination(false);
   theBlobDetection.setThreshold(0.38f);
+  srcImage = get(0,0,640,480);
   theBlobDetection.computeBlobs(srcImage.pixels);
   currentTowerColors = blobDebugMode(); 
   
@@ -173,6 +189,9 @@ void trackLegoTowers()
 {
   Contour tempContour, originalContour;
   ArrayList<Contour> filteredContours;
+  /*
+  rect(354,372,190,113);
+  rect(910,355,106,77); */
 
   legoTowers = extractLegoTowers();
   for (Contour contour: legoTowers)
@@ -206,12 +225,12 @@ void trackLegoTowers()
         int currentx = currentBoundingBoxes.get(j).x;
         int currenth = currentBoundingBoxes.get(j).height;
         
-        if (currentx < srcImage.width/2) {
+        if (currentx < 640/2) {
           hasLeft = true;
           if (currenth > 100)
             leftStanding = true;
         }
-        if (currentx > srcImage.width/2) {
+        if (currentx > 640/2) {
           hasRight = true;
           if (currenth > 100) {
             rightStanding = true;
@@ -607,7 +626,7 @@ String getBestTowerMatch(Contour inputTower, String inputColor)
     //Use hu-moments for image which are invariant to translation, rotation, scale, and skew for comparison
     currentSimilarity = Imgproc.matchShapes(srcContour.pointMat, inputTower.pointMat, Imgproc.CV_CONTOURS_MATCH_I2, 0);
     
-    if (pImgNames.get(c)=="F1" || pImgNames.get(c)=="G1")
+    if (pImgNames.get(c)=="F1" || pImgNames.get(c)=="F2")
       println(pImgNames.get(c) + " " + towerColors.get(c) + " " + currentSimilarity);
       
     if (currentSimilarity < bestSimilarity)

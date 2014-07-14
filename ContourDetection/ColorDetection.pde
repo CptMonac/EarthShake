@@ -19,6 +19,9 @@ String[] blobDebugMode()
   String[] colorTowers = new String[colorContours.size()];
   BlobRect currBlob;
   LegoTower currentTower;
+
+//  rect(178,186,272-178,245-186);
+//  rect(455,177,508-455,216-177);
   
   //Draw coloured blobs
   println(colorContours.size());
@@ -35,6 +38,10 @@ String[] blobDebugMode()
     textSize(15);
     println(colorOrder);
     colorTowers[j] = colorOrder;
+    
+    stroke(255,255,255);
+    rect(towerContours.get(j).x, towerContours.get(j).y, towerContours.get(j).blobWidth, towerContours.get(j).blobHeight);
+    
   }
   //colorTowers = reverse(colorTowers);
   return colorTowers;
@@ -52,6 +59,7 @@ ArrayList<LegoTower> analyzeTower(ArrayList<BlobRect> inputTowers)
   //Decompose all input towers into color components
   for (int i = 0; i<inputTowers.size(); i++)
   {
+    println("inputtower "+inputTowers.get(i).x+" "+inputTowers.get(i).y);
     inputTower = inputTowers.get(i);
     currentTower = new LegoTower(inputTower);
     outputTowers.add(currentTower);
@@ -70,9 +78,9 @@ ArrayList<BlobRect> mergeBlobs()
   {
     Blob currBlob = theBlobDetection.getBlob(i);
     BlobRect currRect = new BlobRect(currBlob);
-    if ((currRect.blobWidth * currRect.blobHeight) > 1200)
+    if ((currRect.blobWidth * currRect.blobHeight) > 1500)
       mergedBlobs.add(currRect);
-
+    //rect(currRect.x, currRect.y, currRect.blobWidth, currRect.blobHeight);  
     for (int j = 0; j < mergedBlobs.size(); j++)
     {
       if (rectOverlap(currRect, mergedBlobs.get(j)) && (currRect != mergedBlobs.get(j)))
@@ -80,8 +88,11 @@ ArrayList<BlobRect> mergeBlobs()
         mergedBlobs.remove(currRect);
         mergedBlobs.remove(mergedBlobs.get(j));
         mergedBlobs.add(boundingRectangle);
+        
       }
     }
+//    if mergedBlobs.get(
+//      rect(mergedBlobs.get(i).x, mergedBlobs.get(i).y, mergedBlobs.get(i).blobWidth, mergedBlobs.get(i).blobHeight);
   }
   println("mergedBlobs "+mergedBlobs.size());
   return mergedBlobs;
