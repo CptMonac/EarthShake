@@ -78,9 +78,12 @@ ArrayList<BlobRect> mergeBlobs()
   {
     Blob currBlob = theBlobDetection.getBlob(i);
     BlobRect currRect = new BlobRect(currBlob);
-    if ((currRect.blobWidth * currRect.blobHeight) > 1500)
+    if ((currRect.blobWidth * currRect.blobHeight) > 1500) {
       mergedBlobs.add(currRect);
-    //rect(currRect.x, currRect.y, currRect.blobWidth, currRect.blobHeight);  
+      stroke(255,255,255);
+      noFill();
+      rect(currRect.x, currRect.y, currRect.blobWidth, currRect.blobHeight);  
+    }
     for (int j = 0; j < mergedBlobs.size(); j++)
     {
       if (rectOverlap(currRect, mergedBlobs.get(j)) && (currRect != mergedBlobs.get(j)))

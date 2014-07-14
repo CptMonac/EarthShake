@@ -75,7 +75,7 @@ void setup()
   opencv = new OpenCV(this, srcImage);
 
   //Setup screen elements
-  size(640, 480);
+  size(640*2, 480);
   
   legoTowers = new ArrayList<Contour>();
   originalBoundingBoxes = new ArrayList<Rectangle>();
@@ -111,7 +111,7 @@ void draw()
   
   PImage depthImage = context.depthImage();
   colorTower = new PImage(depthImage.getImage());
-  resize(colorTower.width, colorTower.height);
+  //resize(colorTower.width, colorTower.height);
     
   //Clean the input image
   cleanKinectInput();
@@ -171,7 +171,7 @@ void imageComparison()
 {
   pushMatrix();
 
-  //scale(0.5);
+  scale(0.5);
   image(colorTower, 0, 0);
 
   theBlobDetection = new BlobDetection(srcImage.width, srcImage.height);
