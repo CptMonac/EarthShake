@@ -78,8 +78,10 @@ ArrayList<BlobRect> mergeBlobs()
     Blob currBlob = theBlobDetection.getBlob(i);
     BlobRect currRect = new BlobRect(currBlob);
     if ((currRect.blobWidth * currRect.blobHeight) > 1500) {
-      currRect.x = currRect.x * scaleFactor;
-      currRect.blobWidth = currRect.blobWidth * scaleFactor;
+      currRect.x *= scaleFactor;
+      currRect.blobWidth *= scaleFactor;
+      currRect.y *= 0.96;
+      currRect.blobHeight *= 0.96;
       mergedBlobs.add(currRect);
       stroke(255,255,255);
       noFill();

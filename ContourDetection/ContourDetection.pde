@@ -75,7 +75,7 @@ void setup()
   opencv = new OpenCV(this, srcImage);
 
   //Setup screen elements
-  size(640+780, 480);
+  size(640+780, 480+20);
   
   legoTowers = new ArrayList<Contour>();
   originalBoundingBoxes = new ArrayList<Rectangle>();
@@ -87,8 +87,10 @@ void setup()
   pImgNames = loadPImgStrings();
   
   screen1 = loadImage("screen1.jpg");
+  wrongTower = loadImage("wrongtower.png");
+  correctTower = loadImage("correctTower.png");
   
-  frame.setSize(640,480);
+  frame.setSize(640,500);
   frame.setTitle("debug window");
   /*
   view2 = new ImagePanel((BufferedImage)viewport2.getNative());
@@ -131,9 +133,8 @@ void draw()
   pushMatrix();
     translate(640, 0);
     image(screen1, 0, 0);
-    //fill(0,0,255);
-    trackLegoTowers();
-    //fill(255,255,255);
+    //ArrayList<Contour> filteredContours = extractLegoTowers_g();
+    trackLegoTowers_g();
   popMatrix();
   
   /*
@@ -473,59 +474,59 @@ ArrayList<String> loadPImgStrings()
 {
   ArrayList<String> pImgNames = new ArrayList<String>();
   pImgNames.add("A1");
-  pImgNames.add("A1 left");
-  pImgNames.add("A1 right");
+  pImgNames.add("A1");
+  pImgNames.add("A1");
   pImgNames.add("A2");
-  pImgNames.add("A2 left");
-  pImgNames.add("A2 right");
+  pImgNames.add("A2");
+  pImgNames.add("A2");
   pImgNames.add("B1");
-  pImgNames.add("B1 left");
-  pImgNames.add("B1 right");
+  pImgNames.add("B1");
+  pImgNames.add("B1");
   pImgNames.add("B2");
-  pImgNames.add("B2 left");
-  pImgNames.add("B2 right"); 
+  pImgNames.add("B2");
+  pImgNames.add("B2"); 
   pImgNames.add("C1"); 
-  pImgNames.add("C1 left");
-  pImgNames.add("C1 right");
+  pImgNames.add("C1");
+  pImgNames.add("C1");
   pImgNames.add("C2");
-  pImgNames.add("C2 left");
-  pImgNames.add("C2 right");
+  pImgNames.add("C2");
+  pImgNames.add("C2");
   pImgNames.add("D1");
-  pImgNames.add("D1 left");
-  pImgNames.add("D1 right"); 
+  pImgNames.add("D1");
+  pImgNames.add("D1"); 
   pImgNames.add("D2");
-  pImgNames.add("D2 left");
-  pImgNames.add("D2 right");
+  pImgNames.add("D2");
+  pImgNames.add("D2");
   pImgNames.add("E1");
-  pImgNames.add("E1 left");
-  pImgNames.add("E1 right"); 
+  pImgNames.add("E1");
+  pImgNames.add("E1"); 
   pImgNames.add("E2");
-  pImgNames.add("E2 left");
-  pImgNames.add("E2 right");
+  pImgNames.add("E2");
+  pImgNames.add("E2");
   pImgNames.add("F1");
-  pImgNames.add("F1 left");
-  pImgNames.add("F1 right"); 
+  pImgNames.add("F1");
+  pImgNames.add("F1"); 
   pImgNames.add("F2");
-  pImgNames.add("F2 left");
-  pImgNames.add("F2 right");
+  pImgNames.add("F2");
+  pImgNames.add("F2");
   pImgNames.add("G1");
-  pImgNames.add("G1 left");
-  pImgNames.add("G1 right"); 
+  pImgNames.add("G1");
+  pImgNames.add("G1"); 
   pImgNames.add("M1");
-  pImgNames.add("M1 left");
-  pImgNames.add("M1 right");
+  pImgNames.add("M1");
+  pImgNames.add("M1");
   pImgNames.add("M2");
-  pImgNames.add("M2 left");
-  pImgNames.add("M2 right"); 
+  pImgNames.add("M2");
+  pImgNames.add("M2"); 
   pImgNames.add("M3");
-  pImgNames.add("M3 left");
-  pImgNames.add("M3 right");
+  pImgNames.add("M3");
+  pImgNames.add("M3");
   pImgNames.add("M4");
-  pImgNames.add("M4 left");
-  pImgNames.add("M4 right"); 
+  pImgNames.add("M4");
+  pImgNames.add("M4"); 
   pImgNames.add("X");
-  pImgNames.add("X left");
-  pImgNames.add("X right");
+  pImgNames.add("X");
+  pImgNames.add("X");
   pImgNames.add("start");
   return pImgNames;                               
 }
