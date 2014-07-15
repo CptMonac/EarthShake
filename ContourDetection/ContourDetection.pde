@@ -112,7 +112,6 @@ void draw()
   PImage depthImage = context.depthImage();
   //colorTower = new PImage(depthImage.getImage());
   colorTower = new PImage(640,480);
-  //resize(colorTower.width, colorTower.height);
     
   //Clean the input image
   cleanKinectInput();
@@ -125,7 +124,6 @@ void draw()
     translate(0, 0);
     image(context.depthImage(),0,0);
     editedImage = opencv.getOutput();
-    //Find lego towers
     trackLegoTowers();
     imageComparison(); 
   popMatrix();
@@ -133,10 +131,9 @@ void draw()
   pushMatrix();
     translate(640, 0);
     image(screen1, 0, 0);
-    fill(0,0,255);
+    //fill(0,0,255);
     trackLegoTowers();
-    fill(255,255,255);
-    //imageComparison();
+    //fill(255,255,255);
   popMatrix();
   
   /*
