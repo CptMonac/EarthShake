@@ -48,7 +48,7 @@ public class LegoTower
   LegoTower(BlobRect inputTower)
   {
     println("LegoTower(BlobRect inputTower)");
-    float scaleFactor = 0.5;        //Scale factor to account for mismatched pixel locations -- use as necessary    
+    //float scaleFactor = 0.7;        //Scale factor to account for mismatched pixel locations -- use as necessary    
     float pixelValue;               //Stores rgb value of selected pixel
     int offset = srcImage.height;//Offset for display in processing window
     

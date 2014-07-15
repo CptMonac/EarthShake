@@ -33,6 +33,8 @@ ArrayList<Contour> contourDBList;
 ArrayList<String> pImgNames;
 String[] currentTowerColors;
 ArrayList<String> towerColors;
+
+float scaleFactor = 0.45;
 /*** VARIABLES end *********************************************/
 
 import java.awt.Graphics;
@@ -65,8 +67,6 @@ void setKinectElements()
 
 void setup()
 {
-
-
   setKinectElements();
   
   //Initialize image variable
@@ -75,7 +75,7 @@ void setup()
   opencv = new OpenCV(this, srcImage);
 
   //Setup screen elements
-  size(640*2, 480);
+  size(640+780, 480);
   
   legoTowers = new ArrayList<Contour>();
   originalBoundingBoxes = new ArrayList<Rectangle>();
@@ -110,7 +110,8 @@ void draw()
   context.update();     
   
   PImage depthImage = context.depthImage();
-  colorTower = new PImage(depthImage.getImage());
+  //colorTower = new PImage(depthImage.getImage());
+  colorTower = new PImage(640,480);
   //resize(colorTower.width, colorTower.height);
     
   //Clean the input image
@@ -124,11 +125,18 @@ void draw()
     translate(0, 0);
     image(context.depthImage(),0,0);
     editedImage = opencv.getOutput();
+    //Find lego towers
+    trackLegoTowers();
+    imageComparison(); 
   popMatrix();
     
   pushMatrix();
     translate(640, 0);
     image(screen1, 0, 0);
+    fill(0,0,255);
+    trackLegoTowers();
+    fill(255,255,255);
+    //imageComparison();
   popMatrix();
   
   /*
@@ -137,11 +145,7 @@ void draw()
   */
   
   viewport2 = get(640,0,780,500);
-  view2.setImage((BufferedImage)viewport2.getNative());
-
-    //Find lego towers
-    trackLegoTowers();
-    imageComparison();    
+  view2.setImage((BufferedImage)viewport2.getNative());   
 }
 
 void cleanKinectInput()
@@ -154,12 +158,14 @@ void cleanKinectInput()
   {
     if (inputDepthMap[i] == 0) { //Error depth map value 
       context.depthImage().pixels[i] = color(0,0,0);
-      colorTower.pixels[i] = color(0,0,0);
+      //colorTower.pixels[i] &= 0x00FFFFFF; 
+      //colorTower.pixels[i] = color(0,0,0);
     }
 
     if ((inputDepthMap[i]< 600) || (inputDepthMap[i] > 1000)) { //Irrelevant depths
       context.depthImage().pixels[i] = color(0,0,0);
-      colorTower.pixels[i] = color(0,0,0);
+      //colorTower.pixels[i] &= 0x00FFFFFF; 
+      //colorTower.pixels[i] = color(0,0,0);
     }
 
     else if ((inputDepthMap[i] > 400) && (inputDepthMap[i] < 1000))
@@ -171,7 +177,7 @@ void imageComparison()
 {
   pushMatrix();
 
-  scale(0.5);
+  scale(scaleFactor);
   image(colorTower, 0, 0);
 
   theBlobDetection = new BlobDetection(srcImage.width, srcImage.height);
@@ -323,13 +329,13 @@ ArrayList<Contour> extractLegoTowers()
     if(contour.area() > 1500)
     {
       filteredContours.add(contour);
-      
+
       contour.draw();
-      //println(contour.area());
+      //fill(0,0,255);
       
       //Draw polygon approximation
       stroke(255, 0, 0);
-      
+
      
         beginShape();
         for (PVector point : contour.getPolygonApproximation().getPoints())
@@ -337,10 +343,9 @@ ArrayList<Contour> extractLegoTowers()
           vertex(point.x, point.y);
         }
         endShape();
-      
     }
   }
-  
+  //fill(255, 255, 255);
   return filteredContours;
 }
 

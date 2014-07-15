@@ -67,7 +67,6 @@ ArrayList<LegoTower> analyzeTower(ArrayList<BlobRect> inputTowers)
   return outputTowers;
 }
 
-
 ArrayList<BlobRect> mergeBlobs()
 {
   stroke(255,0,0);
@@ -79,11 +78,14 @@ ArrayList<BlobRect> mergeBlobs()
     Blob currBlob = theBlobDetection.getBlob(i);
     BlobRect currRect = new BlobRect(currBlob);
     if ((currRect.blobWidth * currRect.blobHeight) > 1500) {
+      currRect.x = currRect.x * scaleFactor;
+      currRect.blobWidth = currRect.blobWidth * scaleFactor;
       mergedBlobs.add(currRect);
       stroke(255,255,255);
       noFill();
-      rect(currRect.x, currRect.y, currRect.blobWidth, currRect.blobHeight);  
+      //rect(currRect.x, currRect.y, currRect.blobWidth, currRect.blobHeight);  
     }
+    
     for (int j = 0; j < mergedBlobs.size(); j++)
     {
       if (rectOverlap(currRect, mergedBlobs.get(j)) && (currRect != mergedBlobs.get(j)))
@@ -94,8 +96,6 @@ ArrayList<BlobRect> mergeBlobs()
         
       }
     }
-//    if mergedBlobs.get(
-//      rect(mergedBlobs.get(i).x, mergedBlobs.get(i).y, mergedBlobs.get(i).blobWidth, mergedBlobs.get(i).blobHeight);
   }
   println("mergedBlobs "+mergedBlobs.size());
   return mergedBlobs;
