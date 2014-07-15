@@ -1,6 +1,14 @@
 String leftToMatch;
 String rightToMatch;
 
+void gameplay()
+{
+  leftToMatch = "F1";
+  rightToMatch = "F2";
+  text_welcome();
+  trackLegoTowers_g();
+}
+
 ArrayList<Contour> extractLegoTowers_g()
 {
   //Find all contours in input image
@@ -17,34 +25,30 @@ ArrayList<Contour> extractLegoTowers_g()
       //contour.draw();
       
       //Draw polygon approximation
-      //stroke(255, 0, 0);
-      //fill(0,0,255);
-
-        beginShape();
-        for (PVector point : contour.getPolygonApproximation().getPoints())
-        {
-          vertex(point.x, point.y);
-        }
-        endShape();
+//      stroke(255, 0, 0);
+//      fill(0,0,255);
+//
+//        beginShape();
+//        for (PVector point : contour.getPolygonApproximation().getPoints())
+//        {
+//          vertex(point.x, point.y);
+//        }
+//        endShape();
     }
   }
-  fill(255, 255, 255);
+  //fill(255, 255, 255);
   return filteredContours;
 }
 
 void trackLegoTowers_g()
-{
-  leftToMatch = "F1";
-  rightToMatch = "F2";
-  text_welcome();
-  
+{ 
   Contour tempContour, originalContour;
   ArrayList<Contour> filteredContours;
   /*
   rect(354,372,190,113);
   rect(910,355,106,77); */
 
-  legoTowers = extractLegoTowers();
+  legoTowers = extractLegoTowers_g();
   for (Contour contour: legoTowers)
   {
     originalBoundingBoxes.add(contour.getBoundingBox());

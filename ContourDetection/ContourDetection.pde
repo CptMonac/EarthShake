@@ -133,8 +133,7 @@ void draw()
   pushMatrix();
     translate(640, 0);
     image(screen1, 0, 0);
-    //ArrayList<Contour> filteredContours = extractLegoTowers_g();
-    trackLegoTowers_g();
+    gameplay();
   popMatrix();
   
   /*
@@ -155,15 +154,13 @@ void cleanKinectInput()
   for (int i=0; i<context.depthMapSize();i++)
   {
     if (inputDepthMap[i] == 0) { //Error depth map value 
-      context.depthImage().pixels[i] = color(0,0,0);
-      //colorTower.pixels[i] &= 0x00FFFFFF; 
-      //colorTower.pixels[i] = color(0,0,0);
+      context.depthImage().pixels[i] = color(0,0,0); 
+      colorTower.pixels[i] = color(0,0,0);
     }
 
     if ((inputDepthMap[i]< 600) || (inputDepthMap[i] > 1000)) { //Irrelevant depths
       context.depthImage().pixels[i] = color(0,0,0);
-      //colorTower.pixels[i] &= 0x00FFFFFF; 
-      //colorTower.pixels[i] = color(0,0,0);
+      colorTower.pixels[i] = color(0,0,0);
     }
 
     else if ((inputDepthMap[i] > 400) && (inputDepthMap[i] < 1000))
