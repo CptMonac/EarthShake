@@ -1,12 +1,34 @@
 String leftToMatch;
 String rightToMatch;
+Boolean scene2, scene3;
 
-void gameplay()
+void gameSetup()
 {
   leftToMatch = "F1";
   rightToMatch = "F2";
-  text_welcome();
-  trackLegoTowers_g();
+  if (scene2==false)
+    image(startScreen, 0, 0);
+  if (scene2==true)
+    image(screen1, 0, 0);
+//  if (mousePressed==true) {
+//    scene2 = true;
+//  }
+}
+
+void gameplay()
+{
+  if (scene3!=true)
+    instr_place_tower();
+//  if (mousePressed==true)
+//    scene3 = true;
+}
+
+void mousePressed()
+{
+  if (scene2==true && scene3==false)
+    scene3 = true;
+  if (scene2==false)
+    scene2 = true;
 }
 
 ArrayList<Contour> extractLegoTowers_g()
@@ -42,11 +64,9 @@ ArrayList<Contour> extractLegoTowers_g()
 
 void trackLegoTowers_g()
 { 
+    
   Contour tempContour, originalContour;
   ArrayList<Contour> filteredContours;
-  /*
-  rect(354,372,190,113);
-  rect(910,355,106,77); */
 
   legoTowers = extractLegoTowers_g();
   for (Contour contour: legoTowers)
@@ -95,9 +115,6 @@ void trackLegoTowers_g()
         if ((filteredContours.size() <= 2) && (currentTowerColors.length==filteredContours.size())) {
           
           noteArray.add(getBestTowerMatch(tempContour, currentTowerColors[j]));    
-              
-//          text(noteArray.get(j), 400, 50+(50*j));
-//          text(currentBoundingBoxes.get(j).height, 400, 75+(50*j));
           
           if (currentBoundingBoxes.get(j).height < 100) 
           {

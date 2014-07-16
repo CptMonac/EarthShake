@@ -1,6 +1,6 @@
 PImage wrongTower, correctTower;
 
-void text_welcome() 
+void instr_place_tower() 
 {
   textSize(25);
   text("Place these towers on the table.", 250, 70);
@@ -34,7 +34,9 @@ void mismatch_left()
 void mismatch_right()
 {
   textSize(25);
+  //tint(255,0);
   image(wrongTower, 590, 210);
+  //noTint();
   text("oops!", 610, 330);
   textSize(15);
 }

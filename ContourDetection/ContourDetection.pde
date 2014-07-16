@@ -35,6 +35,7 @@ String[] currentTowerColors;
 ArrayList<String> towerColors;
 
 float scaleFactor = 0.45;
+PImage startScreen, pretzel;
 /*** VARIABLES end *********************************************/
 
 import java.awt.Graphics;
@@ -75,7 +76,7 @@ void setup()
   opencv = new OpenCV(this, srcImage);
 
   //Setup screen elements
-  size(640+780, 480+20);
+  size(640+780, 480+20, P3D);
   
   legoTowers = new ArrayList<Contour>();
   originalBoundingBoxes = new ArrayList<Rectangle>();
@@ -89,6 +90,10 @@ void setup()
   screen1 = loadImage("screen1.jpg");
   wrongTower = loadImage("wrongtower.png");
   correctTower = loadImage("correctTower.png");
+  startScreen = loadImage("startscreen.jpg");
+  pretzel = loadImage("pretzel.png");
+  scene2 = false;
+  scene3 = false;
   
   frame.setSize(640,500);
   frame.setTitle("debug window");
@@ -104,6 +109,7 @@ void setup()
   v2.setSize(780,500);
   v2.add(view2);
   v2.show();  
+  //gameSetup();
 }
 
 void draw()
@@ -132,8 +138,12 @@ void draw()
     
   pushMatrix();
     translate(640, 0);
-    image(screen1, 0, 0);
-    gameplay();
+    //image(screen1, 0, 0);
+    gameSetup();
+    if (scene2==true)
+      gameplay();
+    if (scene3==true)
+      image(pretzel, 50,50);
   popMatrix();
   
   /*
