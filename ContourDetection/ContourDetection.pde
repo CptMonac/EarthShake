@@ -76,7 +76,7 @@ void setup()
   opencv = new OpenCV(this, srcImage);
 
   //Setup screen elements
-  size(640+780, 480+20, P3D);
+  size(640+780, 480+20);
   
   legoTowers = new ArrayList<Contour>();
   originalBoundingBoxes = new ArrayList<Rectangle>();
@@ -95,21 +95,14 @@ void setup()
   scene2 = false;
   scene3 = false;
   
-  frame.setSize(640,500);
-  frame.setTitle("debug window");
-  /*
+  frame.setSize(780,500);
+  frame.setTitle("gorilla window");
+
   view2 = new ImagePanel((BufferedImage)viewport2.getNative());
-  JFrame v2 = new JFrame("color tower");
+  JFrame v2 = new JFrame("debug window");
   v2.setSize(640,480);
   v2.add(view2);
-  v2.show();
-  */
-  view2 = new ImagePanel((BufferedImage)viewport2.getNative());
-  JFrame v2 = new JFrame("gorilla");
-  v2.setSize(780,500);
-  v2.add(view2);
   v2.show();  
-  //gameSetup();
 }
 
 void draw()
@@ -127,31 +120,26 @@ void draw()
   opencv = new OpenCV(this, srcImage);
   opencv.gray();
   opencv.threshold(70);
-  
+ 
   pushMatrix();
     translate(0, 0);
-    image(context.depthImage(),0,0);
-    editedImage = opencv.getOutput();
-    trackLegoTowers();
-    imageComparison(); 
-  popMatrix();
-    
-  pushMatrix();
-    translate(640, 0);
     //image(screen1, 0, 0);
     gameSetup();
     if (scene2==true)
       gameplay();
     if (scene3==true)
-      image(pretzel, 50,50);
+      image(pretzel,50,50);
   popMatrix();
   
-  /*
-  viewport2 = get(640,0,640,480);
-  view2.setImage((BufferedImage)viewport2.getNative());
-  */
+  pushMatrix();
+    translate(780, 0);
+    image(context.depthImage(),780,0);
+    editedImage = opencv.getOutput();
+    trackLegoTowers();
+    imageComparison(); 
+  popMatrix();
   
-  viewport2 = get(640,0,780,500);
+  viewport2 = get(780,0,640,480);
   view2.setImage((BufferedImage)viewport2.getNative());   
 }
 
@@ -189,7 +177,7 @@ void imageComparison()
   println("WxH "+srcImage.width+"x"+srcImage.height);
   theBlobDetection.setPosDiscrimination(false);
   theBlobDetection.setThreshold(0.38f);
-  srcImage = get(0,0,640,480);
+  srcImage = get(780,0,640,480);
   theBlobDetection.computeBlobs(srcImage.pixels);
   currentTowerColors = blobDebugMode(); 
   

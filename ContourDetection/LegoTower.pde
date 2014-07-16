@@ -47,10 +47,11 @@ public class LegoTower
   
   LegoTower(BlobRect inputTower)
   {
+    //scaleFactor = 1.0;
     println("LegoTower(BlobRect inputTower)");
     //float scaleFactor = 0.7;        //Scale factor to account for mismatched pixel locations -- use as necessary    
     float pixelValue;               //Stores rgb value of selected pixel
-    int offset = srcImage.height;//Offset for display in processing window
+    int offset = 780; //Offset for display in processing window
     
     //Initialize variables
     towerOrigin = new PVector(inputTower.x, inputTower.y);
@@ -118,7 +119,7 @@ public class LegoTower
     int[] colorCounts = {0, 0, 0, 0}; 
     
     //Variables for x values
-    int xLeft = int(inputTower.x*scaleFactor);
+    int xLeft = int((inputTower.x)*scaleFactor);
     int xRight = int((inputTower.blobWidth+inputTower.x)*scaleFactor);
     println("xLeft "+xLeft+" and xRight "+xRight);
     println("inputTower.x "+inputTower.x);
@@ -138,6 +139,9 @@ public class LegoTower
     int blockInitialized = 0;
     int setTopLeftFlag = 1;      
     int firstRowFlag = 0;
+    
+    stroke(255,0,0);
+    rect(xLeft*2.0+20, yLower*2.0+20, (inputTower.blobWidth), inputTower.blobHeight);
     
     /********************************
      *** end initializing variables 
@@ -645,7 +649,7 @@ public class LegoTower
   //Displays visual colored blocks
   public void drawTower()
   {
-    int offset = srcImage.height;//Offset for display in processing window
+    int offset = 780; //Offset for display in processing window
 
     noFill();
     
