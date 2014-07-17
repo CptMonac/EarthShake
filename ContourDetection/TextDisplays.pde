@@ -2,6 +2,7 @@ PImage wrongTower, correctTower;
 
 void continue_button()
 {
+  //replace this function with "image(continue, etc, etc)" later
   fill(0,0,155);
   noStroke();
   rect(470,130,100,40);
@@ -23,7 +24,7 @@ void instr_place_tower()
 void match_left_image()
 {
   textSize(25);
-  image(correctTower, 390, 210);
+  image(correctTower, 370, 160);
   text("MATCH!", 380, 330);
   textSize(15);
 }
@@ -31,14 +32,15 @@ void match_left_image()
 void match_left_text()
 {
   textSize(22);
-  text("Good job! The left tower matches. Now place the right tower.", 230, 30, 450, 70);
+  textSize(22);
+  text("Good job! The left tower matches. Now place the right tower.", 230, 30, 450, 70);    
   textSize(15);
 }
 
 void match_right_image()
 {
   textSize(25);
-  image(correctTower, 590, 210);
+  image(correctTower, 570, 160);
   text("MATCH!", 580, 330);
   textSize(15);
 }
@@ -46,14 +48,14 @@ void match_right_image()
 void match_right_text()
 {
   textSize(22);
-  text("Good jobleft right tower matches. Now place the left tower.", 230, 30, 450, 70);
+  text("Good job! The right tower matches. Now place the left tower.", 230, 30, 450, 70);
   textSize(15);
 }
 
 void mismatch_left_image()
 {
   textSize(25);
-  image(wrongTower, 390, 210);
+  image(wrongTower, 370, 160);
   text("oops!", 410, 330);
   textSize(15);
 }
@@ -69,7 +71,7 @@ void mismatch_right_image()
 {
   textSize(25);
   //tint(255,0);
-  image(wrongTower, 590, 210);
+  image(wrongTower, 570, 160);
   //noTint();
   text("oops!", 610, 330);
   textSize(15);
