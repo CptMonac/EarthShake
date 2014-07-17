@@ -10,17 +10,12 @@ void gameSetup()
     image(startScreen, 0, 0);
   if (scene2==true)
     image(screen1, 0, 0);
-//  if (mousePressed==true) {
-//    scene2 = true;
-//  }
 }
 
 void gameplay()
 {
   if (scene3!=true)
     instr_place_tower();
-//  if (mousePressed==true)
-//    scene3 = true;
 }
 
 void mousePressed()
@@ -155,7 +150,10 @@ void trackLegoTowers_g()
           if (noteArray.get(0)==leftToMatch)
             match_left();
           else 
-            mismatch_left();
+          {
+            mismatch_left_image();
+            mismatch_right_text();
+          }
         }
         else if ((rightDown==false) && (hasRight==true))
         {
@@ -165,30 +163,33 @@ void trackLegoTowers_g()
           if (noteArray.get(0)==rightToMatch)
             match_right();
           else
-            mismatch_right();
+          {
+            mismatch_right_image();
+            mismatch_right_text();
+          }
         } 
       }
       else if (noteArray.size()==2)
       {
         if (leftDown==false)
         {
-//          text("Standing", 167, 320);
-//          text(noteArray.get(0), 167, 290);
-//          text(currentTowerColors[0], 167, 305);
           if (noteArray.get(0)==leftToMatch)
             match_left();
-          else
-            mismatch_left();
+          else 
+          {
+            mismatch_left_image();
+            mismatch_left_text();
+          }
         }
         if (rightDown==false)
         {
-//          text("Standing", 400, 320);
-//          text(noteArray.get(1), 400, 290);
-//          text(currentTowerColors[1], 400, 305);
           if (noteArray.get(1)==rightToMatch)
             match_right();
           else 
-            mismatch_right();
+          {
+            mismatch_right_image();
+            mismatch_right_text();
+          }
         }
       } 
     }

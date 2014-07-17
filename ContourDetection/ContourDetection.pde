@@ -76,7 +76,7 @@ void setup()
   opencv = new OpenCV(this, srcImage);
 
   //Setup screen elements
-  size(640+780, 480+20);
+  size(640+780, 480+20, P3D);
   
   legoTowers = new ArrayList<Contour>();
   originalBoundingBoxes = new ArrayList<Rectangle>();
@@ -139,7 +139,7 @@ void draw()
     }
   popMatrix();
   
-  viewport2 = get(780,0,640,480);
+  viewport2 = get(780,20,640,480);
   view2.setImage((BufferedImage)viewport2.getNative());   
 }
 
