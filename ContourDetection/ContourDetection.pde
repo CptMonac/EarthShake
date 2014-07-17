@@ -129,11 +129,13 @@ void draw()
       gameplay();
     if (scene3==true)
       image(pretzel,50,50);
+    //translate(780,0);
+    //imageComparison();
   popMatrix();
   
   pushMatrix();
     translate(780, 0);
-    image(context.depthImage(),780,0);
+    image(context.depthImage(),0,0);
     editedImage = opencv.getOutput();
     trackLegoTowers();
     imageComparison(); 
@@ -177,7 +179,7 @@ void imageComparison()
   println("WxH "+srcImage.width+"x"+srcImage.height);
   theBlobDetection.setPosDiscrimination(false);
   theBlobDetection.setThreshold(0.38f);
-  srcImage = get(780,0,640,480);
+  //srcImage = get(780,0,640,480);
   theBlobDetection.computeBlobs(srcImage.pixels);
   currentTowerColors = blobDebugMode(); 
   

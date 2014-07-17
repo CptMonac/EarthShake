@@ -47,7 +47,6 @@ public class LegoTower
   
   LegoTower(BlobRect inputTower)
   {
-    //scaleFactor = 1.0;
     println("LegoTower(BlobRect inputTower)");
     //float scaleFactor = 0.7;        //Scale factor to account for mismatched pixel locations -- use as necessary    
     float pixelValue;               //Stores rgb value of selected pixel
@@ -88,7 +87,9 @@ public class LegoTower
     BlueBottomLeft = new PVector(-1, -1);
 
     //Load the pixel data for the display window into the pixels[] array
+    //translate(780,0);
     loadPixels();  
+    //translate(-780,0);
     
     /******************************
      *** initialize variables 
@@ -117,6 +118,8 @@ public class LegoTower
     //Arrays, all follow RBGY index format
     int[] ignoreColor = {0, 0, 0, 0};
     int[] colorCounts = {0, 0, 0, 0}; 
+ 
+    scaleFactor = 1.0; 
     
     //Variables for x values
     int xLeft = int((inputTower.x)*scaleFactor);
@@ -140,8 +143,8 @@ public class LegoTower
     int setTopLeftFlag = 1;      
     int firstRowFlag = 0;
     
-    stroke(255,0,0);
-    rect(xLeft*2.0+20, yLower*2.0+20, (inputTower.blobWidth), inputTower.blobHeight);
+    //stroke(255,0,0);
+    //rect(xLeft*2.0+20, yLower*2.0+20, (inputTower.blobWidth), inputTower.blobHeight);
     
     /********************************
      *** end initializing variables 
@@ -179,15 +182,18 @@ public class LegoTower
         color pixelColor = pixels[pixelY*width + pixelX];
         pixelValue = hue(pixelColor);
         //colorPixelFound = 0;
+ 
+          fill(100,100,100);
+          text("R", pixelX/scaleFactor, pixelY/scaleFactor);
+          noFill(); 
         
         //Identify red hue
         if (pixelColorHue(pixelValue) == 0)  
         {
           colorPixelFound = 1;
-//          fill(255,0,0);
-//          text("R", pixelX*2, pixelY*2);
-//          noFill();
-            
+          fill(255,0,0);
+          text("R", pixelX/scaleFactor, pixelY/scaleFactor);
+          noFill();           
           if ((ignoreColor[0] == 0) || (ignoreColor[0]==1)) {
                colorCounts[0]++;
                
@@ -213,9 +219,9 @@ public class LegoTower
         else if (pixelColorHue(pixelValue) == 1)  
         {
           colorPixelFound = 1;
-//          fill(255,255,255);
-//          text("B", pixelX*2, pixelY*2);
-//          noFill();
+          fill(0,0,255);
+          text("B", pixelX/scaleFactor, pixelY/scaleFactor);
+          noFill();
           if ((ignoreColor[1] == 0) || (ignoreColor[1]==1))
              colorCounts[1]++;
           if ((firstRowFlag == 1) && (permNewBlock==1)) {
@@ -238,9 +244,9 @@ public class LegoTower
         else if (pixelColorHue(pixelValue) == 2)   
         {
           colorPixelFound = 1;
-//          fill(255,255,255);
-//          text("o", pixelX*2, pixelY*2);
-//          noFill();
+          fill(0,255,0);
+          text("o", pixelX/scaleFactor, pixelY/scaleFactor);
+          noFill();
           if ((ignoreColor[2] == 0) || (ignoreColor[2]==1))      
             colorCounts[2]++;
           if ((firstRowFlag == 1) && (permNewBlock==2)) {
@@ -263,9 +269,9 @@ public class LegoTower
         else if (pixelColorHue(pixelValue) == 3)        
         { 
           colorPixelFound = 1;
-//          fill(255,255,0);
-//          text("Y", pixelX*2, pixelY*2);
-//          noFill();
+          fill(255,255,0);
+          text("Y", pixelX/scaleFactor, pixelY/scaleFactor);
+          noFill();
           if ((ignoreColor[3] == 0) || (ignoreColor[3]==1))
             colorCounts[3]++;
           
@@ -485,6 +491,7 @@ public class LegoTower
     yellowSegment2 = new BlobRect(Yellow2Origin.x, Yellow2Origin.y, abs(Yellow2Final.x - Yellow2Origin.x), abs(Yellow2Final.y - Yellow2Origin.y));
     
     //return colorOrder;
+    scaleFactor = 0.45;
         
   }
   
