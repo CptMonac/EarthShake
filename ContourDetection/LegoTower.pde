@@ -87,9 +87,7 @@ public class LegoTower
     BlueBottomLeft = new PVector(-1, -1);
 
     //Load the pixel data for the display window into the pixels[] array
-    //translate(780,0);
     loadPixels();  
-    //translate(-780,0);
     
     /******************************
      *** initialize variables 
@@ -183,17 +181,17 @@ public class LegoTower
         pixelValue = hue(pixelColor);
         //colorPixelFound = 0;
  
-          fill(100,100,100);
-          text("R", pixelX/scaleFactor, pixelY/scaleFactor);
-          noFill(); 
+//          fill(100,100,100);
+//          text("R", pixelX/scaleFactor, pixelY/scaleFactor);
+//          noFill(); 
         
         //Identify red hue
         if (pixelColorHue(pixelValue) == 0)  
         {
           colorPixelFound = 1;
-          fill(255,0,0);
-          text("R", pixelX/scaleFactor, pixelY/scaleFactor);
-          noFill();           
+//          fill(255,0,0);
+//          text("R", pixelX/scaleFactor, pixelY/scaleFactor);
+//          noFill();           
           if ((ignoreColor[0] == 0) || (ignoreColor[0]==1)) {
                colorCounts[0]++;
                
@@ -219,9 +217,9 @@ public class LegoTower
         else if (pixelColorHue(pixelValue) == 1)  
         {
           colorPixelFound = 1;
-          fill(0,0,255);
-          text("B", pixelX/scaleFactor, pixelY/scaleFactor);
-          noFill();
+//          fill(0,0,255);
+//          text("B", pixelX/scaleFactor, pixelY/scaleFactor);
+//          noFill();
           if ((ignoreColor[1] == 0) || (ignoreColor[1]==1))
              colorCounts[1]++;
           if ((firstRowFlag == 1) && (permNewBlock==1)) {
@@ -244,9 +242,9 @@ public class LegoTower
         else if (pixelColorHue(pixelValue) == 2)   
         {
           colorPixelFound = 1;
-          fill(0,255,0);
-          text("o", pixelX/scaleFactor, pixelY/scaleFactor);
-          noFill();
+//          fill(0,255,0);
+//          text("o", pixelX/scaleFactor, pixelY/scaleFactor);
+//          noFill();
           if ((ignoreColor[2] == 0) || (ignoreColor[2]==1))      
             colorCounts[2]++;
           if ((firstRowFlag == 1) && (permNewBlock==2)) {
@@ -269,9 +267,9 @@ public class LegoTower
         else if (pixelColorHue(pixelValue) == 3)        
         { 
           colorPixelFound = 1;
-          fill(255,255,0);
-          text("Y", pixelX/scaleFactor, pixelY/scaleFactor);
-          noFill();
+//          fill(255,255,0);
+//          text("Y", pixelX/scaleFactor, pixelY/scaleFactor);
+//          noFill();
           if ((ignoreColor[3] == 0) || (ignoreColor[3]==1))
             colorCounts[3]++;
           
@@ -669,15 +667,15 @@ public class LegoTower
       //rect(redSegment.x, redSegment.y, redSegment.blobWidth, redSegment.blobHeight);
       
       float Rx1 = RedOrigin.x;
-      //println("Rx1 is "+RedOrigin.x);
+      println("Rx1 is "+RedOrigin.x);
       float Ry1 = RedOrigin.y;
-      //println("Ry1 is "+RedOrigin.y);
+      println("Ry1 is "+RedOrigin.y);
       //float Rx2 = RedTopRight.x;
       float Rx2 = RedOrigin.x + redSegment.blobWidth;
-      //println("Rx2 is "+Rx2);
+      println("Rx2 is "+Rx2);
       float Rx3 = RedFinal.x - redSegment.blobWidth;
       float Ry2 = RedFinal.y;
-      //println("Ry2 is "+Ry2);
+      println("Ry2 is "+Ry2);
       float Rx4 = RedFinal.x;
       line(Rx1, Ry1, Rx2, Ry1);
       line(Rx2, Ry1, Rx4, Ry2);

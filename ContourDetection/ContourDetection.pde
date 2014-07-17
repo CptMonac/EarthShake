@@ -111,7 +111,6 @@ void draw()
   context.update();     
   
   PImage depthImage = context.depthImage();
-  //colorTower = new PImage(depthImage.getImage());
   colorTower = new PImage(640,480);
     
   //Clean the input image
@@ -120,18 +119,6 @@ void draw()
   opencv = new OpenCV(this, srcImage);
   opencv.gray();
   opencv.threshold(70);
- 
-  pushMatrix();
-    translate(0, 0);
-    //image(screen1, 0, 0);
-    gameSetup();
-    if (scene2==true)
-      gameplay();
-    if (scene3==true)
-      image(pretzel,50,50);
-    //translate(780,0);
-    //imageComparison();
-  popMatrix();
   
   pushMatrix();
     translate(780, 0);
@@ -139,6 +126,17 @@ void draw()
     editedImage = opencv.getOutput();
     trackLegoTowers();
     imageComparison(); 
+  popMatrix();
+ 
+  pushMatrix();
+    translate(0, 0);
+    //image(screen1, 0, 0);
+    gameSetup();
+    if (scene2==true)
+      gameplay();
+    if (scene3==true) {
+      trackLegoTowers_g();
+    }
   popMatrix();
   
   viewport2 = get(780,0,640,480);
@@ -171,7 +169,7 @@ void cleanKinectInput()
 void imageComparison() 
 {
   pushMatrix();
-
+  image(colorTower, -780, 0);
   scale(scaleFactor);
   image(colorTower, 0, 0);
 
@@ -179,7 +177,7 @@ void imageComparison()
   println("WxH "+srcImage.width+"x"+srcImage.height);
   theBlobDetection.setPosDiscrimination(false);
   theBlobDetection.setThreshold(0.38f);
-  //srcImage = get(780,0,640,480);
+  srcImage = get(780,0,640,480);
   theBlobDetection.computeBlobs(srcImage.pixels);
   currentTowerColors = blobDebugMode(); 
   
@@ -562,7 +560,7 @@ ArrayList<String> loadTowerColors()
   towerColors.add("BrYRG"); //E2
   towerColors.add("yBrYRG"); //E2
   towerColors.add("GYR"); //F1
-  towerColors.add("BGYR"); //F1
+  towerColors.add("gBGYR"); //F1
   towerColors.add("BGYR"); //F1
   towerColors.add("gBGRY"); //F2
   towerColors.add("GRY"); //F2
