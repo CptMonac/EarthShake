@@ -1,11 +1,14 @@
 String leftToMatch;
 String rightToMatch;
 Boolean scene2, scene3;
+Boolean foundLeftMatch, foundRightMatch;
 
 void gameSetup()
 {
   leftToMatch = "F1";
   rightToMatch = "F2";
+  foundLeftMatch = false;
+  foundRightMatch = false;
   if (scene2==false)
     image(startScreen, 0, 0);
   if (scene2==true)
@@ -174,24 +177,36 @@ void trackLegoTowers_g()
         if (leftDown==false)
         {
           if (noteArray.get(0)==leftToMatch)
+          {
             match_left();
+            foundLeftMatch = true;
+          }
           else 
           {
             mismatch_left_image();
-            mismatch_left_text();
           }
         }
         if (rightDown==false)
         {
           if (noteArray.get(1)==rightToMatch)
+          {
             match_right();
+            foundRightMatch = true;
+          }
           else 
           {
             mismatch_right_image();
-            mismatch_right_text();
           }
         }
       } 
     }
+    if ((foundLeftMatch==false) && (foundRightMatch==false))
+      neither_match_text();
+    if ((foundLeftMatch==false) && (foundRightMatch==true))
+      mismatch_left_text();
+    if ((foundLeftMatch==true) && (foundRightMatch==false))
+      mismatch_right_text();      
+    if ((foundLeftMatch==true) && (foundRightMatch==true))
+      both_match_text();
   }
 }

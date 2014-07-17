@@ -2,8 +2,9 @@ PImage wrongTower, correctTower;
 
 void instr_place_tower() 
 {
-  textSize(25);
-  text("Place these towers on the table.", 250, 70);
+  textSize(22);
+  text("Place these towers on the table. Click to continue when you have placed them.", 230, 30, 450, 70);
+  textSize(30);
   text(leftToMatch, 390, 250);
   text(rightToMatch, 590, 250);
   textSize(15);
@@ -35,8 +36,8 @@ void mismatch_left_image()
 
 void mismatch_left_text()
 {
-  textSize(20);
-  text("You placed the wrong tower on the left. Please place the correct tower.", 230, 30, 450, 70);
+  textSize(22);
+  text("Uh oh! You placed the wrong tower on the left. Please place the correct tower.", 230, 30, 450, 70);
   textSize(15);
 }
 
@@ -52,7 +53,21 @@ void mismatch_right_image()
 
 void mismatch_right_text()
 {
-  textSize(20);
-  text("You placed the wrong tower on the right. Please place the correct tower.", 230, 30, 450, 70);
+  textSize(22);
+  text("Uh oh! You placed the wrong tower on the right. Please place the correct tower.", 230, 30, 450, 70);
+  textSize(15);
+}
+
+void both_match_text()
+{
+  textSize(25);
+  text("Good job! Click to continue.", 250, 70);
+  textSize(15);
+}
+
+void neither_match_text()
+{
+  textSize(22);
+  text("Uh oh! Neither tower is correct. Please try placing the towers again.", 230, 30, 450, 70);
   textSize(15);
 }
