@@ -76,7 +76,7 @@ void setup()
   opencv = new OpenCV(this, srcImage);
 
   //Setup screen elements
-  size(640+780, 480+20, P3D);
+  size(640+780, 480+20);
   
   legoTowers = new ArrayList<Contour>();
   originalBoundingBoxes = new ArrayList<Rectangle>();
@@ -92,8 +92,10 @@ void setup()
   correctTower = loadImage("correctTower.png");
   startScreen = loadImage("startscreen.jpg");
   pretzel = loadImage("pretzel.png");
+  
   scene2 = false;
   scene3 = false;
+  scene4 = false;  
   
   frame.setSize(780,500);
   frame.setTitle("gorilla window");
@@ -130,13 +132,13 @@ void draw()
  
   pushMatrix();
     translate(0, 0);
-    //image(screen1, 0, 0);
     gameSetup();
     if (scene2==true)
       gameplay();
-    if (scene3==true) {
+    if (scene3==true)
       trackLegoTowers_g();
-    }
+    if (scene4==true) 
+      image(pretzel, 300, 150);
   popMatrix();
   
   viewport2 = get(780,20,640,480);
@@ -641,13 +643,6 @@ String getBestTowerMatch(Contour inputTower, String inputColor)
       }
     }
   }
-  /*
-  if (towerType=="Unknown Tower") {
-    println("unknowntower");
-    inputTower.draw();
-    stroke(255,255,255);
-    strokeWeight(10);
-  } */
   
   return towerType;
 }

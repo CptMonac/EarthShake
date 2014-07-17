@@ -1,6 +1,6 @@
 String leftToMatch;
 String rightToMatch;
-Boolean scene2, scene3;
+Boolean scene2, scene3, scene4;
 Boolean foundLeftMatch, foundRightMatch;
 
 void gameSetup()
@@ -23,6 +23,11 @@ void gameplay()
 
 void mousePressed()
 {
+  if (scene3==true && scene4==false)
+  {
+    if (foundLeftMatch==true && foundRightMatch==true)
+      scene4 = true;
+  }
   if (scene2==true && scene3==false)
     scene3 = true;
   if (scene2==false)
@@ -71,7 +76,7 @@ void trackLegoTowers_g()
   {
     originalBoundingBoxes.add(contour.getBoundingBox());
   }
-
+  
   if (legoTowers.size() > 0)
   {
     filteredContours = extractLegoTowers_g();
@@ -147,28 +152,28 @@ void trackLegoTowers_g()
       {
         if ((leftDown==false) && (hasLeft==true)) 
         {
-          //text("Standing L", 167, 320);
-          //text(noteArray.get(0), 167, 290);
-          //text(currentTowerColors[0], 167, 305);
           if (noteArray.get(0)==leftToMatch)
-            match_left();
+          {
+            if (scene3==true && scene4==false)
+              match_left_image();
+            foundLeftMatch = true;
+          }
           else 
           {
             mismatch_left_image();
-            mismatch_right_text();
           }
         }
         else if ((rightDown==false) && (hasRight==true))
         {
-          //text("Standing R", 400, 320);
-          //text(noteArray.get(0), 400, 290);
-          //text(currentTowerColors[0], 400, 305);
           if (noteArray.get(0)==rightToMatch)
-            match_right();
+          {
+            if (scene3==true && scene4==false)
+              match_right_image();
+            foundRightMatch = true;
+          }
           else
           {
             mismatch_right_image();
-            mismatch_right_text();
           }
         } 
       }
@@ -178,7 +183,8 @@ void trackLegoTowers_g()
         {
           if (noteArray.get(0)==leftToMatch)
           {
-            match_left();
+            if (scene3==true && scene4==false)
+              match_left_image();
             foundLeftMatch = true;
           }
           else 
@@ -190,7 +196,8 @@ void trackLegoTowers_g()
         {
           if (noteArray.get(1)==rightToMatch)
           {
-            match_right();
+            if (scene3==true && scene4==false)
+              match_right_image();
             foundRightMatch = true;
           }
           else 
@@ -200,13 +207,23 @@ void trackLegoTowers_g()
         }
       } 
     }
-    if ((foundLeftMatch==false) && (foundRightMatch==false))
-      neither_match_text();
-    if ((foundLeftMatch==false) && (foundRightMatch==true))
-      mismatch_left_text();
-    if ((foundLeftMatch==true) && (foundRightMatch==false))
-      mismatch_right_text();      
-    if ((foundLeftMatch==true) && (foundRightMatch==true))
-      both_match_text();
   }
+  if (scene3==true && scene4==false)
+    checkTowerMatch();
+}
+
+void checkTowerMatch()
+{
+  if ((foundLeftMatch==false) && (foundRightMatch==false) && ((legoTowers.size()==0)||(legoTowers.size()==2)))
+    neither_match_text();
+  else if ((foundLeftMatch==false) && (foundRightMatch==true) && (legoTowers.size()==2))
+    mismatch_left_text();
+  else if ((foundLeftMatch==true) && (foundRightMatch==false) && (legoTowers.size()==2))
+    mismatch_right_text();      
+  else if ((foundLeftMatch==true) && (foundRightMatch==true))
+    both_match_text();
+  else if (foundLeftMatch==true)
+    match_left_text();
+  else if (foundRightMatch==true)
+    match_right_text();
 }

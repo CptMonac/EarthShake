@@ -10,7 +10,7 @@ void instr_place_tower()
   textSize(15);
 }
 
-void match_left()
+void match_left_image()
 {
   textSize(25);
   image(correctTower, 390, 210);
@@ -18,11 +18,25 @@ void match_left()
   textSize(15);
 }
 
-void match_right()
+void match_left_text()
+{
+  textSize(22);
+  text("Good job! The left tower matches. Now place the right tower.", 230, 30, 450, 70);
+  textSize(15);
+}
+
+void match_right_image()
 {
   textSize(25);
   image(correctTower, 590, 210);
   text("MATCH!", 580, 330);
+  textSize(15);
+}
+
+void match_right_text()
+{
+  textSize(22);
+  text("Good jobleft right tower matches. Now place the left tower.", 230, 30, 450, 70);
   textSize(15);
 }
 
