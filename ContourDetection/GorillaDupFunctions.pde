@@ -9,8 +9,10 @@ void gameSetup()
   rightToMatch = "F2";
   foundLeftMatch = false;
   foundRightMatch = false;
-  if (scene2==false)
+  if (scene2==false) {
     image(startScreen, 0, 0);
+    continue_button();
+  }
   if (scene2==true)
     image(screen1, 0, 0);
 }
@@ -25,13 +27,21 @@ void mousePressed()
 {
   if (scene3==true && scene4==false)
   {
-    if (foundLeftMatch==true && foundRightMatch==true)
+    if ((mouseX >= 470) && (mouseX <= 570) && (mouseY >= 130) && (mouseY <= 170))
       scene4 = true;
   }
+  
   if (scene2==true && scene3==false)
-    scene3 = true;
+  {
+    if ((mouseX >= 470) && (mouseX <= 570) && (mouseY >= 130) && (mouseY <= 170))
+      scene3 = true;
+  }
+    
   if (scene2==false)
-    scene2 = true;
+  {
+    if ((mouseX >= 470) && (mouseX <= 570) && (mouseY >= 130) && (mouseY <= 170))
+      scene2 = true;
+  }
 }
 
 ArrayList<Contour> extractLegoTowers_g()

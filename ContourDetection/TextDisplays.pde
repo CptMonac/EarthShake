@@ -1,9 +1,19 @@
 PImage wrongTower, correctTower;
 
+void continue_button()
+{
+  fill(0,0,155);
+  noStroke();
+  rect(470,130,100,40);
+  fill(255,255,255);
+  stroke(255,255,255);  
+}
+
 void instr_place_tower() 
 {
   textSize(22);
   text("Place these towers on the table. Click to continue when you have placed them.", 230, 30, 450, 70);
+  continue_button();
   textSize(30);
   text(leftToMatch, 390, 250);
   text(rightToMatch, 590, 250);
@@ -76,6 +86,7 @@ void both_match_text()
 {
   textSize(25);
   text("Good job! Click to continue.", 250, 70);
+  continue_button();
   textSize(15);
 }
 

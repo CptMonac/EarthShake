@@ -9,6 +9,9 @@ import org.opencv.core.CvType;
 import org.opencv.core.MatOfPoint;
 import org.opencv.imgproc.Imgproc;
 import java.awt.Rectangle;
+import java.awt.Graphics;
+import java.awt.image.BufferedImage;
+import javax.swing.*;
 
 /*** VARIABLES start *******************************************/
 OpenCV opencv;
@@ -36,17 +39,10 @@ ArrayList<String> towerColors;
 
 float scaleFactor = 0.45;
 PImage startScreen, pretzel;
-/*** VARIABLES end *********************************************/
 
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
-import javax.swing.*;
-/*
-ImagePanel view2;
-PImage viewport2 = new PImage(640,480,RGB);
-*/
 ImagePanel view2;
 PImage viewport2 = new PImage(780,500,RGB);
+/*** VARIABLES end *********************************************/
 
 
 void setKinectElements() 
