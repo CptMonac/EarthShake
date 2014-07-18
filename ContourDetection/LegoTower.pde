@@ -140,10 +140,7 @@ public class LegoTower
     int blockInitialized = 0;
     int setTopLeftFlag = 1;      
     int firstRowFlag = 0;
-    
-    //stroke(255,0,0);
-    //rect(xLeft*2.0+20, yLower*2.0+20, (inputTower.blobWidth), inputTower.blobHeight);
-    
+  
     /********************************
      *** end initializing variables 
      ********************************/
@@ -206,9 +203,7 @@ public class LegoTower
                 setTopLeftFlag = 0;
                 topRightPix[0] = scanForTopRight(xLeft, xRight, 0, pixelY);
               }
-            }  /*      
-            if (tempNewBlock==0)
-              bottomRightPix[tempNewBlock] = scanForBottomRight(xLeft, xRight, 0, pixelY); */
+            }
           }  
             
         }       
@@ -233,9 +228,7 @@ public class LegoTower
               setTopLeftFlag = 0;
               topRightPix[1] = scanForTopRight(xLeft, xRight, 1, pixelY);
             }
-          } /*
-          if (tempNewBlock==1)
-            bottomRightPix[tempNewBlock] = scanForBottomRight(xLeft, xRight, 1, pixelY); */
+          }
         }
         
         //Identify green hue
@@ -258,9 +251,7 @@ public class LegoTower
               setTopLeftFlag = 0;
               topRightPix[2] = scanForTopRight(xLeft, xRight, 2, pixelY);
             }
-          } /*
-          if (tempNewBlock==2)
-            bottomRightPix[tempNewBlock] = scanForBottomRight(xLeft, xRight, 2, pixelY); */
+          } 
         }
                 
         //Identify yellow hue
@@ -284,11 +275,7 @@ public class LegoTower
               setTopLeftFlag = 0;
               topRightPix[3] = scanForTopRight(xLeft, xRight, 3, pixelY);
             }
-          } /*
-          if (tempNewBlock==3)
-            bottomRightPix[tempNewBlock] = scanForBottomRight(xLeft, xRight, 3, pixelY); */
-          
-          
+          } 
         }         
       }
       
@@ -312,9 +299,7 @@ public class LegoTower
               bottomRightPix[tempNewBlock] = scanForBottomRight(xLeft, xRight, 0, pixelY);
               upperYLimit[tempNewBlock] = pixelY;
             }
-          }/*
-          if (permNewBlock==0) 
-            upperYLimit[permNewBlock] = pixelY; */
+          }
         }
         else if (rowColorInt == colorCounts[1]) {
           rowColor = "blue";

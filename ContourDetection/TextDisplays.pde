@@ -14,14 +14,17 @@ void continue_button()
 
 void instr_place_tower() 
 {
-  textSize(22);
-  text("Place these towers on the table. Click to continue when you have placed them.", 230, 30, 450, 70);
-  continue_button();
-  textSize(30);
+  textSize(25);
+  text("Place these towers on the table.", 250, 50, 450, 70);
+  textSize(15);
+}
+
+void instr_place_images()
+{
+  //continue_button();
   //leftToMatchImg, rightToMatchImg
   image(leftToMatchImg, 380, 160);
   image(rightToMatchImg, 580, 160);
-  textSize(15);
 }
 
 void match_left_image()

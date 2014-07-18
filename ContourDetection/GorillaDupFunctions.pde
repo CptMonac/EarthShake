@@ -2,6 +2,7 @@ String leftToMatch;
 String rightToMatch;
 Boolean scene2, scene3, scene4;
 Boolean foundLeftMatch, foundRightMatch;
+Boolean placingTowers;
 
 void gameSetup()
 {
@@ -21,24 +22,20 @@ void gameSetup()
     image(startScreen, 0, 0);
     continue_button();
   }
-  if (scene2==true)
+  if (scene2==true) {
     image(screen1, 0, 0);
+    //instr_place_tower();
+  }
 }
 
 void gameplay()
 {
-  if (scene3!=true)
-    instr_place_tower();
+//  if (scene3!=true)
+//  instr_place_tower();
 }
 
 void mousePressed()
-{
-  if (scene3==true && scene4==false)
-  {
-    if ((mouseX >= 470) && (mouseX <= 570) && (mouseY >= 130) && (mouseY <= 170))
-      scene4 = true;
-  }
-  
+{ 
   if (scene2==true && scene3==false)
   {
     if ((mouseX >= 470) && (mouseX <= 570) && (mouseY >= 130) && (mouseY <= 170))
@@ -74,14 +71,14 @@ void drawLegoContours_g()
   //Find all contours in input image
   ArrayList<Contour> towerContours = opencv.findContours();
   ArrayList<Contour> filteredContours = new ArrayList<Contour>();
+  
+  int adjust = 0;  
     
   //Filter contours to only lego towers
   for (Contour contour: towerContours)
   {
     if(contour.area() > 1500)
     {
-      //contour.draw();
-      
       //Draw polygon approximation
       stroke(0, 0, 255);
       fill(0,0,255);
@@ -89,7 +86,11 @@ void drawLegoContours_g()
         beginShape();
         for (PVector point : contour.getPolygonApproximation().getPoints())
         {
-          vertex(point.x+170, point.y-180);
+          if (point.x < 640/2)
+            adjust = 20;
+          else
+            adjust = -20;
+          vertex(point.x+170+adjust, point.y-180);
         }
         endShape();
     }
@@ -109,8 +110,16 @@ void trackLegoTowers_g()
     originalBoundingBoxes.add(contour.getBoundingBox());
   }
   
+  if (legoTowers.size() == 0)
+    instr_place_tower();
+  
+  if (scene3==false)
+    instr_place_images();
+  
   if (legoTowers.size() > 0)
   {
+    placingTowers = true;
+    
     filteredContours = extractLegoTowers_g();
 
     Boolean leftDown = false;
@@ -186,7 +195,7 @@ void trackLegoTowers_g()
         {
           if (noteArray.get(0)==leftToMatch)
           {
-            if (scene3==true && scene4==false)
+            if (scene2==true && scene3==false)
               match_left_image();
             foundLeftMatch = true;
           }
@@ -199,7 +208,7 @@ void trackLegoTowers_g()
         {
           if (noteArray.get(0)==rightToMatch)
           {
-            if (scene3==true && scene4==false)
+            if (scene2==true && scene3==false)
               match_right_image();
             foundRightMatch = true;
           }
@@ -215,7 +224,7 @@ void trackLegoTowers_g()
         {
           if (noteArray.get(0)==leftToMatch)
           {
-            if (scene3==true && scene4==false)
+            if (scene2==true && scene3==false)
               match_left_image();
             foundLeftMatch = true;
           }
@@ -228,7 +237,7 @@ void trackLegoTowers_g()
         {
           if (noteArray.get(1)==rightToMatch)
           {
-            if (scene3==true && scene4==false)
+            if (scene2==true && scene3==false)
               match_right_image();
             foundRightMatch = true;
           }
@@ -240,13 +249,13 @@ void trackLegoTowers_g()
       } 
     }
   }
-  if (scene3==true && scene4==false)
+  if (scene2==true && scene3==false)
     checkTowerMatch();
 }
 
 void checkTowerMatch()
 {
-  if ((foundLeftMatch==false) && (foundRightMatch==false) && ((legoTowers.size()==0)||(legoTowers.size()==2)))
+  if ((foundLeftMatch==false) && (foundRightMatch==false) && (legoTowers.size()==2))
     neither_match_text();
   else if ((foundLeftMatch==false) && (foundRightMatch==true) && (legoTowers.size()==2))
     mismatch_left_text();

@@ -134,11 +134,12 @@ void draw()
   pushMatrix();
     translate(0, 0);
     gameSetup();
-    if (scene2==true)
+    if (scene2==true) {
+      placingTowers = false;
       gameplay();
-    if (scene3==true)
       trackLegoTowers_g();
-    if (scene4==true) 
+    }
+    if (scene3==true)
       drawLegoContours_g();
       //image(pretzel, 300, 150);
   popMatrix();
