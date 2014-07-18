@@ -1,4 +1,6 @@
 PImage wrongTower, correctTower;
+PImage leftToMatchImg, rightToMatchImg;
+PImage LTMwrong, LTMcorrect, RTMwrong, RTMcorrect;
 
 void continue_button()
 {
@@ -16,15 +18,16 @@ void instr_place_tower()
   text("Place these towers on the table. Click to continue when you have placed them.", 230, 30, 450, 70);
   continue_button();
   textSize(30);
-  text(leftToMatch, 390, 250);
-  text(rightToMatch, 590, 250);
+  //leftToMatchImg, rightToMatchImg
+  image(leftToMatchImg, 380, 160);
+  image(rightToMatchImg, 580, 160);
   textSize(15);
 }
 
 void match_left_image()
 {
   textSize(25);
-  image(correctTower, 370, 160);
+  image(LTMcorrect, 370, 160);
   text("MATCH!", 380, 330);
   textSize(15);
 }
@@ -40,7 +43,7 @@ void match_left_text()
 void match_right_image()
 {
   textSize(25);
-  image(correctTower, 570, 160);
+  image(RTMcorrect, 570, 160);
   text("MATCH!", 580, 330);
   textSize(15);
 }
@@ -55,7 +58,7 @@ void match_right_text()
 void mismatch_left_image()
 {
   textSize(25);
-  image(wrongTower, 370, 160);
+  image(LTMwrong, 370, 160);
   text("oops!", 410, 330);
   textSize(15);
 }
@@ -71,7 +74,7 @@ void mismatch_right_image()
 {
   textSize(25);
   //tint(255,0);
-  image(wrongTower, 570, 160);
+  image(RTMwrong, 570, 160);
   //noTint();
   text("oops!", 610, 330);
   textSize(15);

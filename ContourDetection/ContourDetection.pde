@@ -40,6 +40,8 @@ ArrayList<String> towerColors;
 float scaleFactor = 0.45;
 PImage startScreen, pretzel;
 
+PImage F1_tower, F1_wrong, F1_correct;
+
 ImagePanel view2;
 PImage viewport2 = new PImage(780,500,RGB);
 /*** VARIABLES end *********************************************/
@@ -88,6 +90,9 @@ void setup()
   correctTower = loadImage("correctTower.png");
   startScreen = loadImage("startscreen.jpg");
   pretzel = loadImage("pretzel.png");
+  F1_tower = loadImage("F1_tower.png");
+  F1_wrong = loadImage("F1_wrong.png");
+  F1_correct = loadImage("F1_correct.png");
   
   scene2 = false;
   scene3 = false;
@@ -134,7 +139,8 @@ void draw()
     if (scene3==true)
       trackLegoTowers_g();
     if (scene4==true) 
-      image(pretzel, 300, 150);
+      drawLegoContours_g();
+      //image(pretzel, 300, 150);
   popMatrix();
   
   viewport2 = get(780,20,640,480);

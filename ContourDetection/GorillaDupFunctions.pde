@@ -7,6 +7,14 @@ void gameSetup()
 {
   leftToMatch = "F1";
   rightToMatch = "F2";
+  
+  leftToMatchImg = F1_tower;
+  LTMwrong = F1_wrong;
+  LTMcorrect = F1_correct;
+  rightToMatchImg = F1_tower;
+  RTMwrong = F1_wrong;
+  RTMcorrect = F1_correct;
+  
   foundLeftMatch = false;
   foundRightMatch = false;
   if (scene2==false) {
@@ -56,23 +64,37 @@ ArrayList<Contour> extractLegoTowers_g()
     if(contour.area() > 1500)
     {
       filteredContours.add(contour);
+    }
+  }
+  return filteredContours;
+}
 
+void drawLegoContours_g()
+{
+  //Find all contours in input image
+  ArrayList<Contour> towerContours = opencv.findContours();
+  ArrayList<Contour> filteredContours = new ArrayList<Contour>();
+    
+  //Filter contours to only lego towers
+  for (Contour contour: towerContours)
+  {
+    if(contour.area() > 1500)
+    {
       //contour.draw();
       
       //Draw polygon approximation
-//      stroke(255, 0, 0);
-//      fill(0,0,255);
-//
-//        beginShape();
-//        for (PVector point : contour.getPolygonApproximation().getPoints())
-//        {
-//          vertex(point.x, point.y);
-//        }
-//        endShape();
+      stroke(0, 0, 255);
+      fill(0,0,255);
+
+        beginShape();
+        for (PVector point : contour.getPolygonApproximation().getPoints())
+        {
+          vertex(point.x+170, point.y-180);
+        }
+        endShape();
     }
   }
-  //fill(255, 255, 255);
-  return filteredContours;
+  fill(255, 255, 255);
 }
 
 void trackLegoTowers_g()
