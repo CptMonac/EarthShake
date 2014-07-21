@@ -12,9 +12,9 @@ void gameSetup()
   leftToMatchImg = F1_tower;
   LTMwrong = F1_wrong;
   LTMcorrect = F1_correct;
-  rightToMatchImg = F1_tower;
-  RTMwrong = F1_wrong;
-  RTMcorrect = F1_correct;
+  rightToMatchImg = F2_tower;
+  RTMwrong = F2_wrong;
+  RTMcorrect = F2_correct;
   
   foundLeftMatch = false;
   foundRightMatch = false;
@@ -35,14 +35,61 @@ void mousePressed()
 { 
   if (scene2==true && scene3==false)
   {
-    if ((mouseX >= 470) && (mouseX <= 570) && (mouseY >= 130) && (mouseY <= 170))
+    if (continue_pressed()==true)
       scene3 = true;
   }
     
   if (scene2==false)
   {
-    if ((mouseX >= 470) && (mouseX <= 570) && (mouseY >= 130) && (mouseY <= 170))
+    if (continue_pressed()==true)
       scene2 = true;
   }
 }
 
+Boolean continue_pressed()
+{
+  int xleft = int(9*780/16);
+  int xright = xleft + int(3*780/16);
+  int ytop = int(13*500/16);
+  int ybot = ytop + int(1*500/16);
+  if ((mouseX >= xleft) && (mouseX <= xright) && (mouseY >= ytop) && (mouseY <= ybot))
+    return true;
+  else
+    return false;
+}
+
+Boolean tower1_selected()
+{
+  int xleft = int(1*780/2);
+  int xright = xleft + int(1*780/16);
+  int ytop = int(11*500/16);
+  int ybot = ytop + int(1*500/16);
+  if ((mouseX >= xleft) && (mouseX <= xright) && (mouseY >= ytop) && (mouseY <= ybot))
+    return true;
+  else
+    return false;
+}
+
+Boolean same_selected()
+{
+  int xleft = int(5*780/8);
+  int xright = xleft + int(1*780/16);
+  int ytop = int(11*500/16);
+  int ybot = ytop + int(1*500/16);
+  if ((mouseX >= xleft) && (mouseX <= xright) && (mouseY >= ytop) && (mouseY <= ybot))
+    return true;
+  else
+    return false;
+}
+
+Boolean tower2_selected()
+{
+  int xleft = int(3*780/4);
+  int xright = xleft + int(1*780/16);
+  int ytop = int(11*500/16);
+  int ybot = ytop + int(1*500/16);
+  if ((mouseX >= xleft) && (mouseX <= xright) && (mouseY >= ytop) && (mouseY <= ybot))
+    return true;
+  else
+    return false;
+}

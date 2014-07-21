@@ -41,6 +41,7 @@ float scaleFactor = 0.45;
 PImage startScreen, pretzel;
 
 PImage F1_tower, F1_wrong, F1_correct;
+PImage F2_tower, F2_wrong, F2_correct;
 
 ImagePanel view2;
 PImage viewport2 = new PImage(780,500,RGB);
@@ -85,14 +86,22 @@ void setup()
   println("sizeof contourDBList = "+contourDBList.size()); 
   pImgNames = loadPImgStrings();
   
-  screen1 = loadImage("screen1.jpg");
+  screen1 = loadImage("screen1_grid.jpg");
   wrongTower = loadImage("wrongtower.png");
   correctTower = loadImage("correctTower.png");
   startScreen = loadImage("startscreen.jpg");
   pretzel = loadImage("pretzel.png");
+  
+  continueButton = loadImage("continue.png");
+  same = loadImage("same.png");
+  tower1 = loadImage("first.png");
+  tower2 = loadImage("second.png");
   F1_tower = loadImage("F1_tower.png");
   F1_wrong = loadImage("F1_wrong.png");
   F1_correct = loadImage("F1_correct.png");
+  F2_tower = loadImage("F2_tower.png");
+  F2_wrong = loadImage("F2_wrong.png");
+  F2_correct = loadImage("F2_correct.png");  
   
   scene2 = false;
   scene3 = false;
