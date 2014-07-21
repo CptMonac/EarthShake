@@ -110,11 +110,11 @@ void trackLegoTowers_g()
     originalBoundingBoxes.add(contour.getBoundingBox());
   }
   
-  if (legoTowers.size() == 0)
+  if (legoTowers.size() == 0) {
     instr_place_tower();
-  
-  if (scene3==false)
-    instr_place_images();
+    if (scene3==false)
+      instr_place_images();
+  }
   
   if (legoTowers.size() > 0)
   {
@@ -248,6 +248,11 @@ void trackLegoTowers_g()
         }
       } 
     }
+        if (hasLeft==false)
+          image(leftToMatchImg, 380, 160);
+        if (hasRight==false)
+          image(rightToMatchImg, 580, 160);
+    
   }
   if (scene2==true && scene3==false)
     checkTowerMatch();

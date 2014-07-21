@@ -136,12 +136,11 @@ void draw()
     gameSetup();
     if (scene2==true) {
       placingTowers = false;
-      gameplay();
+      //gameplay();
       trackLegoTowers_g();
     }
     if (scene3==true)
       drawLegoContours_g();
-      //image(pretzel, 300, 150);
   popMatrix();
   
   viewport2 = get(780,20,640,480);

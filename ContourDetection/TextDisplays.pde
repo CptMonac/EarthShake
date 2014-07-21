@@ -21,8 +21,6 @@ void instr_place_tower()
 
 void instr_place_images()
 {
-  //continue_button();
-  //leftToMatchImg, rightToMatchImg
   image(leftToMatchImg, 380, 160);
   image(rightToMatchImg, 580, 160);
 }
