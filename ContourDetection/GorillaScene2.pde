@@ -1,54 +1,3 @@
-String leftToMatch;
-String rightToMatch;
-Boolean scene2, scene3, scene4;
-Boolean foundLeftMatch, foundRightMatch;
-Boolean placingTowers;
-
-void gameSetup()
-{
-  leftToMatch = "F1";
-  rightToMatch = "F2";
-  
-  leftToMatchImg = F1_tower;
-  LTMwrong = F1_wrong;
-  LTMcorrect = F1_correct;
-  rightToMatchImg = F1_tower;
-  RTMwrong = F1_wrong;
-  RTMcorrect = F1_correct;
-  
-  foundLeftMatch = false;
-  foundRightMatch = false;
-  if (scene2==false) {
-    image(startScreen, 0, 0);
-    continue_button();
-  }
-  if (scene2==true) {
-    image(screen1, 0, 0);
-    //instr_place_tower();
-  }
-}
-
-void gameplay()
-{
-//  if (scene3!=true)
-//  instr_place_tower();
-}
-
-void mousePressed()
-{ 
-  if (scene2==true && scene3==false)
-  {
-    if ((mouseX >= 470) && (mouseX <= 570) && (mouseY >= 130) && (mouseY <= 170))
-      scene3 = true;
-  }
-    
-  if (scene2==false)
-  {
-    if ((mouseX >= 470) && (mouseX <= 570) && (mouseY >= 130) && (mouseY <= 170))
-      scene2 = true;
-  }
-}
-
 ArrayList<Contour> extractLegoTowers_g()
 {
   //Find all contours in input image
@@ -66,39 +15,7 @@ ArrayList<Contour> extractLegoTowers_g()
   return filteredContours;
 }
 
-void drawLegoContours_g()
-{
-  //Find all contours in input image
-  ArrayList<Contour> towerContours = opencv.findContours();
-  ArrayList<Contour> filteredContours = new ArrayList<Contour>();
-  
-  int adjust = 0;  
-    
-  //Filter contours to only lego towers
-  for (Contour contour: towerContours)
-  {
-    if(contour.area() > 1500)
-    {
-      //Draw polygon approximation
-      stroke(0, 0, 255);
-      fill(0,0,255);
-
-        beginShape();
-        for (PVector point : contour.getPolygonApproximation().getPoints())
-        {
-          if (point.x < 640/2)
-            adjust = 20;
-          else
-            adjust = -20;
-          vertex(point.x+170+adjust, point.y-180);
-        }
-        endShape();
-    }
-  }
-  fill(255, 255, 255);
-}
-
-void trackLegoTowers_g()
+void trackLegoTowers_g2()
 { 
     
   Contour tempContour, originalContour;
@@ -248,11 +165,23 @@ void trackLegoTowers_g()
         }
       } 
     }
-        if (hasLeft==false)
-          image(leftToMatchImg, 380, 160);
-        if (hasRight==false)
-          image(rightToMatchImg, 580, 160);
     
+    if (hasLeft==false)
+      image(leftToMatchImg, 380, 160);
+    if (hasRight==false)
+      image(rightToMatchImg, 580, 160);
+      
+//    if (hasLeft==true && hasRight==true) {
+//      if (scene3==true)
+//        if (leftDown==true) {
+//          image(wrongTower, 370, 160);
+//          text("FALLEN!", 380, 330);
+//        }
+//        if (rightDown==true) {
+//          image(wrongTower, 570, 160);
+//          text("FALLEN!", 580, 330);
+//        }
+//    }    
   }
   if (scene2==true && scene3==false)
     checkTowerMatch();

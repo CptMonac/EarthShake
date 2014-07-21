@@ -19,9 +19,6 @@ String[] blobDebugMode()
   String[] colorTowers = new String[colorContours.size()];
   BlobRect currBlob;
   LegoTower currentTower;
-
-//  rect(178,186,272-178,245-186);
-//  rect(455,177,508-455,216-177);
   
   //Draw coloured blobs
   println(colorContours.size());

@@ -29,7 +29,7 @@ void match_left_image()
 {
   textSize(25);
   image(LTMcorrect, 370, 160);
-  text("MATCH!", 380, 330);
+  //text("MATCH!", 380, 330);
   textSize(15);
 }
 
@@ -45,7 +45,8 @@ void match_right_image()
 {
   textSize(25);
   image(RTMcorrect, 570, 160);
-  text("MATCH!", 580, 330);
+  //text("MATCH!", 580, 330);
+  textSize(15);
   textSize(15);
 }
 
@@ -60,7 +61,7 @@ void mismatch_left_image()
 {
   textSize(25);
   image(LTMwrong, 370, 160);
-  text("oops!", 410, 330);
+  //text("oops!", 410, 330);
   textSize(15);
 }
 
@@ -77,7 +78,7 @@ void mismatch_right_image()
   //tint(255,0);
   image(RTMwrong, 570, 160);
   //noTint();
-  text("oops!", 610, 330);
+  //text("oops!", 610, 330);
   textSize(15);
 }
 
