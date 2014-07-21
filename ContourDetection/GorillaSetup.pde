@@ -1,6 +1,6 @@
 String leftToMatch;
 String rightToMatch;
-Boolean scene2, scene3, scene4;
+Boolean scene2, scene3, scene3a;
 Boolean foundLeftMatch, foundRightMatch;
 Boolean placingTowers;
 

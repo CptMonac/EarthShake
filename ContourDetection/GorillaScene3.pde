@@ -30,3 +30,8 @@ void drawLegoContours_g()
   fill(255, 255, 255);
 }
 
+void prediction_3a()
+{
+  
+}
+

@@ -103,3 +103,24 @@ void neither_match_text()
   text("Uh oh! Neither tower is correct. Please try placing the towers again.", 230, 30, 450, 70);
   textSize(15);
 }
+
+//*************************************************** PREDICTION SCREENS
+void prediction_tower_buttons()
+{
+  fill(0,0,155);
+  noStroke();
+  rect(390,340,60,40);
+  rect(500,340,60,40);
+  //text("SAME",470,130);
+  rect(610,340,60,40);
+  fill(255,255,255);
+  stroke(255,255,255);  
+}
+
+void prediction_intro()
+{
+  textSize(22);
+  text("Which tower do you think will fall first when I shake the table?", 230, 30, 450, 70);
+  prediction_tower_buttons();
+  textSize(15);
+}

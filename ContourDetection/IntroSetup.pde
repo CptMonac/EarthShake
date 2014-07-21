@@ -96,7 +96,7 @@ void setup()
   
   scene2 = false;
   scene3 = false;
-  scene4 = false;  
+  scene3a = false;  
   
   frame.setSize(780,500);
   frame.setTitle("gorilla window");
@@ -139,8 +139,10 @@ void draw()
       //gameplay();
       trackLegoTowers_g2();
     }
-    if (scene3==true)
+    if (scene3==true) {
+      prediction_intro();
       drawLegoContours_g();
+    }
   popMatrix();
   
   viewport2 = get(780,20,640,480);
