@@ -1,8 +1,15 @@
-String leftToMatch;
-String rightToMatch;
-Boolean scene2, scene3, scene3a;
+String leftToMatch, rightToMatch;
+Boolean scene2, scene3, scene3a, scene3b, scene4;
 Boolean foundLeftMatch, foundRightMatch;
 Boolean placingTowers;
+String towerPredictionString;
+int towerPredictionNumber;
+Boolean correctGuess;
+int fallen;
+
+PImage startScreen, pretzel;
+PImage F1_tower, F1_wrong, F1_correct;
+PImage F2_tower, F2_wrong, F2_correct;
 
 void gameSetup()
 {
@@ -33,10 +40,28 @@ void gameplay()
 
 void mousePressed()
 { 
+  if (scene3b==true && scene4==false)
+  {
+    if (continue_pressed()==true) {
+      scene3b = false;
+      scene4 = true;
+    }
+  }
+  
+  if (scene3==true && scene3a==true && scene3b==false)
+  {
+    if ((tower1_selected()==true)||(same_selected()==true)||(tower2_selected()==true)) {
+      scene3a = false;
+      scene3b = true;      
+    }
+  }
+  
   if (scene2==true && scene3==false)
   {
-    if (continue_pressed()==true)
+    if (continue_pressed()==true) {
       scene3 = true;
+      scene3a = true;
+    }
   }
     
   if (scene2==false)
@@ -46,50 +71,3 @@ void mousePressed()
   }
 }
 
-Boolean continue_pressed()
-{
-  int xleft = int(9*780/16);
-  int xright = xleft + int(3*780/16);
-  int ytop = int(13*500/16);
-  int ybot = ytop + int(1*500/16);
-  if ((mouseX >= xleft) && (mouseX <= xright) && (mouseY >= ytop) && (mouseY <= ybot))
-    return true;
-  else
-    return false;
-}
-
-Boolean tower1_selected()
-{
-  int xleft = int(1*780/2);
-  int xright = xleft + int(1*780/16);
-  int ytop = int(11*500/16);
-  int ybot = ytop + int(1*500/16);
-  if ((mouseX >= xleft) && (mouseX <= xright) && (mouseY >= ytop) && (mouseY <= ybot))
-    return true;
-  else
-    return false;
-}
-
-Boolean same_selected()
-{
-  int xleft = int(5*780/8);
-  int xright = xleft + int(1*780/16);
-  int ytop = int(11*500/16);
-  int ybot = ytop + int(1*500/16);
-  if ((mouseX >= xleft) && (mouseX <= xright) && (mouseY >= ytop) && (mouseY <= ybot))
-    return true;
-  else
-    return false;
-}
-
-Boolean tower2_selected()
-{
-  int xleft = int(3*780/4);
-  int xright = xleft + int(1*780/16);
-  int ytop = int(11*500/16);
-  int ybot = ytop + int(1*500/16);
-  if ((mouseX >= xleft) && (mouseX <= xright) && (mouseY >= ytop) && (mouseY <= ybot))
-    return true;
-  else
-    return false;
-}

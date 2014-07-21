@@ -7,13 +7,7 @@ PImage continueButton, tower1, tower2, same;
 void continue_button()
 {
   //replace this function with "image(continue, etc, etc)" later
-  /*
-  fill(0,0,155);
-  noStroke();
-  rect(470,130,100,40);
-  fill(255,255,255);
-  stroke(255,255,255);  */
-  image(continueButton, int(9*780/16), int(13*500/16));
+  image(continueButton, 9*780/16, 13*500/16);
 }
 
 void instr_place_tower() 
@@ -31,10 +25,7 @@ void instr_place_images()
 
 void match_left_image()
 {
-  textSize(25);
-  image(LTMcorrect, int(1*780/2), int(3*500/8));
-  //text("MATCH!", 380, 330);
-  textSize(15);
+  image(LTMcorrect, 1*780/2, 5*500/16);
 }
 
 void match_left_text()
@@ -47,10 +38,7 @@ void match_left_text()
 
 void match_right_image()
 {
-  textSize(25);
-  image(RTMcorrect, int(11*780/16), int(3*500/8));
-  //text("MATCH!", 580, 330);
-  textSize(15);
+  image(RTMcorrect, 11*780/16, 5*500/16);
   textSize(15);
 }
 
@@ -63,10 +51,7 @@ void match_right_text()
 
 void mismatch_left_image()
 {
-  textSize(25);
-  image(LTMwrong, int(1*780/2), int(3*500/8));
-  //text("oops!", 410, 330);
-  textSize(15);
+  image(LTMwrong, 1*780/2, 5*500/16);
 }
 
 void mismatch_left_text()
@@ -78,12 +63,7 @@ void mismatch_left_text()
 
 void mismatch_right_image()
 {
-  textSize(25);
-  //tint(255,0);
-  image(RTMwrong, int(11*780/16), int(3*500/8));
-  //noTint();
-  //text("oops!", 610, 330);
-  textSize(15);
+  image(RTMwrong, 11*780/16, 5*500/16);
 }
 
 void mismatch_right_text()
@@ -120,6 +100,36 @@ void prediction_intro()
 {
   textSize(22);
   text("Which tower do you think will fall first when I shake the table?", 230, 30, 450, 70);
+  towerPredictionNumber = 0;
+  towerPredictionString = "";
   prediction_tower_buttons();
   textSize(15);
+}
+
+void prediction_discusschoice()
+{
+  text("You chose that "+towerPredictionString+" Why do you think so? Discuss with a friend. When you are done, click SHAKE to see the result.", 230, 30, 450, 70);
+  continue_button();
+  correctGuess = false;
+  fallen = 0;
+}
+
+//********************************************************* POST SHAKE
+void guess_message()
+{
+  String fallenTower = "";
+  if (fallen==1)
+    fallenTower = "left";
+  else if (fallen==2)
+    fallenTower = "right";
+  
+  if (correctGuess==true)
+  {
+    if (towerPredictionNumber==1)
+      text("Good job! Your hypothesis was right. The left tower fell first. Why do you think it fell first?", 230, 30, 450, 70);
+    else if (towerPredictionNumber==2) 
+      text("Good job! Your hypothesis was right. The right tower fell first. Why do you think it fell first?", 230, 30, 450, 70);
+  }
+  else if (fallen!=0)
+    text("Oh no! Your hypothesis was incorrect. Why do you think the "+fallenTower+" fell first?", 230, 30, 450, 70);
 }

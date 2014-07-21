@@ -38,10 +38,6 @@ String[] currentTowerColors;
 ArrayList<String> towerColors;
 
 float scaleFactor = 0.45;
-PImage startScreen, pretzel;
-
-PImage F1_tower, F1_wrong, F1_correct;
-PImage F2_tower, F2_wrong, F2_correct;
 
 ImagePanel view2;
 PImage viewport2 = new PImage(780,500,RGB);
@@ -106,6 +102,8 @@ void setup()
   scene2 = false;
   scene3 = false;
   scene3a = false;  
+  scene3b = false;
+  scene4 = false;
   
   frame.setSize(780,500);
   frame.setTitle("gorilla window");
@@ -149,9 +147,14 @@ void draw()
       trackLegoTowers_g2();
     }
     if (scene3==true) {
-      prediction_intro();
+      if (scene3a==true)
+        prediction_intro();
+      if (scene3b==true)
+        prediction_discusschoice();
       drawLegoContours_g();
     }
+    if (scene4==true)
+      guess_message();
   popMatrix();
   
   viewport2 = get(780,20,640,480);

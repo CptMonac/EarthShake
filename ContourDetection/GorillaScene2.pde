@@ -1,3 +1,4 @@
+//************************************************************ SCENE 2
 ArrayList<Contour> extractLegoTowers_g()
 {
   //Find all contours in input image
@@ -33,18 +34,18 @@ void trackLegoTowers_g2()
       instr_place_images();
   }
   
+  Boolean leftDown = false;
+  Boolean rightDown = false;
+  Boolean hasLeft = false;
+  Boolean hasRight = false;
+  Boolean leftStanding = false;
+  Boolean rightStanding = false;
+  
   if (legoTowers.size() > 0)
   {
     placingTowers = true;
     
     filteredContours = extractLegoTowers_g();
-
-    Boolean leftDown = false;
-    Boolean rightDown = false;
-    Boolean hasLeft = false;
-    Boolean hasRight = false;
-    Boolean leftStanding = false;
-    Boolean rightStanding = false;
 
     for (int i=0; i<legoTowers.size(); i++) 
     {    
@@ -164,27 +165,31 @@ void trackLegoTowers_g2()
           }
         }
       } 
-    }
-    
-    if (hasLeft==false)
-      image(leftToMatchImg, 380, 160);
-    if (hasRight==false)
-      image(rightToMatchImg, 580, 160);
-      
-//    if (hasLeft==true && hasRight==true) {
-//      if (scene3==true)
-//        if (leftDown==true) {
-//          image(wrongTower, 370, 160);
-//          text("FALLEN!", 380, 330);
-//        }
-//        if (rightDown==true) {
-//          image(wrongTower, 570, 160);
-//          text("FALLEN!", 580, 330);
-//        }
-//    }    
+    } 
   }
+  if (hasLeft==false)
+    image(leftToMatchImg, 380, 160);
+  if (hasRight==false)
+    image(rightToMatchImg, 580, 160);  
+    
   if (scene2==true && scene3==false)
     checkTowerMatch();
+    
+  if (scene4==true)
+  {
+    if ((rightStanding==true) && (leftStanding==false))
+      fallen = 1;
+    else if ((rightStanding==false) && (leftStanding==true)) 
+      fallen = 2;
+    if ((towerPredictionNumber==1) && (fallen==1))
+    {
+      correctGuess = true;
+    }  
+    if ((towerPredictionNumber==2) && (fallen==2))
+    {
+      correctGuess = true;
+    }
+  }
 }
 
 void checkTowerMatch()
@@ -202,3 +207,94 @@ void checkTowerMatch()
   else if (foundRightMatch==true)
     match_right_text();
 }
+
+//************************************************************ SCENE 3
+void drawLegoContours_g()
+{
+  //Find all contours in input image
+  ArrayList<Contour> towerContours = opencv.findContours();
+  ArrayList<Contour> filteredContours = new ArrayList<Contour>();
+  
+  int adjust = 0;  
+    
+  //Filter contours to only lego towers
+  for (Contour contour: towerContours)
+  {
+    if(contour.area() > 1500)
+    {
+      //Draw polygon approximation
+      stroke(0, 0, 255);
+      fill(0,0,255);
+
+        beginShape();
+        for (PVector point : contour.getPolygonApproximation().getPoints())
+        {
+          if (point.x < 640/2)
+            adjust = 20;
+          else
+            adjust = -20;
+          vertex(point.x+170+adjust, point.y-180);
+        }
+        endShape();
+    }
+  }
+  fill(255, 255, 255);
+}
+
+Boolean continue_pressed()
+{
+  int xleft = int(9*780/16);
+  int xright = xleft + int(3*780/16);
+  int ytop = int(13*500/16);
+  int ybot = ytop + int(1*500/16);
+  if ((mouseX >= xleft) && (mouseX <= xright) && (mouseY >= ytop) && (mouseY <= ybot))
+    return true;
+  else
+    return false;
+}
+
+Boolean tower1_selected()
+{
+  int xleft = int(1*780/2);
+  int xright = xleft + int(1*780/16);
+  int ytop = int(11*500/16);
+  int ybot = ytop + int(1*500/16);
+  if ((mouseX >= xleft) && (mouseX <= xright) && (mouseY >= ytop) && (mouseY <= ybot)) {
+    towerPredictionNumber = 1;
+    towerPredictionString = "TOWER 1 will fall first.";
+    return true;
+  }
+  else
+    return false;
+}
+
+Boolean same_selected()
+{
+  int xleft = int(5*780/8);
+  int xright = xleft + int(1*780/16);
+  int ytop = int(11*500/16);
+  int ybot = ytop + int(1*500/16);
+  if ((mouseX >= xleft) && (mouseX <= xright) && (mouseY >= ytop) && (mouseY <= ybot)) {
+    towerPredictionNumber = 3;
+    towerPredictionString = "BOTH TOWERS will fall at the same time.";
+    return true;
+  }
+  else
+    return false;
+}
+
+Boolean tower2_selected()
+{
+  int xleft = int(3*780/4);
+  int xright = xleft + int(1*780/16);
+  int ytop = int(11*500/16);
+  int ybot = ytop + int(1*500/16);
+  if ((mouseX >= xleft) && (mouseX <= xright) && (mouseY >= ytop) && (mouseY <= ybot)) {
+    towerPredictionNumber = 2;
+    towerPredictionString = "TOWER 2 will fall first.";
+    return true;
+  }
+  else
+    return false;
+}
+
