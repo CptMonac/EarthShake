@@ -18,6 +18,8 @@ ArrayList<Contour> extractLegoTowers_g()
 
 void trackLegoTowers_g2()
 { 
+  foundLeftMatch = false;
+  foundRightMatch = false;
     
   Contour tempContour, originalContour;
   ArrayList<Contour> filteredContours;
@@ -33,13 +35,6 @@ void trackLegoTowers_g2()
     if (scene3==false)
       instr_place_images();
   }
-  
-  Boolean leftDown = false;
-  Boolean rightDown = false;
-  Boolean hasLeft = false;
-  Boolean hasRight = false;
-  Boolean leftStanding = false;
-  Boolean rightStanding = false;
   
   if (legoTowers.size() > 0)
   {
@@ -215,30 +210,56 @@ void drawLegoContours_g()
   ArrayList<Contour> towerContours = opencv.findContours();
   ArrayList<Contour> filteredContours = new ArrayList<Contour>();
   
-  int adjust = 0;  
+  int adjustx = 0; 
+  int adjusty = 5*500/16; 
     
   //Filter contours to only lego towers
   for (Contour contour: towerContours)
   {
     if(contour.area() > 1500)
     {
-      //Draw polygon approximation
-      stroke(0, 0, 255);
-      fill(0,0,255);
-
-        beginShape();
-        for (PVector point : contour.getPolygonApproximation().getPoints())
-        {
-          if (point.x < 640/2)
-            adjust = 20;
-          else
-            adjust = -20;
-          vertex(point.x+170+adjust, point.y-180);
-        }
-        endShape();
+      //Draw outline approximation
+      stroke(0, 255, 0);
+      
+      println(foundLeftMatch);
+      println(foundRightMatch);
+      if ((contour.getPolygonApproximation().getPoints().get(0).x) < 640/2) {
+        adjustx = 1*780/4;
+        if (foundLeftMatch==false)
+          stroke(255, 0, 0);
+        else
+          stroke(0, 255, 0);
+      }
+      else {
+        adjustx = 3*780/16;
+        if (foundRightMatch==false)  
+          stroke(255, 0, 0);
+        else
+          stroke(0, 255, 0);
+      }
+        
+      translate(adjustx,-adjusty);
+      contour.draw();
+      translate(-adjustx,adjusty);
     }
   }
-  fill(255, 255, 255);
+      //Draw polygon approximation
+//      stroke(0, 0, 255);
+//      fill(0,0,255);
+//
+//        beginShape();
+//        for (PVector point : contour.getPolygonApproximation().getPoints())
+//        {
+//          if (point.x < 640/2)
+//            adjust = 20;
+//          else
+//            adjust = -20;
+//          vertex(point.x+170+adjust, point.y-180);
+//        }
+//        endShape();
+//    }
+//  }
+//  fill(255, 255, 255);
 }
 
 Boolean continue_pressed()

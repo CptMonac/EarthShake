@@ -7,6 +7,13 @@ int towerPredictionNumber;
 Boolean correctGuess;
 int fallen;
 
+Boolean leftDown = false;
+Boolean rightDown = false;
+Boolean hasLeft = false;
+Boolean hasRight = false;
+Boolean leftStanding = false;
+Boolean rightStanding = false;
+
 PImage startScreen, pretzel;
 PImage F1_tower, F1_wrong, F1_correct;
 PImage F2_tower, F2_wrong, F2_correct;
@@ -23,8 +30,6 @@ void gameSetup()
   RTMwrong = F2_wrong;
   RTMcorrect = F2_correct;
   
-  foundLeftMatch = false;
-  foundRightMatch = false;
   if (scene2==false) {
     image(startScreen, 0, 0);
     continue_button();

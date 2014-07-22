@@ -131,5 +131,5 @@ void guess_message()
       text("Good job! Your hypothesis was right. The right tower fell first. Why do you think it fell first?", 230, 30, 450, 70);
   }
   else if (fallen!=0)
-    text("Oh no! Your hypothesis was incorrect. Why do you think the "+fallenTower+" fell first?", 230, 30, 450, 70);
+    text("Oh no! Your hypothesis was incorrect. Why do you think the "+fallenTower+" tower fell first?", 230, 30, 450, 70);
 }
