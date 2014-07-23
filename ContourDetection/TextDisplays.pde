@@ -1,7 +1,6 @@
 PImage wrongTower, correctTower;
 PImage leftToMatchImg, rightToMatchImg;
 PImage LTMwrong, LTMcorrect, RTMwrong, RTMcorrect;
-PImage continueButton, tower1, tower2, same;
 
 //****************************************************** PLACING TOWERS
 void continue_button()
@@ -17,20 +16,23 @@ void instr_place_tower()
   textSize(15);
 }
 
-void instr_place_images()
+void instr_place_left_img()
 {
-  image(leftToMatchImg, int(1*780/2), int(3*500/8));
-  image(rightToMatchImg, int(11*780/16), int(3*500/8));
+  image(leftToMatchImg, 1*780/2, 2*500/8);
+}
+
+void instr_place_right_img()
+{
+  image(rightToMatchImg, 23*780/32, 2*500/8);
 }
 
 void match_left_image()
 {
-  image(LTMcorrect, 1*780/2, 5*500/16);
+  image(LTMcorrect, 1*780/2, 4*500/16);
 }
 
 void match_left_text()
 {
-  textSize(22);
   textSize(22);
   text("Good job! The left tower matches. Now place the right tower.", 230, 30, 450, 70);    
   textSize(15);
@@ -38,8 +40,7 @@ void match_left_text()
 
 void match_right_image()
 {
-  image(RTMcorrect, 11*780/16, 5*500/16);
-  textSize(15);
+  image(RTMcorrect, 23*780/32, 4*500/16);
 }
 
 void match_right_text()
@@ -51,7 +52,7 @@ void match_right_text()
 
 void mismatch_left_image()
 {
-  image(LTMwrong, 1*780/2, 5*500/16);
+  image(LTMwrong, 1*780/2, 4*500/16);
 }
 
 void mismatch_left_text()
@@ -63,7 +64,7 @@ void mismatch_left_text()
 
 void mismatch_right_image()
 {
-  image(RTMwrong, 11*780/16, 5*500/16);
+  image(RTMwrong, 23*780/32, 4*500/16);
 }
 
 void mismatch_right_text()
@@ -109,9 +110,14 @@ void prediction_intro()
 void prediction_discusschoice()
 {
   text("You chose that "+towerPredictionString+" Why do you think so? Discuss with a friend. When you are done, click SHAKE to see the result.", 230, 30, 450, 70);
-  continue_button();
+  shake_button();
   correctGuess = false;
   fallen = 0;
+}
+
+void shake_button()
+{
+  image(shake, 9*780/16, 13*500/16);
 }
 
 //********************************************************* POST SHAKE
@@ -132,4 +138,15 @@ void guess_message()
   }
   else if (fallen!=0)
     text("Oh no! Your hypothesis was incorrect. Why do you think the "+fallenTower+" tower fell first?", 230, 30, 450, 70);
+
+  if (fallen!=0)
+    pred_buttons();
+}
+
+void pred_buttons()
+{
+  image(pred_taller, 7*780/16, 3*500/4);
+  image(pred_weight, 7*780/16, 7*500/8);
+  image(pred_thinner, 11*780/16, 3*500/4);
+  image(pred_symm, 11*780/16, 7*500/8);  
 }

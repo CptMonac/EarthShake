@@ -18,6 +18,13 @@ ArrayList<Contour> extractLegoTowers_g()
 
 void trackLegoTowers_g2()
 { 
+  leftDown = false;
+  rightDown = false;
+  hasLeft = false;
+  hasRight = false;
+  leftStanding = false;
+  rightStanding = false;  
+  
   foundLeftMatch = false;
   foundRightMatch = false;
     
@@ -32,10 +39,12 @@ void trackLegoTowers_g2()
   
   if (legoTowers.size() == 0) {
     instr_place_tower();
-    if (scene3==false)
-      instr_place_images();
+    if (scene3==false) {
+      instr_place_left_img();
+      instr_place_right_img();
+    }
   }
-  
+    
   if (legoTowers.size() > 0)
   {
     placingTowers = true;
@@ -163,9 +172,9 @@ void trackLegoTowers_g2()
     } 
   }
   if (hasLeft==false)
-    image(leftToMatchImg, 380, 160);
+    instr_place_left_img();
   if (hasRight==false)
-    image(rightToMatchImg, 580, 160);  
+    instr_place_right_img();  
     
   if (scene2==true && scene3==false)
     checkTowerMatch();
@@ -223,6 +232,7 @@ void drawLegoContours_g()
       
       println(foundLeftMatch);
       println(foundRightMatch);
+      
       if ((contour.getPolygonApproximation().getPoints().get(0).x) < 640/2) {
         adjustx = 1*780/4;
         if (foundLeftMatch==false)
@@ -315,6 +325,18 @@ Boolean tower2_selected()
     towerPredictionString = "TOWER 2 will fall first.";
     return true;
   }
+  else
+    return false;
+}
+
+Boolean shake_pressed()
+{
+  float xleft = 9*780/16;
+  float xright = xleft + 100;
+  float ytop = 13*500/16;
+  float ybot = ytop + 1*500/16;
+  if ((mouseX >= xleft) && (mouseX <= xright) && (mouseY >= ytop) && (mouseY <= ybot)) 
+    return true;
   else
     return false;
 }
