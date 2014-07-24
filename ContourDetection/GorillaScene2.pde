@@ -230,7 +230,7 @@ void drawLegoContours_g()
   ArrayList<Contour> filteredContours = new ArrayList<Contour>();
   
   int adjustx = 0; 
-  int adjusty = 3*500/16; 
+  int adjusty = 3*gorHeight/16; 
     
   //Filter contours to only lego towers
   for (Contour contour: towerContours)
@@ -238,20 +238,16 @@ void drawLegoContours_g()
     if(contour.area() > 1500)
     {
       //Draw outline approximation
-      stroke(0, 255, 0);
-      
-      println(foundLeftMatch);
-      println(foundRightMatch);
       
       if ((contour.getPolygonApproximation().getPoints().get(0).x) < 640/2) {
-        adjustx = 1*780/4;
+        adjustx = 1*gorWidth/4;
         if (foundLeftMatch==false)
           stroke(255, 0, 0);
         else
           stroke(0, 255, 0);
       }
       else {
-        adjustx = 3*780/16;
+        adjustx = 3*gorWidth/16;
         if (foundRightMatch==false)  
           stroke(255, 0, 0);
         else
@@ -263,22 +259,5 @@ void drawLegoContours_g()
       translate(-adjustx,adjusty);
     }
   }
-      //Draw polygon approximation
-//      stroke(0, 0, 255);
-//      fill(0,0,255);
-//
-//        beginShape();
-//        for (PVector point : contour.getPolygonApproximation().getPoints())
-//        {
-//          if (point.x < 640/2)
-//            adjust = 20;
-//          else
-//            adjust = -20;
-//          vertex(point.x+170+adjust, point.y-180);
-//        }
-//        endShape();
-//    }
-//  }
-//  fill(255, 255, 255);
 }
 

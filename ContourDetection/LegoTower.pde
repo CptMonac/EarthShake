@@ -48,7 +48,7 @@ public class LegoTower
   LegoTower(BlobRect inputTower)
   {
     println("LegoTower(BlobRect inputTower)");
-    //float scaleFactor = 0.7;        //Scale factor to account for mismatched pixel locations -- use as necessary    
+    //float scaleFactorx = 0.7;        //Scale factor to account for mismatched pixel locations -- use as necessary    
     float pixelValue;               //Stores rgb value of selected pixel
     int offset = 780; //Offset for display in processing window
     
@@ -117,11 +117,11 @@ public class LegoTower
     int[] ignoreColor = {0, 0, 0, 0};
     int[] colorCounts = {0, 0, 0, 0}; 
  
-    scaleFactor = 1.0; 
+    scaleFactorx = 1.0; 
     
     //Variables for x values
-    int xLeft = int((inputTower.x)*scaleFactor);
-    int xRight = int((inputTower.blobWidth+inputTower.x)*scaleFactor);
+    int xLeft = int((inputTower.x)*scaleFactorx);
+    int xRight = int((inputTower.blobWidth+inputTower.x)*scaleFactorx);
     println("xLeft "+xLeft+" and xRight "+xRight);
     println("inputTower.x "+inputTower.x);
     int[] topLeftPix = {xLeft, xLeft, xLeft, xLeft, xLeft, xLeft, xLeft, xLeft};
@@ -129,8 +129,8 @@ public class LegoTower
     int[] bottomRightPix = {xRight, xRight, xRight, xRight, xRight, xRight, xRight, xRight};
     
     //Variables for y values
-    int yUpper = int((inputTower.y+inputTower.blobHeight)*scaleFactor);//int((inputTower.blobHeight+offset+inputTower.y)*scaleFactor);
-    int yLower = int(inputTower.y*scaleFactor);
+    int yUpper = int((inputTower.y+inputTower.blobHeight)*scaleFactorx);//int((inputTower.blobHeight+offset+inputTower.y)*scaleFactorx);
+    int yLower = int(inputTower.y*scaleFactorx);
     println("yLower "+yLower+" and yUpper "+yUpper);
     println("inputTower.y "+inputTower.y);
     int[] upperYLimit = {yUpper, yUpper, yUpper, yUpper, yUpper, yUpper, yUpper, yUpper};
@@ -179,7 +179,7 @@ public class LegoTower
         //colorPixelFound = 0;
  
 //          fill(100,100,100);
-//          text("R", pixelX/scaleFactor, pixelY/scaleFactor);
+//          text("R", pixelX/scaleFactorx, pixelY/scaleFactorx);
 //          noFill(); 
         
         //Identify red hue
@@ -187,7 +187,7 @@ public class LegoTower
         {
           colorPixelFound = 1;
 //          fill(255,0,0);
-//          text("R", pixelX/scaleFactor, pixelY/scaleFactor);
+//          text("R", pixelX/scaleFactorx, pixelY/scaleFactorx);
 //          noFill();           
           if ((ignoreColor[0] == 0) || (ignoreColor[0]==1)) {
                colorCounts[0]++;
@@ -213,7 +213,7 @@ public class LegoTower
         {
           colorPixelFound = 1;
 //          fill(0,0,255);
-//          text("B", pixelX/scaleFactor, pixelY/scaleFactor);
+//          text("B", pixelX/scaleFactorx, pixelY/scaleFactorx);
 //          noFill();
           if ((ignoreColor[1] == 0) || (ignoreColor[1]==1))
              colorCounts[1]++;
@@ -236,7 +236,7 @@ public class LegoTower
         {
           colorPixelFound = 1;
 //          fill(0,255,0);
-//          text("o", pixelX/scaleFactor, pixelY/scaleFactor);
+//          text("o", pixelX/scaleFactorx, pixelY/scaleFactorx);
 //          noFill();
           if ((ignoreColor[2] == 0) || (ignoreColor[2]==1))      
             colorCounts[2]++;
@@ -259,7 +259,7 @@ public class LegoTower
         { 
           colorPixelFound = 1;
 //          fill(255,255,0);
-//          text("Y", pixelX/scaleFactor, pixelY/scaleFactor);
+//          text("Y", pixelX/scaleFactorx, pixelY/scaleFactorx);
 //          noFill();
           if ((ignoreColor[3] == 0) || (ignoreColor[3]==1))
             colorCounts[3]++;
@@ -429,36 +429,36 @@ public class LegoTower
       
       if (ignoreColor[c] == 2) {
         //println("drawing second for "+c);
-        drawOrigin(c+4, topLeftPix[c+4], lowerYLimit[c+4]-7, scaleFactor);
-        drawFinal(c+4, bottomRightPix[c+4], upperYLimit[c+4]-8, scaleFactor);
-        drawTopRight(c+4, topRightPix[c+4], lowerYLimit[c+4]-7, scaleFactor);
+        drawOrigin(c+4, topLeftPix[c+4], lowerYLimit[c+4]-7, scaleFactorx);
+        drawFinal(c+4, bottomRightPix[c+4], upperYLimit[c+4]-8, scaleFactorx);
+        drawTopRight(c+4, topRightPix[c+4], lowerYLimit[c+4]-7, scaleFactorx);
       }
       if ((permNewBlock!=c) && (ignoreColor[c] != 0)) { 
         println("setting o/f");
         //for blocks that aren't bottom block
-        drawOrigin(c, topLeftPix[c], lowerYLimit[c]-7, scaleFactor);
-        drawFinal(c, bottomRightPix[c], upperYLimit[c]-8, scaleFactor);
-        drawTopRight(c, topRightPix[c], lowerYLimit[c]-7, scaleFactor);
+        drawOrigin(c, topLeftPix[c], lowerYLimit[c]-7, scaleFactorx);
+        drawFinal(c, bottomRightPix[c], upperYLimit[c]-8, scaleFactorx);
+        drawTopRight(c, topRightPix[c], lowerYLimit[c]-7, scaleFactorx);
       }
       else if ((permNewBlock==c)  && (ignoreColor[permNewBlock] <= 1)) { 
         println("setting o/f");
         //for bottom block
         if (ignoreColor[c]==0) {
           //special case if there is only one block in tower
-          drawOrigin(c, topLeftPix[c], lowerYLimit[c]-7, scaleFactor);
-          drawFinal(c, bottomRightPix[c], yUpper-1, scaleFactor); 
-          drawTopRight(c, topRightPix[c], setY-7, scaleFactor);
+          drawOrigin(c, topLeftPix[c], lowerYLimit[c]-7, scaleFactorx);
+          drawFinal(c, bottomRightPix[c], yUpper-1, scaleFactorx); 
+          drawTopRight(c, topRightPix[c], setY-7, scaleFactorx);
         }
         else if (ignoreColor[c]==1) {
           //for first block that is same color as bottom block
-          drawOrigin(c, topLeftPix[c], lowerYLimit[c]-7, scaleFactor);
-          drawFinal(c, bottomRightPix[c], upperYLimit[c]-8, scaleFactor);
-          drawTopRight(c, topRightPix[c], lowerYLimit[c]-7, scaleFactor);          
+          drawOrigin(c, topLeftPix[c], lowerYLimit[c]-7, scaleFactorx);
+          drawFinal(c, bottomRightPix[c], upperYLimit[c]-8, scaleFactorx);
+          drawTopRight(c, topRightPix[c], lowerYLimit[c]-7, scaleFactorx);          
           
           //general bottom block
-          drawOrigin(c+4, topLeftPix[c+4], setY-7, scaleFactor);
-          drawFinal(c+4, bottomRightPix[c+4], yUpper-1, scaleFactor); 
-          drawTopRight(c+4, topRightPix[c+4], setY-7, scaleFactor);
+          drawOrigin(c+4, topLeftPix[c+4], setY-7, scaleFactorx);
+          drawFinal(c+4, bottomRightPix[c+4], yUpper-1, scaleFactorx); 
+          drawTopRight(c+4, topRightPix[c+4], setY-7, scaleFactorx);
         }  
       }
     }
@@ -474,7 +474,7 @@ public class LegoTower
     yellowSegment2 = new BlobRect(Yellow2Origin.x, Yellow2Origin.y, abs(Yellow2Final.x - Yellow2Origin.x), abs(Yellow2Final.y - Yellow2Origin.y));
     
     //return colorOrder;
-    scaleFactor = 0.45;
+    scaleFactorx = 0.45;
         
   }
   
@@ -511,7 +511,7 @@ public class LegoTower
   //Scans first three lines of a block to determine its topLeft x and y coordinates
   public int scanForTopLeft(int xLeft, int xRight, int blockColor, int pixelRow)
   {
-    //float scaleFactor = 0.5;
+    //float scaleFactorx = 0.5;
     int topLeftFive[] = {0, 0, 0};
     int lookingForFirstPixColor;
     
@@ -557,7 +557,7 @@ public class LegoTower
   //Scans first three lines of a block to determine its topRight x and y coordinates
   public int scanForTopRight(int xLeft, int xRight, int blockColor, int pixelRow)
   {
-    //float scaleFactor = 0.5;
+    //float scaleFactorx = 0.5;
     int topRightFive[] = {0, 0, 0};
     
     //Loop through each row and find left-most block-colored pixel; set value in array
@@ -588,7 +588,7 @@ public class LegoTower
   //Scans last five lines of a block to determine its bottomRight x and y coordinates
   public int scanForBottomRight(int xLeft, int xRight, int blockColor, int pixelRow)
   {
-    //float scaleFactor = 0.5;
+    //float scaleFactorx = 0.5;
     int botRightFive[] = {0, 0, 0, 0, 0};
     int lookingForFirstPixColor;
     
@@ -831,24 +831,24 @@ public class LegoTower
     textSize(15);
   }
   
-  public void drawOrigin(int newBlock, int pixelX, int pixelY, float scaleFactor) 
+  public void drawOrigin(int newBlock, int pixelX, int pixelY, float scaleFactorx) 
   {
     if ((newBlock == 0) && (RedOrigin.x < 0))
-      RedOrigin.set(pixelX/scaleFactor, pixelY/scaleFactor);
+      RedOrigin.set(pixelX/scaleFactorx, pixelY/scaleFactorx);
     else if ((newBlock == 1) && (BlueOrigin.x < 0))
-      BlueOrigin.set(pixelX/scaleFactor, pixelY/scaleFactor);    
+      BlueOrigin.set(pixelX/scaleFactorx, pixelY/scaleFactorx);    
     else if ((newBlock == 2) && (GreenOrigin.x < 0))
-      GreenOrigin.set(pixelX/scaleFactor, pixelY/scaleFactor); 
+      GreenOrigin.set(pixelX/scaleFactorx, pixelY/scaleFactorx); 
     else if ((newBlock == 3) && (YellowOrigin.x < 0))
-      YellowOrigin.set(pixelX/scaleFactor, pixelY/scaleFactor);
+      YellowOrigin.set(pixelX/scaleFactorx, pixelY/scaleFactorx);
     else if ((newBlock == 4) && (Red2Origin.x < 0))
-      Red2Origin.set(pixelX/scaleFactor, pixelY/scaleFactor);
+      Red2Origin.set(pixelX/scaleFactorx, pixelY/scaleFactorx);
     else if ((newBlock == 5) && (Blue2Origin.x < 0))
-      Blue2Origin.set(pixelX/scaleFactor, pixelY/scaleFactor);
+      Blue2Origin.set(pixelX/scaleFactorx, pixelY/scaleFactorx);
     else if ((newBlock == 6) && (Green2Origin.x < 0))
-      Green2Origin.set(pixelX/scaleFactor, pixelY/scaleFactor);
+      Green2Origin.set(pixelX/scaleFactorx, pixelY/scaleFactorx);
     else if ((newBlock == 7) && (Yellow2Origin.x < 0))
-      Yellow2Origin.set(pixelX/scaleFactor, pixelY/scaleFactor);
+      Yellow2Origin.set(pixelX/scaleFactorx, pixelY/scaleFactorx);
     //can use mod and divide(round down) to differentiate colors
   }
   
@@ -863,50 +863,50 @@ public class LegoTower
   }
   
   //Sets Final x and y coord for block
-  public void drawFinal(int oldBlock, int pixelX, int pixelY, float scaleFactor) 
+  public void drawFinal(int oldBlock, int pixelX, int pixelY, float scaleFactorx) 
   {
     if ((oldBlock == 0) && (RedOrigin.x > 0))
-      RedFinal.set(pixelX/scaleFactor, pixelY/scaleFactor);
+      RedFinal.set(pixelX/scaleFactorx, pixelY/scaleFactorx);
     else if ((oldBlock == 1) && (BlueOrigin.x > 0))
-      BlueFinal.set(pixelX/scaleFactor, pixelY/scaleFactor);    
+      BlueFinal.set(pixelX/scaleFactorx, pixelY/scaleFactorx);    
     else if ((oldBlock == 2) && (GreenOrigin.x > 0))
-      GreenFinal.set(pixelX/scaleFactor, pixelY/scaleFactor); 
+      GreenFinal.set(pixelX/scaleFactorx, pixelY/scaleFactorx); 
     else if ((oldBlock == 3) && (YellowOrigin.x > 0))
-      YellowFinal.set(pixelX/scaleFactor, pixelY/scaleFactor);
+      YellowFinal.set(pixelX/scaleFactorx, pixelY/scaleFactorx);
     else if ((oldBlock == 4) && (Red2Origin.x > 0))
-      Red2Final.set(pixelX/scaleFactor, pixelY/scaleFactor);
+      Red2Final.set(pixelX/scaleFactorx, pixelY/scaleFactorx);
     else if ((oldBlock == 5) && (Blue2Origin.x > 0))
-      Blue2Final.set(pixelX/scaleFactor, pixelY/scaleFactor);
+      Blue2Final.set(pixelX/scaleFactorx, pixelY/scaleFactorx);
     else if ((oldBlock == 6) && (Green2Origin.x > 0))
-      Green2Final.set(pixelX/scaleFactor, pixelY/scaleFactor);
+      Green2Final.set(pixelX/scaleFactorx, pixelY/scaleFactorx);
     else if ((oldBlock == 7) && (Yellow2Origin.x > 0))
-      Yellow2Final.set(pixelX/scaleFactor, pixelY/scaleFactor);
+      Yellow2Final.set(pixelX/scaleFactorx, pixelY/scaleFactorx);
   }
 
   //Sets topRight x and y coord for block  
-  public void drawTopRight(int block, int pixelX, int pixelY, float scaleFactor) 
+  public void drawTopRight(int block, int pixelX, int pixelY, float scaleFactorx) 
   {
     if ((block == 0) && (RedOrigin.x > 0))
-      RedTopRight.set(pixelX/scaleFactor, pixelY/scaleFactor);
+      RedTopRight.set(pixelX/scaleFactorx, pixelY/scaleFactorx);
     else if ((block == 1) && (BlueOrigin.x > 0))
-      BlueTopRight.set(pixelX/scaleFactor, pixelY/scaleFactor);    
+      BlueTopRight.set(pixelX/scaleFactorx, pixelY/scaleFactorx);    
     else if ((block == 2) && (GreenOrigin.x > 0))
-      GreenTopRight.set(pixelX/scaleFactor, pixelY/scaleFactor); 
+      GreenTopRight.set(pixelX/scaleFactorx, pixelY/scaleFactorx); 
     else if ((block == 3) && (YellowOrigin.x > 0))
-      YellowTopRight.set(pixelX/scaleFactor, pixelY/scaleFactor);
+      YellowTopRight.set(pixelX/scaleFactorx, pixelY/scaleFactorx);
   }
 
   //Sets bottomLeft x and y coord for block
-  public void drawBottomLeft(int block, int pixelX, int pixelY, float scaleFactor) 
+  public void drawBottomLeft(int block, int pixelX, int pixelY, float scaleFactorx) 
   {
     if ((block == 0) && (RedOrigin.x > 0))
-      RedBottomLeft.set(pixelX/scaleFactor, pixelY/scaleFactor);
+      RedBottomLeft.set(pixelX/scaleFactorx, pixelY/scaleFactorx);
     else if ((block == 1) && (BlueOrigin.x > 0))
-      BlueBottomLeft.set(pixelX/scaleFactor, pixelY/scaleFactor);    
+      BlueBottomLeft.set(pixelX/scaleFactorx, pixelY/scaleFactorx);    
     else if ((block == 2) && (GreenOrigin.x > 0))
-      GreenBottomLeft.set(pixelX/scaleFactor, pixelY/scaleFactor); 
+      GreenBottomLeft.set(pixelX/scaleFactorx, pixelY/scaleFactorx); 
     else if ((block == 3) && (YellowOrigin.x > 0))
-      YellowBottomLeft.set(pixelX/scaleFactor, pixelY/scaleFactor);
+      YellowBottomLeft.set(pixelX/scaleFactorx, pixelY/scaleFactorx);
   }
 
   //Displays debugging chart of towers and blocks' height and width on screen

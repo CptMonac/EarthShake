@@ -37,9 +37,13 @@ ArrayList<String> pImgNames;
 String[] currentTowerColors;
 ArrayList<String> towerColors;
 
-float scaleFactor = 0.45;
 int gorWidth = 780;
 int gorHeight = 500;
+int legoWidth = 640;
+int legoHeight = 480;
+
+float scaleFactorx = 0.45; // 640/(640+780)
+float scaleFactory = 0.96; // 480/(480+500)
 
 ImagePanel view2;
 PImage viewport2 = new PImage(780,500,RGB);
@@ -140,7 +144,6 @@ void draw()
     gameSetup();
     if (scene2==true) {
       placingTowers = false;
-      //gameplay();
       trackLegoTowers_g2();
     }
     if (scene3==true) {

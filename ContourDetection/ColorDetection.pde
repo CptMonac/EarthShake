@@ -36,8 +36,8 @@ String[] blobDebugMode()
     println(colorOrder);
     colorTowers[j] = colorOrder;
     
-    stroke(255,255,255);
-    rect(towerContours.get(j).x, towerContours.get(j).y, towerContours.get(j).blobWidth, towerContours.get(j).blobHeight);
+    //stroke(255,255,255);
+    //rect(towerContours.get(j).x, towerContours.get(j).y, towerContours.get(j).blobWidth, towerContours.get(j).blobHeight);
     
   }
   //colorTowers = reverse(colorTowers);
@@ -75,10 +75,10 @@ ArrayList<BlobRect> mergeBlobs()
     Blob currBlob = theBlobDetection.getBlob(i);
     BlobRect currRect = new BlobRect(currBlob);
     if ((currRect.blobWidth * currRect.blobHeight) > 1500) {
-      currRect.x *= scaleFactor;
-      currRect.blobWidth *= scaleFactor;
-      currRect.y *= 0.96;
-      currRect.blobHeight *= 0.96;
+      currRect.x *= scaleFactorx;
+      currRect.blobWidth *= scaleFactorx;
+      currRect.y *= scaleFactory;
+      currRect.blobHeight *= scaleFactory;
       mergedBlobs.add(currRect);
       stroke(255,255,255);
       noFill();

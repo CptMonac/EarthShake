@@ -25,7 +25,7 @@ void imageComparison()
 {
   pushMatrix();
   image(colorTower, -780, 0);
-  scale(scaleFactor);
+  scale(scaleFactorx);
   image(colorTower, 0, 0);
 
   theBlobDetection = new BlobDetection(srcImage.width, srcImage.height);
