@@ -71,7 +71,7 @@ void mousePressed()
   
   if (scene2==true && scene3==false)
   {
-    if ((foundLeftMatch==true) && (foundRightMatch==true) && (continue_pressed()==true)) {
+    if ((continue_pressed()==true) && (foundLeftMatch==true) && (foundRightMatch==true)) {
       scene3 = true;
       scene3a = true;
     }
@@ -86,34 +86,44 @@ void mousePressed()
 
 void loadColorTowers()
 {
-  A1_tower = loadImage("color/A1_tower.png");
+//  A1_tower = loadImage("color/A1_tower.png");
+  A1_tower = loadImage("color/A1_arrow.png");
   A1_wrong = loadImage("color/A1_wrong.png");
   A1_correct = loadImage("color/A1_correct.png");
-  A2_tower = loadImage("color/A2_tower.png");
+//  A2_tower = loadImage("color/A2_tower.png");
+  A2_tower = loadImage("color/A2_arrow.png");
   A2_wrong = loadImage("color/A2_wrong.png");
   A2_correct = loadImage("color/A2_correct.png");
-  B1_tower = loadImage("color/B1_tower.png");
+//  B1_tower = loadImage("color/B1_tower.png");
+  B1_tower = loadImage("color/B1_arrow.png");
   B1_wrong = loadImage("color/B1_wrong.png");
   B1_correct = loadImage("color/B1_correct.png");
-  B2_tower = loadImage("color/B2_tower.png");
+//  B2_tower = loadImage("color/B2_tower.png");
+  B2_tower = loadImage("color/B2_arrow.png");
   B2_wrong = loadImage("color/B2_wrong.png");
   B2_correct = loadImage("color/B2_correct.png");
-  C1_tower = loadImage("color/C1_tower.png");
+//  C1_tower = loadImage("color/C1_tower.png");
+  C1_tower = loadImage("color/C1_arrow.png");
   C1_wrong = loadImage("color/C1_wrong.png");
   C1_correct = loadImage("color/C1_correct.png");
-  C2_tower = loadImage("color/C2_tower.png");
+//  C2_tower = loadImage("color/C2_tower.png");
+  C2_tower = loadImage("color/C2_arrow.png");
   C2_wrong = loadImage("color/C2_wrong.png");
   C2_correct = loadImage("color/C2_correct.png");
-  D1_tower = loadImage("color/D1_tower.png");
+//  D1_tower = loadImage("color/D1_tower.png");
+  D1_tower = loadImage("color/D1_arrow.png");
   D1_wrong = loadImage("color/D1_wrong.png");
   D1_correct = loadImage("color/D1_correct.png");
-  D2_tower = loadImage("color/D2_tower.png");
+//  D2_tower = loadImage("color/D2_tower.png");
+  D2_tower = loadImage("color/D2_arrow.png");
   D2_wrong = loadImage("color/D2_wrong.png");
   D2_correct = loadImage("color/D2_correct.png");
-  F1_tower = loadImage("color/F1_tower.png");
+//  F1_tower = loadImage("color/F1_tower.png");
+  F1_tower = loadImage("color/F1_arrow.png");
   F1_wrong = loadImage("color/F1_wrong.png");
   F1_correct = loadImage("color/F1_correct.png");
-  F2_tower = loadImage("color/F2_tower.png");
+//  F2_tower = loadImage("color/F2_tower.png");
+  F2_tower = loadImage("color/F2_arrow.png");
   F2_wrong = loadImage("color/F2_wrong.png");
   F2_correct = loadImage("color/F2_correct.png");   
 }

@@ -82,7 +82,8 @@ void setup()
   println("sizeof contourDBList = "+contourDBList.size()); 
   pImgNames = loadPImgStrings();
   
-  screen1 = loadImage("screen1_grid.jpg");
+  //screen1 = loadImage("screen1_grid.jpg");
+  screen1 = loadImage("gorilla.jpg");
   wrongTower = loadImage("wrongtower.png");
   correctTower = loadImage("correctTower.png");
   startScreen = loadImage("startscreen.jpg");
