@@ -1,5 +1,5 @@
 String leftToMatch, rightToMatch;
-Boolean scene2, scene3, scene3a, scene3b, scene4;
+Boolean scene2, scene3, scene3a, scene3b, scene4, scene5;
 Boolean foundLeftMatch, foundRightMatch;
 Boolean leftDown, rightDown, hasLeft, hasRight;
 Boolean leftStanding, rightStanding;
@@ -53,6 +53,16 @@ void gameplay()
 
 void mousePressed()
 { 
+  if (scene4==true && scene5==false) 
+  {
+    if (explanation() != 0) {
+      scene2 = false;
+      scene3 = false;
+      scene4 = false;
+      scene5 = true;
+    }
+  }
+  
   if (scene3b==true && scene4==false)
   {
     if (shake_pressed()==true) {

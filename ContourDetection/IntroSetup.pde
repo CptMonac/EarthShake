@@ -15,7 +15,7 @@ import javax.swing.*;
 
 /*** VARIABLES start *******************************************/
 OpenCV opencv;
-PImage srcImage, srcImage2, editedImage, colorImage, screen1;
+PImage srcImage, srcImage2, editedImage, colorImage, screen1, circle;
 SimpleOpenNI  context;
 
 ArrayList<Contour> legoTowers;
@@ -38,6 +38,8 @@ String[] currentTowerColors;
 ArrayList<String> towerColors;
 
 float scaleFactor = 0.45;
+int gorWidth = 780;
+int gorHeight = 500;
 
 ImagePanel view2;
 PImage viewport2 = new PImage(780,500,RGB);
@@ -88,6 +90,7 @@ void setup()
   correctTower = loadImage("correctTower.png");
   startScreen = loadImage("startscreen.jpg");
   pretzel = loadImage("pretzel.png");
+  circle = loadImage("placementcircle.png");
   
   loadColorTowers();
   loadButtons(); 
@@ -97,6 +100,7 @@ void setup()
   scene3a = false;  
   scene3b = false;
   scene4 = false;
+  scene5 = false;
   
   frame.setSize(780,500);
   frame.setTitle("gorilla window");
@@ -148,6 +152,8 @@ void draw()
     }
     if (scene4==true)
       guess_message();
+    if (scene5==true)
+      image(pretzel,200,200);
   popMatrix();
   
   viewport2 = get(780,20,640,480);

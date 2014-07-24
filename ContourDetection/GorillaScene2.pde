@@ -48,6 +48,9 @@ void trackLegoTowers_g2()
       instr_place_right_img();
     }
   }
+  
+  if (scene3==false)
+    placementcircles();
     
   if (legoTowers.size() > 0)
   {
@@ -227,7 +230,7 @@ void drawLegoContours_g()
   ArrayList<Contour> filteredContours = new ArrayList<Contour>();
   
   int adjustx = 0; 
-  int adjusty = 5*500/16; 
+  int adjusty = 3*500/16; 
     
   //Filter contours to only lego towers
   for (Contour contour: towerContours)
@@ -277,74 +280,5 @@ void drawLegoContours_g()
 //    }
 //  }
 //  fill(255, 255, 255);
-}
-
-Boolean continue_pressed()
-{
-  int xleft = int(9*780/16);
-  int xright = xleft + int(3*780/16);
-  int ytop = int(13*500/16);
-  int ybot = ytop + int(1*500/16);
-  if ((mouseX >= xleft) && (mouseX <= xright) && (mouseY >= ytop) && (mouseY <= ybot))
-    return true;
-  else
-    return false;
-}
-
-Boolean tower1_selected()
-{
-  int xleft = int(1*780/2);
-  int xright = xleft + int(1*780/16);
-  int ytop = int(11*500/16);
-  int ybot = ytop + int(1*500/16);
-  if ((mouseX >= xleft) && (mouseX <= xright) && (mouseY >= ytop) && (mouseY <= ybot)) {
-    towerPredictionNumber = 1;
-    towerPredictionString = "TOWER 1 will fall first.";
-    return true;
-  }
-  else
-    return false;
-}
-
-Boolean same_selected()
-{
-  int xleft = int(5*780/8);
-  int xright = xleft + int(1*780/16);
-  int ytop = int(11*500/16);
-  int ybot = ytop + int(1*500/16);
-  if ((mouseX >= xleft) && (mouseX <= xright) && (mouseY >= ytop) && (mouseY <= ybot)) {
-    towerPredictionNumber = 3;
-    towerPredictionString = "BOTH TOWERS will fall at the same time.";
-    return true;
-  }
-  else
-    return false;
-}
-
-Boolean tower2_selected()
-{
-  int xleft = int(3*780/4);
-  int xright = xleft + int(1*780/16);
-  int ytop = int(11*500/16);
-  int ybot = ytop + int(1*500/16);
-  if ((mouseX >= xleft) && (mouseX <= xright) && (mouseY >= ytop) && (mouseY <= ybot)) {
-    towerPredictionNumber = 2;
-    towerPredictionString = "TOWER 2 will fall first.";
-    return true;
-  }
-  else
-    return false;
-}
-
-Boolean shake_pressed()
-{
-  float xleft = 9*780/16;
-  float xright = xleft + 200;
-  float ytop = 13*500/16;
-  float ybot = ytop + 1*500/16;
-  if ((mouseX >= xleft) && (mouseX <= xright) && (mouseY >= ytop) && (mouseY <= ybot)) 
-    return true;
-  else
-    return false;
 }
 

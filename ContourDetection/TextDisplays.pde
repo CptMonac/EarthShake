@@ -3,10 +3,15 @@ PImage leftToMatchImg, rightToMatchImg;
 PImage LTMwrong, LTMcorrect, RTMwrong, RTMcorrect;
 
 //****************************************************** PLACING TOWERS
+void placementcircles()
+{
+  image(circle, 17*gorWidth/32, 11*gorHeight/16);
+  image(circle, 24*gorWidth/32, 11*gorHeight/16);
+}
+
 void continue_button()
 {
-  //replace this function with "image(continue, etc, etc)" later
-  image(continueButton, 9*780/16, 13*500/16);
+  image(continueButton, 9*gorWidth/16, 13*gorHeight/16);
 }
 
 void instr_place_tower() 
@@ -18,17 +23,17 @@ void instr_place_tower()
 
 void instr_place_left_img()
 {
-  image(leftToMatchImg, 1*780/2, 2*500/8);
+  image(leftToMatchImg, 1*gorWidth/2, 5*gorHeight/16);
 }
 
 void instr_place_right_img()
 {
-  image(rightToMatchImg, 23*780/32, 2*500/8);
+  image(rightToMatchImg, 23*gorWidth/32, 5*gorHeight/16);
 }
 
 void match_left_image()
 {
-  image(LTMcorrect, 1*780/2, 4*500/16);
+  image(LTMcorrect, 1*gorWidth/2, 5*gorHeight/16);
 }
 
 void match_left_text()
@@ -40,7 +45,7 @@ void match_left_text()
 
 void match_right_image()
 {
-  image(RTMcorrect, 23*780/32, 4*500/16);
+  image(RTMcorrect, 23*gorWidth/32, 5*gorHeight/16);
 }
 
 void match_right_text()
@@ -52,7 +57,7 @@ void match_right_text()
 
 void mismatch_left_image()
 {
-  image(LTMwrong, 1*780/2, 4*500/16);
+  image(LTMwrong, 1*gorWidth/2, 5*gorHeight/16);
 }
 
 void mismatch_left_text()
@@ -64,7 +69,7 @@ void mismatch_left_text()
 
 void mismatch_right_image()
 {
-  image(RTMwrong, 23*780/32, 4*500/16);
+  image(RTMwrong, 23*gorWidth/32, 5*gorHeight/16);
 }
 
 void mismatch_right_text()
@@ -92,9 +97,9 @@ void neither_match_text()
 //*************************************************** PREDICTION SCREENS
 void prediction_tower_buttons()
 {
-  image(tower1, int(1*780/2), int(11*500/16));
-  image(same, int(5*780/8), int(11*500/16));
-  image(tower2, int(3*780/4), int(11*500/16));
+  image(tower1, int(1*gorWidth/2), int(3*gorHeight/8));
+  image(same, int(5*gorWidth/8), int(3*gorHeight/8));
+  image(tower2, int(3*gorWidth/4), int(3*gorHeight/8));
 }
 
 void prediction_intro()
@@ -117,7 +122,7 @@ void prediction_discusschoice()
 
 void shake_button()
 {
-  image(shake, 9*780/16, 13*500/16);
+  image(shake, 9*gorWidth/16, 13*gorHeight/16);
 }
 
 //********************************************************* POST SHAKE
@@ -145,8 +150,8 @@ void guess_message()
 
 void pred_buttons()
 {
-  image(pred_taller, 7*780/16, 3*500/4);
-  image(pred_weight, 7*780/16, 7*500/8);
-  image(pred_thinner, 11*780/16, 3*500/4);
-  image(pred_symm, 11*780/16, 7*500/8);  
+  image(pred_taller, 7*gorWidth/16, 1*gorHeight/4);
+  image(pred_weight, 7*gorWidth/16, 3*gorHeight/8);
+  image(pred_thinner, 23*gorWidth/32, 1*gorHeight/4);
+  image(pred_symm, 23*gorWidth/32, 3*gorHeight/8);  
 }
