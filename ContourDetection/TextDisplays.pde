@@ -155,3 +155,6 @@ void pred_buttons()
   image(pred_thinner, 23*gorWidth/32, 1*gorHeight/4);
   image(pred_symm, 23*gorWidth/32, 3*gorHeight/8);  
 }
+
+//****************************************************** EXPLANATION
+

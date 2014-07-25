@@ -240,14 +240,14 @@ void drawLegoContours_g()
       //Draw outline approximation
       
       if ((contour.getPolygonApproximation().getPoints().get(0).x) < 640/2) {
-        adjustx = 1*gorWidth/4;
+        adjustx = 11*gorWidth/32;
         if (foundLeftMatch==false)
           stroke(255, 0, 0);
         else
           stroke(0, 255, 0);
       }
       else {
-        adjustx = 3*gorWidth/16;
+        adjustx = 7*gorWidth/32;
         if (foundRightMatch==false)  
           stroke(255, 0, 0);
         else
