@@ -90,8 +90,6 @@ void prediction_tower_buttons()
 
 void prediction_intro()
 {
-  towerPredictionNumber = 0;
-  towerPredictionString = "";
   image(t_pred_intro, 1*gorWidth/4, 0);
   prediction_tower_buttons();
 }
@@ -105,8 +103,6 @@ void prediction_discusschoice()
   else if (towerPredictionNumber==3)
     image(t_pred_same, 1*gorWidth/4, 0);
   shake_button();
-  correctGuess = false;
-  fallen = 0;
 }
 
 void shake_button()

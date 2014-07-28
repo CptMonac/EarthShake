@@ -46,8 +46,21 @@ void gameSetup()
     image(screen1, 0, 0);
 }
 
-void gameplay()
+void resetVariables()
 {
+  scene1 = true;
+  scene2 = false;
+  scene3 = false;
+  scene3a = false;
+  scene3b = false;
+  scene4 = false;
+  scene5 = false;
+  scene6 = false;
+  
+  towerPredictionNumber = 0;
+  towerPredictionString = "";
+  correctGuess = false;
+  fallen = 0;  
 }
 
 void mousePressed()
@@ -58,6 +71,7 @@ void mousePressed()
     {
       scene6 = false;
       scene3 = false;
+      resetVariables();
       scene2 = true;
     }
   }
@@ -263,47 +277,47 @@ void loadColorTowers()
   F2_wrong = loadImage("color/F2_wrong.png");
   F2_correct = loadImage("color/F2_correct.png");   
 }
-
-ArrayList<PImage> createColorImageArray()
-{
-  ArrayList<PImage> colorImages = new ArrayList<PImage>();
-  loadColorTowers();
-  
-  colorImages.add(A1_tower);
-  colorImages.add(A2_tower);
-  colorImages.add(B1_tower);
-  colorImages.add(B2_tower);
-  colorImages.add(C1_tower);
-  colorImages.add(C2_tower);
-  colorImages.add(D1_tower);
-  colorImages.add(D2_tower);
-  colorImages.add(F1_tower);
-  colorImages.add(F2_tower);
-  
-  colorImages.add(A1_correct);
-  colorImages.add(A2_correct);
-  colorImages.add(B1_correct);
-  colorImages.add(B2_correct);
-  colorImages.add(C1_correct);
-  colorImages.add(C2_correct);
-  colorImages.add(D1_correct);
-  colorImages.add(D2_correct);
-  colorImages.add(F1_correct);
-  colorImages.add(F2_correct);
-  
-  colorImages.add(A1_wrong);
-  colorImages.add(A2_wrong);
-  colorImages.add(B1_wrong);
-  colorImages.add(B2_wrong);
-  colorImages.add(C1_wrong);
-  colorImages.add(C2_wrong);
-  colorImages.add(D1_wrong);
-  colorImages.add(D2_wrong);
-  colorImages.add(F1_wrong);
-  colorImages.add(F2_wrong);
-  
-  return colorImages;
-}
+//
+//ArrayList<PImage> createColorImageArray()
+//{
+//  ArrayList<PImage> colorImages = new ArrayList<PImage>();
+//  loadColorTowers();
+//  
+//  colorImages.add(A1_tower);
+//  colorImages.add(A2_tower);
+//  colorImages.add(B1_tower);
+//  colorImages.add(B2_tower);
+//  colorImages.add(C1_tower);
+//  colorImages.add(C2_tower);
+//  colorImages.add(D1_tower);
+//  colorImages.add(D2_tower);
+//  colorImages.add(F1_tower);
+//  colorImages.add(F2_tower);
+//  
+//  colorImages.add(A1_correct);
+//  colorImages.add(A2_correct);
+//  colorImages.add(B1_correct);
+//  colorImages.add(B2_correct);
+//  colorImages.add(C1_correct);
+//  colorImages.add(C2_correct);
+//  colorImages.add(D1_correct);
+//  colorImages.add(D2_correct);
+//  colorImages.add(F1_correct);
+//  colorImages.add(F2_correct);
+//  
+//  colorImages.add(A1_wrong);
+//  colorImages.add(A2_wrong);
+//  colorImages.add(B1_wrong);
+//  colorImages.add(B2_wrong);
+//  colorImages.add(C1_wrong);
+//  colorImages.add(C2_wrong);
+//  colorImages.add(D1_wrong);
+//  colorImages.add(D2_wrong);
+//  colorImages.add(F1_wrong);
+//  colorImages.add(F2_wrong);
+//  
+//  return colorImages;
+//}
 
 void loadButtons()
 {

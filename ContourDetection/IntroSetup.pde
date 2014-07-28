@@ -100,14 +100,7 @@ void setup()
   loadButtons(); 
   loadText();
   
-  scene1 = true;
-  scene2 = false;
-  scene3 = false;
-  scene3a = false;  
-  scene3b = false;
-  scene4 = false;
-  scene5 = false;
-  scene6 = false;
+  resetVariables();
   
   frame.setSize(780,500);
   frame.setTitle("gorilla window");
@@ -118,7 +111,7 @@ void setup()
   v2.add(view2);
   v2.show();  
   
-  scenarioNumber = 5;//int(random(1,6));
+  scenarioNumber = int(random(1,6));
   loadScenario(scenarioNumber);
 }
 
