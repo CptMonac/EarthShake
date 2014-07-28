@@ -118,7 +118,7 @@ void setup()
   v2.add(view2);
   v2.show();  
   
-  scenarioNumber = 2; //int(random(1,6));
+  scenarioNumber = 5;//int(random(1,6));
   loadScenario(scenarioNumber);
 }
 

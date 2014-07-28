@@ -238,25 +238,37 @@ void drawLegoContours_g()
     if(contour.area() > 1500)
     {
       //Draw outline approximation
+      int side = 0;
       
       if ((contour.getPolygonApproximation().getPoints().get(0).x) < 640/2) {
+        side = 1; //left
         adjustx = 11*gorWidth/32;
-        if (foundLeftMatch==false)
+        if (contour.getBoundingBox().height < 100)
           stroke(255, 0, 0);
         else
           stroke(0, 255, 0);
       }
       else {
+        side = 2; //right
         adjustx = 8*gorWidth/32;
-        if (foundRightMatch==false)  
+        if (contour.getBoundingBox().height < 100)  
           stroke(255, 0, 0);
         else
           stroke(0, 255, 0);
       }
-        
+       
+      if (contour.getBoundingBox().height > 100)
+      {  
+        if ((side==1) && (foundLeftMatch==false))
+          break;
+        else if ((side==2) && (foundRightMatch==false))
+          break;  
+      }
+      
       translate(adjustx,-adjusty);
       contour.draw();
       translate(-adjustx,adjusty);
+      
     }
   }
 }

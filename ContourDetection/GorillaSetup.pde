@@ -37,8 +37,6 @@ PImage F2_tower, F2_wrong, F2_correct;
 
 void gameSetup()
 {
-//  int scenarioNumber = int(random(1,6));
-//  loadScenario(scenarioNumber);
   if (scene1==true)
   {
     image(startScreen, 0, 0);
@@ -78,8 +76,6 @@ void mousePressed()
   if (scene4==true && scene5==false) 
   {
     if (explanation() != 0) {
-      //scene2 = false;
-      //scene3 = false;
       scene4 = false;
       scene5 = true;
     }
