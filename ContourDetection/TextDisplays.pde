@@ -2,10 +2,6 @@ PImage wrongTower, correctTower;
 PImage leftToMatchImg, rightToMatchImg;
 PImage LTMwrong, LTMcorrect, RTMwrong, RTMcorrect;
 
-//PImage t_expl_correct_symm, t_expl_correct_taller, t_expl_correct_thinner, t_expl_correct_weight;
-//PImage t_expl_wrong_symm, t_expl_wrong_taller, t_expl_wrong_thinnger, t_expl_wrong_weight;
-
-
 //****************************************************** PLACING TOWERS
 void placementcircles()
 {

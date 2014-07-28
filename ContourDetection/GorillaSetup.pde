@@ -57,6 +57,7 @@ void mousePressed()
     if (continue_pressed()==true)
     {
       scene6 = false;
+      scene3 = false;
       scene2 = true;
     }
   }
@@ -67,7 +68,7 @@ void mousePressed()
     {
       generateNewSet(scenarioNumber);
       scene2 = false;
-      scene3 = false;
+      //scene3 = false;
       scene5 = false;
       scene6 = true;
     }
