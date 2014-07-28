@@ -98,6 +98,7 @@ void setup()
   
   loadColorTowers();
   loadButtons(); 
+  loadText();
   
   scene2 = false;
   scene3 = false;

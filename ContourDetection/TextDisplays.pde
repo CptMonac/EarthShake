@@ -2,23 +2,25 @@ PImage wrongTower, correctTower;
 PImage leftToMatchImg, rightToMatchImg;
 PImage LTMwrong, LTMcorrect, RTMwrong, RTMcorrect;
 
+//PImage t_expl_correct_symm, t_expl_correct_taller, t_expl_correct_thinner, t_expl_correct_weight;
+//PImage t_expl_wrong_symm, t_expl_wrong_taller, t_expl_wrong_thinnger, t_expl_wrong_weight;
+
+
 //****************************************************** PLACING TOWERS
 void placementcircles()
 {
-  image(circle, 17*gorWidth/32, 11*gorHeight/16);
-  image(circle, 24*gorWidth/32, 11*gorHeight/16);
+  image(circle, 1*gorWidth/2, 21*gorHeight/32);
+  image(circle, 23*gorWidth/32, 21*gorHeight/32);
 }
 
 void continue_button()
 {
-  image(continueButton, 9*gorWidth/16, 13*gorHeight/16);
+  image(continueButton, 17*gorWidth/32, 13*gorHeight/16);
 }
 
 void instr_place_tower() 
 {
-  textSize(25);
-  text("Place these towers on the table.", 250, 50, 450, 70);
-  textSize(15);
+  image(t_place_both, 1*gorWidth/4, 0);
 }
 
 void instr_place_left_img()
@@ -38,9 +40,7 @@ void match_left_image()
 
 void match_left_text()
 {
-  textSize(22);
-  text("Good job! The left tower matches. Now place the right tower.", 230, 30, 450, 70);    
-  textSize(15);
+  image(t_place_right, 1*gorWidth/4, 0);
 }
 
 void match_right_image()
@@ -50,9 +50,7 @@ void match_right_image()
 
 void match_right_text()
 {
-  textSize(22);
-  text("Good job! The right tower matches. Now place the left tower.", 230, 30, 450, 70);
-  textSize(15);
+  image(t_place_left, 1*gorWidth/4, 0);
 }
 
 void mismatch_left_image()
@@ -62,9 +60,7 @@ void mismatch_left_image()
 
 void mismatch_left_text()
 {
-  textSize(22);
-  text("Uh oh! You placed the wrong tower on the left. Please place the correct tower.", 230, 30, 450, 70);
-  textSize(15);
+  image(t_place_wrong_left, 1*gorWidth/4, 0);
 }
 
 void mismatch_right_image()
@@ -74,47 +70,44 @@ void mismatch_right_image()
 
 void mismatch_right_text()
 {
-  textSize(22);
-  text("Uh oh! You placed the wrong tower on the right. Please place the correct tower.", 230, 30, 450, 70);
-  textSize(15);
+  image(t_place_wrong_right, 1*gorWidth/4, 0);
 }
 
 void both_match_text()
 {
-  textSize(25);
-  text("Good job! Click to continue.", 250, 70);
+  image(t_place_continue, 1*gorWidth/4, 0);
   continue_button();
-  textSize(15);
 }
 
 void neither_match_text()
 {
-  textSize(22);
-  text("Uh oh! Neither tower is correct. Please try placing the towers again.", 230, 30, 450, 70);
-  textSize(15);
+  image(t_place_wrong_both, 1*gorWidth/4, 0);
 }
 
 //*************************************************** PREDICTION SCREENS
 void prediction_tower_buttons()
 {
-  image(tower1, int(1*gorWidth/2), int(3*gorHeight/8));
-  image(same, int(5*gorWidth/8), int(3*gorHeight/8));
-  image(tower2, int(3*gorWidth/4), int(3*gorHeight/8));
+  image(tower1, int(15*gorWidth/32), int(5*gorHeight/16));
+  image(same, int(5*gorWidth/8), int(5*gorHeight/16));
+  image(tower2, int(25*gorWidth/32), int(5*gorHeight/16));
 }
 
 void prediction_intro()
 {
-  textSize(22);
-  text("Which tower do you think will fall first when I shake the table?", 230, 30, 450, 70);
   towerPredictionNumber = 0;
   towerPredictionString = "";
+  image(t_pred_intro, 1*gorWidth/4, 0);
   prediction_tower_buttons();
-  textSize(15);
 }
 
 void prediction_discusschoice()
 {
-  text("You chose that "+towerPredictionString+" Why do you think so? Discuss with a friend. When you are done, click SHAKE to see the result.", 230, 30, 450, 70);
+  if (towerPredictionNumber==1)
+    image(t_pred_left, 1*gorWidth/4, 0);
+  else if (towerPredictionNumber==2)
+    image(t_pred_right, 1*gorWidth/4, 0);    
+  else if (towerPredictionNumber==3)
+    image(t_pred_same, 1*gorWidth/4, 0);
   shake_button();
   correctGuess = false;
   fallen = 0;
@@ -137,12 +130,17 @@ void guess_message()
   if (correctGuess==true)
   {
     if (towerPredictionNumber==1)
-      text("Good job! Your hypothesis was right. The left tower fell first. Why do you think it fell first?", 230, 30, 450, 70);
+      image(t_hyp_correct_left, 1*gorWidth/4, 0);
     else if (towerPredictionNumber==2) 
-      text("Good job! Your hypothesis was right. The right tower fell first. Why do you think it fell first?", 230, 30, 450, 70);
+      image(t_hyp_correct_right, 1*gorWidth/4, 0);
   }
   else if (fallen!=0)
-    text("Oh no! Your hypothesis was incorrect. Why do you think the "+fallenTower+" tower fell first?", 230, 30, 450, 70);
+  {
+    if (fallen==1)
+      image(t_hyp_wrong_left, 1*gorWidth/4, 0);
+    else if (fallen==2)
+      image(t_hyp_wrong_right, 1*gorWidth/4, 0);
+  }
 
   if (fallen!=0)
     pred_buttons();
@@ -150,10 +148,10 @@ void guess_message()
 
 void pred_buttons()
 {
-  image(pred_taller, 7*gorWidth/16, 1*gorHeight/4);
-  image(pred_weight, 7*gorWidth/16, 3*gorHeight/8);
-  image(pred_thinner, 23*gorWidth/32, 1*gorHeight/4);
-  image(pred_symm, 23*gorWidth/32, 3*gorHeight/8);  
+  image(pred_taller, 3*gorWidth/8, 1*gorHeight/4);
+  image(pred_weight, 3*gorWidth/8, 3*gorHeight/8);
+  image(pred_thinner, 21*gorWidth/32, 1*gorHeight/4);
+  image(pred_symm, 21*gorWidth/32, 3*gorHeight/8);  
 }
 
 //****************************************************** EXPLANATION

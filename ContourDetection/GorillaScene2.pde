@@ -247,7 +247,7 @@ void drawLegoContours_g()
           stroke(0, 255, 0);
       }
       else {
-        adjustx = 7*gorWidth/32;
+        adjustx = 8*gorWidth/32;
         if (foundRightMatch==false)  
           stroke(255, 0, 0);
         else
