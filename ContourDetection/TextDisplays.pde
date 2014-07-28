@@ -87,9 +87,9 @@ void neither_match_text()
 //*************************************************** PREDICTION SCREENS
 void prediction_tower_buttons()
 {
-  image(tower1, int(15*gorWidth/32), int(5*gorHeight/16));
-  image(same, int(5*gorWidth/8), int(5*gorHeight/16));
-  image(tower2, int(25*gorWidth/32), int(5*gorHeight/16));
+  image(tower1, 15*gorWidth/32, 9*gorHeight/32);
+  image(same, 5*gorWidth/8, 9*gorHeight/32);
+  image(tower2, 25*gorWidth/32, 9*gorHeight/32);
 }
 
 void prediction_intro()
@@ -134,7 +134,7 @@ void guess_message()
     else if (towerPredictionNumber==2) 
       image(t_hyp_correct_right, 1*gorWidth/4, 0);
   }
-  else if (fallen!=0)
+  else if ((fallen!=0) && (correctGuess==false))
   {
     if (fallen==1)
       image(t_hyp_wrong_left, 1*gorWidth/4, 0);
@@ -155,4 +155,44 @@ void pred_buttons()
 }
 
 //****************************************************** EXPLANATION
+void fallen_correct(int fr)
+{
+  if (fr==1)
+    image(t_expl_correct_taller, 1*gorWidth/4, 0);
+  else if (fr==2)
+    image(t_expl_correct_thinner, 1*gorWidth/4, 0);
+  else if (fr==3)
+    image(t_expl_correct_weight, 1*gorWidth/4, 0);
+  else if (fr==4)
+    image(t_expl_correct_symm, 1*gorWidth/4, 0);
+}
+
+void fallen_wrong(int fr)
+{
+  if (fr==1)
+    image(t_expl_wrong_taller, 1*gorWidth/4, 0);
+  else if (fr==2)
+    image(t_expl_wrong_thinner, 1*gorWidth/4, 0);
+  else if (fr==3)
+    image(t_expl_wrong_weight, 1*gorWidth/4, 0);
+  else if (fr==4)
+    image(t_expl_wrong_symm, 1*gorWidth/4, 0);
+}
+
+void expl_result(int expl_guess)
+{
+  if (expl_guess == fallen_reason)
+    fallen_correct(fallen_reason);
+  else
+    fallen_wrong(fallen_reason);
+  continue_button();
+}
+
+//****************************************************** TRANSITION
+//void transition_screen()
+//{
+//  image(pretzel, 0, 0);
+//  if (legoTowers.size()==0)
+//    continue_button();
+//}
 

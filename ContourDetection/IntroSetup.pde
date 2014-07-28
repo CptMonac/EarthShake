@@ -100,12 +100,14 @@ void setup()
   loadButtons(); 
   loadText();
   
+  scene1 = true;
   scene2 = false;
   scene3 = false;
   scene3a = false;  
   scene3b = false;
   scene4 = false;
   scene5 = false;
+  scene6 = false;
   
   frame.setSize(780,500);
   frame.setTitle("gorilla window");
@@ -115,6 +117,9 @@ void setup()
   v2.setSize(640,480);
   v2.add(view2);
   v2.show();  
+  
+  scenarioNumber = 2; //int(random(1,6));
+  loadScenario(scenarioNumber);
 }
 
 void draw()
@@ -157,7 +162,9 @@ void draw()
     if (scene4==true)
       guess_message();
     if (scene5==true)
-      image(pretzel,200,200);
+      expl_result(explanation());
+    if (scene6==true)
+      newRoundOfTowers();
   popMatrix();
   
   viewport2 = get(780,20,640,480);

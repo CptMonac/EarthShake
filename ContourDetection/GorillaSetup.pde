@@ -1,5 +1,5 @@
 String leftToMatch, rightToMatch;
-Boolean scene2, scene3, scene3a, scene3b, scene4, scene5;
+Boolean scene1, scene2, scene3, scene3a, scene3b, scene4, scene5, scene6;
 Boolean foundLeftMatch, foundRightMatch;
 Boolean leftDown, rightDown, hasLeft, hasRight;
 Boolean leftStanding, rightStanding;
@@ -8,6 +8,7 @@ String towerPredictionString;
 int towerPredictionNumber;
 Boolean correctGuess;
 int fallen, fallen_reason;
+int scenarioNumber;
 
 /* buttons etc */
 PImage startScreen, pretzel;
@@ -36,16 +37,15 @@ PImage F2_tower, F2_wrong, F2_correct;
 
 void gameSetup()
 {
-  int scenarioNumber = int(random(1,6));
-  loadScenario(scenarioNumber);
-  
-  if (scene2==false) {
+//  int scenarioNumber = int(random(1,6));
+//  loadScenario(scenarioNumber);
+  if (scene1==true)
+  {
     image(startScreen, 0, 0);
     continue_button();
   }
-  if (scene2==true) {
+  else
     image(screen1, 0, 0);
-  }
 }
 
 void gameplay()
@@ -54,11 +54,32 @@ void gameplay()
 
 void mousePressed()
 { 
+  if (scene6==true)
+  {
+    if (continue_pressed()==true)
+    {
+      scene6 = false;
+      scene2 = true;
+    }
+  }
+  
+  if (scene5==true && scene6==false)
+  {
+    if (continue_pressed()==true)
+    {
+      generateNewSet(scenarioNumber);
+      scene2 = false;
+      scene3 = false;
+      scene5 = false;
+      scene6 = true;
+    }
+  }
+  
   if (scene4==true && scene5==false) 
   {
     if (explanation() != 0) {
-      scene2 = false;
-      scene3 = false;
+      //scene2 = false;
+      //scene3 = false;
       scene4 = false;
       scene5 = true;
     }
@@ -88,11 +109,24 @@ void mousePressed()
     }
   }
     
-  if (scene2==false)
+  if (scene1==true && scene2==false)
   {
     if (continue_pressed()==true)
+    {
+      scene1 = false;
       scene2 = true;
+    }
   }
+}
+
+void generateNewSet(int oldSet)
+{
+  int tempNew = int(random(1,6));
+  while (tempNew==oldSet)
+  {
+    tempNew = int(random(1,6));
+  }
+  loadScenario(tempNew);
 }
 
 void loadScenario(int scenarioNumber)
