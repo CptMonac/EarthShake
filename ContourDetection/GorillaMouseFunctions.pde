@@ -6,7 +6,12 @@ Boolean continue_pressed()
   float ytop = 13*gorHeight/16;
   float ybot = ytop + 1*gorHeight/8;
   if ((mouseX >= xleft) && (mouseX <= xright) && (mouseY >= ytop) && (mouseY <= ybot))
+  {
+//    tint(0, 126);
+//    continue_button();
+//    noTint();
     return true;
+  }
   else
     return false;
 }

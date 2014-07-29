@@ -227,7 +227,6 @@ void drawLegoContours_g()
 {
   //Find all contours in input image
   ArrayList<Contour> towerContours = opencv.findContours();
-  ArrayList<Contour> filteredContours = new ArrayList<Contour>();
   
   int adjustx = 0; 
   int adjusty = 3*gorHeight/16; 
@@ -235,7 +234,7 @@ void drawLegoContours_g()
   //Filter contours to only lego towers
   for (Contour contour: towerContours)
   {
-    if(contour.area() > 1000)
+    if(contour.area() > 500)
     {
       //Draw outline approximation
       int side = 0;
@@ -246,7 +245,12 @@ void drawLegoContours_g()
         if (contour.getBoundingBox().height < 100)
           stroke(255, 0, 0);
         else
-          stroke(0, 255, 0);
+        {
+          if (foundLeftMatch==false)
+            break;
+          else
+            stroke(0, 255, 0);
+        }
       }
       else {
         side = 2; //right
@@ -254,16 +258,21 @@ void drawLegoContours_g()
         if (contour.getBoundingBox().height < 100)  
           stroke(255, 0, 0);
         else
-          stroke(0, 255, 0);
+        {
+          if (foundRightMatch==false)
+            break;
+          else
+            stroke(0, 255, 0);
+        }
       }
        
-      if (contour.getBoundingBox().height > 100)
-      {  
-        if ((side==1) && (foundLeftMatch==false))
-          break;
-        else if ((side==2) && (foundRightMatch==false))
-          break;  
-      }
+//      if (contour.getBoundingBox().height > 100)
+//      {  
+//        if ((side==1) && (foundLeftMatch==false))
+//          break;
+//        else if ((side==2) && (foundRightMatch==false))
+//          break;  
+//      }
       
       translate(adjustx,-adjusty);
       contour.draw();
