@@ -10,6 +10,8 @@ Boolean correctGuess;
 int fallen, fallen_reason;
 int scenarioNumber;
 int expl_guess = 0;
+int towerIteration, currentPair;
+IntList towerPairs;
 
 /* buttons etc */
 PImage startScreen, pretzel;
@@ -79,7 +81,7 @@ void mousePressed()
   {
     if (continue_pressed()==true)
     {
-      generateNewSet(scenarioNumber);
+      generateNewSet();
       scene2 = false;
       scene5 = false;
       scene6 = true;
@@ -128,15 +130,39 @@ void mousePressed()
   }
 }
 
-void generateNewSet(int oldSet)
+void generateNewSet()
 {
-  int tempNew = int(random(1,6));
-  while (tempNew==oldSet)
+  int newPair = generateTowerPairOrder();
+  loadScenario(newPair);
+  scenarioNumber = newPair;
+}
+
+void initTowerPairOrder()
+{
+  towerPairs = new IntList();
+  towerPairs.append(1); //A
+  towerPairs.append(2); //B
+  towerPairs.append(3); //C
+  towerPairs.append(4); //D
+  towerPairs.append(5); //F
+  towerPairs.shuffle();
+  towerIteration = 0;
+}
+
+int generateTowerPairOrder()
+{
+  if (towerIteration < 5)
   {
-    tempNew = int(random(1,6));
+    currentPair = towerPairs.get(towerIteration);
+    towerIteration++;
   }
-  loadScenario(tempNew);
-  scenarioNumber = tempNew;
+  else
+  {
+    resetVariables();
+    scene1 = true;
+    scene2 = false;
+  }
+  return currentPair;
 }
 
 void loadScenario(int scenarioNumber)

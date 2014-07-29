@@ -235,7 +235,7 @@ void drawLegoContours_g()
   //Filter contours to only lego towers
   for (Contour contour: towerContours)
   {
-    if(contour.area() > 1500)
+    if(contour.area() > 1000)
     {
       //Draw outline approximation
       int side = 0;

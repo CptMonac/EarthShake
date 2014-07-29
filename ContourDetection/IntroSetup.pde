@@ -113,8 +113,10 @@ void setup()
   v2.add(view2);
   v2.show();  
   
-  scenarioNumber = int(random(1,6));
-  loadScenario(scenarioNumber);
+//  scenarioNumber = int(random(1,6));
+//  loadScenario(scenarioNumber);
+  initTowerPairOrder();
+  generateNewSet();
 }
 
 void draw()
