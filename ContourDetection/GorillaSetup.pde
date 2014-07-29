@@ -9,6 +9,7 @@ int towerPredictionNumber;
 Boolean correctGuess;
 int fallen, fallen_reason;
 int scenarioNumber;
+int expl_guess = 0;
 
 /* buttons etc */
 PImage startScreen, pretzel;
@@ -48,8 +49,8 @@ void gameSetup()
 
 void resetVariables()
 {
-  scene1 = true;
-  scene2 = false;
+  //scene1 = true;
+  //scene2 = false;
   scene3 = false;
   scene3a = false;
   scene3b = false;
@@ -69,8 +70,6 @@ void mousePressed()
   {
     if (continue_pressed()==true)
     {
-      scene6 = false;
-      scene3 = false;
       resetVariables();
       scene2 = true;
     }
@@ -82,7 +81,6 @@ void mousePressed()
     {
       generateNewSet(scenarioNumber);
       scene2 = false;
-      //scene3 = false;
       scene5 = false;
       scene6 = true;
     }
@@ -138,6 +136,7 @@ void generateNewSet(int oldSet)
     tempNew = int(random(1,6));
   }
   loadScenario(tempNew);
+  scenarioNumber = tempNew;
 }
 
 void loadScenario(int scenarioNumber)

@@ -171,7 +171,7 @@ void fallen_wrong(int fr)
     image(t_expl_wrong_symm, 1*gorWidth/4, 0);
 }
 
-void expl_result(int expl_guess)
+void expl_result()
 {
   if (expl_guess == fallen_reason)
     fallen_correct(fallen_reason);

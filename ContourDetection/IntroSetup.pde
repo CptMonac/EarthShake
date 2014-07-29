@@ -101,6 +101,8 @@ void setup()
   loadText();
   
   resetVariables();
+  scene1 = true;
+  scene2 = false;
   
   frame.setSize(780,500);
   frame.setTitle("gorilla window");
@@ -155,7 +157,7 @@ void draw()
     if (scene4==true)
       guess_message();
     if (scene5==true)
-      expl_result(explanation());
+      expl_result();
     if (scene6==true)
       newRoundOfTowers();
   popMatrix();

@@ -70,7 +70,6 @@ Boolean shake_pressed()
 
 int explanation()
 { 
-  int expl_guess = 0;
   // width/4 wide, height/8 tall
   
   //pred_taller = 1
