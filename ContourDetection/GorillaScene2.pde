@@ -287,6 +287,6 @@ void newRoundOfTowers()
   if (extractLegoTowers_g().size() == 0)
     continue_button();
   else
-    image(pretzel, 0, 0);
+    image(t_clear_table, 1*gorWidth/4, 0);
 }
 

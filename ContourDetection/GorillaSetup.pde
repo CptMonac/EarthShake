@@ -16,7 +16,9 @@ IntList towerPairs;
 /* buttons etc */
 PImage startScreen, pretzel;
 PImage continueButton, tower1, tower2, same, shake;
+PImage continueButton_hover, tower1_hover, tower2_hover, same_hover, shake_hover;
 PImage pred_thinner, pred_symm, pred_weight, pred_taller;
+PImage pred_thinner_hover, pred_symm_hover, pred_weight_hover, pred_taller_hover;
 
 /* text bubbles */
 PImage t_expl_correct_symm, t_expl_correct_taller, t_expl_correct_thinner, t_expl_correct_weight;
@@ -24,7 +26,9 @@ PImage t_expl_wrong_symm, t_expl_wrong_taller, t_expl_wrong_thinner, t_expl_wron
 PImage t_hyp_correct_left, t_hyp_correct_right, t_hyp_wrong_left, t_hyp_wrong_right;
 PImage t_place_both, t_place_continue, t_place_left, t_place_right;
 PImage t_place_wrong_both, t_place_wrong_left, t_place_wrong_right;
+PImage t_place_wrong_left_only, t_place_wrong_right_only;
 PImage t_pred_intro, t_pred_left, t_pred_right, t_pred_same;
+PImage t_clear_table;
 
 /* color tower images */
 PImage A1_tower, A1_wrong, A1_correct;
@@ -347,13 +351,21 @@ void loadColorTowers()
 void loadButtons()
 {
   continueButton = loadImage("buttons/continue.png");
+  continueButton_hover = loadImage("buttons/continue_hover.png");
   same = loadImage("buttons/same.png");
+  same_hover = loadImage("buttons/same_hover.png");
   tower1 = loadImage("buttons/first.png");
+  tower1_hover = loadImage("buttons/first_hover.png");
   tower2 = loadImage("buttons/second.png");  
+  tower2_hover = loadImage("buttons/second_hover.png");
   shake = loadImage("buttons/shake.png");
+  shake_hover = loadImage("buttons/shake_hover.png");
   pred_symm = loadImage("buttons/pred_symm.png");
+  pred_symm_hover = loadImage("buttons/pred_symm_hover.png");
   pred_taller = loadImage("buttons/pred_taller.png");
+  pred_taller_hover = loadImage("buttons/pred_taller_hover.png");
   pred_thinner = loadImage("buttons/pred_thinner.png");
+  pred_thinner_hover = loadImage("buttons/pred_thinner_hover.png");
   pred_weight = loadImage("buttons/pred_weight.png");
 }
 
@@ -377,10 +389,13 @@ void loadText()
   t_place_right = loadImage("text/place_right.png");
   t_place_wrong_both = loadImage("text/place_wrong_both.png");
   t_place_wrong_left = loadImage("text/place_wrong_left.png");
+  //t_place_wrong_left_only = loadImage("text/place_wrong_left_only.png");
   t_place_wrong_right = loadImage("text/place_wrong_right.png");
+  //t_place_wrong_right_only = loadImage("text/place_wrong_right_only.png");
   t_pred_intro = loadImage("text/prediction_intro.png");
   t_pred_left = loadImage("text/prediction_left_first.png");
   t_pred_right = loadImage("text/prediction_right_first.png");
   t_pred_same = loadImage("text/prediction_same_first.png");
+  t_clear_table = loadImage("text/clear_table.png");
 }
 
