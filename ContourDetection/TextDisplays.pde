@@ -1,7 +1,7 @@
 PImage wrongTower, correctTower;
 PImage leftToMatchImg, rightToMatchImg;
 PImage LTMwrong, LTMcorrect, RTMwrong, RTMcorrect;
-PImage LTMfinal, RTMfinal;
+PImage LTMfallen, RTMfallen, LTMfinal, RTMfinal;
 
 //****************************************************** PLACING TOWERS
 void placementcircles()

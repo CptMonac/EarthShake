@@ -298,6 +298,45 @@ void drawLegoContours_g()
   }
 }
 
+void drawLegoContours_static()
+{
+  //Find all contours in input image
+  ArrayList<Contour> towerContours = opencv.findContours();
+    
+  //Filter contours to only lego towers
+  for (Contour contour: towerContours)
+  {
+    if(contour.area() > 1500)
+    {
+      //Draw outline approximation
+      int side = 0;
+      
+      if ((contour.getPolygonApproximation().getPoints().get(0).x) < 640/2) {
+        side = 1; //left
+        if (contour.getBoundingBox().height < 100)
+        {
+          image(LTMfallen, 1*gorWidth/2, 5*gorHeight/16);
+        }
+        else
+        {
+          image(leftToMatchImg, 1*gorWidth/2, 5*gorHeight/16);
+        }
+      }
+      else {
+        side = 2; //right
+        if (contour.getBoundingBox().height < 100)  
+        {
+          image(RTMfallen, 23*gorWidth/32, 5*gorHeight/16);
+        }
+        else
+        {
+          image(rightToMatchImg, 23*gorWidth/32, 5*gorHeight/16);
+        }
+      }
+    }
+  }
+}
+
 void newRoundOfTowers()
 {
   if (extractLegoTowers_g().size() == 0)
