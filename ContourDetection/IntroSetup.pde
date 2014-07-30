@@ -77,7 +77,7 @@ void setup()
   opencv = new OpenCV(this, srcImage);
 
   //Setup screen elements
-  size(640+780, 480+20);
+  size(640+780, 480+20, P3D);
   
   legoTowers = new ArrayList<Contour>();
   originalBoundingBoxes = new ArrayList<Rectangle>();

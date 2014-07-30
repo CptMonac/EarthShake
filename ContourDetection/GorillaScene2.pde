@@ -124,29 +124,29 @@ void trackLegoTowers_g2()
         {
           if (noteArray.get(0)==leftToMatch)
           {
-            if (scene2==true && scene3==false)
-              match_left_image();
+//            if (scene2==true && scene3==false)
+//              match_left_image();
             foundLeftMatch = true;
           }
-          else 
-          {
-            if (scene2==true && scene3==false)
-              mismatch_left_image();
-          }
+//          else 
+//          {
+//            if (scene2==true && scene3==false)
+//              mismatch_left_image();
+//          }
         }
         else if ((rightDown==false) && (hasRight==true))
         {
           if (noteArray.get(0)==rightToMatch)
           {
-            if (scene2==true && scene3==false)
-              match_right_image();
+//            if (scene2==true && scene3==false)
+//              match_right_image();
             foundRightMatch = true;
           }
-          else
-          {
-            if (scene2==true && scene3==false)
-              mismatch_right_image();
-          }
+//          else
+//          {
+//            if (scene2==true && scene3==false)
+//              mismatch_right_image();
+//          }
         } 
       }
       else if (noteArray.size()==2)
@@ -155,37 +155,37 @@ void trackLegoTowers_g2()
         {
           if (noteArray.get(0)==leftToMatch)
           {
-            if (scene2==true && scene3==false)
-              match_left_image();
+//            if (scene2==true && scene3==false)
+//              match_left_image();
             foundLeftMatch = true;
           }
-          else 
-          {
-            if (scene2==true && scene3==false)
-              mismatch_left_image();
-          }
+//          else 
+//          {
+//            if (scene2==true && scene3==false)
+//              mismatch_left_image();
+//          }
         }
         if (rightDown==false)
         {
           if (noteArray.get(1)==rightToMatch)
           {
-            if (scene2==true && scene3==false)
-              match_right_image();
+//            if (scene2==true && scene3==false)
+//              match_right_image();
             foundRightMatch = true;
           }
-          else 
-          {
-            if (scene2==true && scene3==false)
-              mismatch_right_image();
-          }
+//          else 
+//          {
+//            if (scene2==true && scene3==false)
+//              mismatch_right_image();
+//          }
         }
       } 
     } 
   }
-  if (hasLeft==false)
-    instr_place_left_img();
-  if (hasRight==false)
-    instr_place_right_img();  
+//  if (hasLeft==false)
+//    instr_place_left_img();
+//  if (hasRight==false)
+//    instr_place_right_img();  
     
   if (scene2==true && scene3==false)
   {
@@ -212,7 +212,18 @@ void trackLegoTowers_g2()
 
 void checkTowerImage()
 {
-  
+  if (hasLeft==false)
+    instr_place_left_img();
+  if (hasRight==false)
+    instr_place_right_img();
+  if ((hasLeft==true) && (foundLeftMatch==false))
+    mismatch_left_image();
+  if ((hasLeft==true) && (foundLeftMatch==true))
+    match_left_image();
+  if ((hasRight==true) && (foundRightMatch==false))
+    mismatch_right_image();
+  if ((hasRight==true) && (foundRightMatch==true))
+    match_right_image();
 }
 
 void checkTowerMatch()

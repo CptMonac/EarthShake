@@ -186,6 +186,8 @@ void expl_result()
     fallen_correct(fallen_reason);
   else
     fallen_wrong(fallen_reason);
+  scene2 = false;
+  scene3 = false;
   expl_towerImages();
   continue_button();
 }

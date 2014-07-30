@@ -138,9 +138,18 @@ void mousePressed()
 
 void generateNewSet()
 {
-  int newPair = generateTowerPairOrder();
-  loadScenario(newPair);
-  scenarioNumber = newPair;
+  if (towerIteration >= 5)
+  {
+    resetVariables();
+    scene1 = true;
+    scene2 = false;
+  }
+  else
+  {
+    int newPair = generateTowerPairOrder();
+    loadScenario(newPair);
+    scenarioNumber = newPair;
+  }
 }
 
 void initTowerPairOrder()
@@ -157,17 +166,8 @@ void initTowerPairOrder()
 
 int generateTowerPairOrder()
 {
-  if (towerIteration < 5)
-  {
-    currentPair = towerPairs.get(towerIteration);
-    towerIteration++;
-  }
-  else
-  {
-    resetVariables();
-    scene1 = true;
-    scene2 = false;
-  }
+  currentPair = towerPairs.get(towerIteration);
+  towerIteration++;
   return currentPair;
 }
 
