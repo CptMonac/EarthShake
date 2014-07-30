@@ -140,9 +140,9 @@ void generateNewSet()
 {
   if (towerIteration >= 5)
   {
-    resetVariables();
     scene1 = true;
     scene2 = false;
+    resetVariables();
   }
   else
   {

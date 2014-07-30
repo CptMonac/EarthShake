@@ -21,7 +21,7 @@ Boolean tower1_selected()
   float xleft = 15*gorWidth/32;
   float xright = xleft + 1*gorWidth/8; //+100
   float ytop = 9*gorHeight/32;
-  float ybot = ytop + 1*gorHeight/16;
+  float ybot = ytop + 1*gorHeight/8;
   if ((mouseX >= xleft) && (mouseX <= xright) && (mouseY >= ytop) && (mouseY <= ybot)) {
     towerPredictionNumber = 1;
     towerPredictionString = "TOWER 1 will fall first.";
@@ -36,7 +36,7 @@ Boolean same_selected()
   float xleft = 5*gorWidth/8;
   float xright = xleft + 1*gorWidth/8; //+100
   float ytop = 9*gorHeight/32;
-  float ybot = ytop + 1*gorHeight/16;
+  float ybot = ytop + 1*gorHeight/8;
   if ((mouseX >= xleft) && (mouseX <= xright) && (mouseY >= ytop) && (mouseY <= ybot)) {
     towerPredictionNumber = 3;
     towerPredictionString = "BOTH TOWERS will fall at the same time.";
@@ -51,7 +51,7 @@ Boolean tower2_selected()
   float xleft = 25*gorWidth/32;
   float xright = xleft + 1*gorWidth/8; //+100
   float ytop = 9*gorHeight/32;
-  float ybot = ytop + 1*gorHeight/16;
+  float ybot = ytop + 1*gorHeight/8;
   if ((mouseX >= xleft) && (mouseX <= xright) && (mouseY >= ytop) && (mouseY <= ybot)) {
     towerPredictionNumber = 2;
     towerPredictionString = "TOWER 2 will fall first.";
