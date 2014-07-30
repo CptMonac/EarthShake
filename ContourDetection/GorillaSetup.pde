@@ -74,11 +74,11 @@ void mousePressed()
 { 
   if (scene6==true)
   {
-    if (continue_pressed()==true)
-    {
-      resetVariables();
-      scene2 = true;
-    }
+//    if (continue_pressed()==true)
+//    {
+//      resetVariables();
+//      scene2 = true;
+//    }
   }
   
   if (scene5==true && scene6==false)

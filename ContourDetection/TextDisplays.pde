@@ -12,14 +12,14 @@ void placementcircles()
 void continue_button()
 {
   image(continueButton, 17*gorWidth/32, 13*gorHeight/16);
-  float xleft = 17*gorWidth/32;
-  float xright = xleft + 3*gorWidth/8;
-  float ytop = 13*gorHeight/16;
-  float ybot = ytop + 1*gorHeight/8;
-  if ((mouseX >= xleft) && (mouseX <= xright) && (mouseY >= ytop) && (mouseY <= ybot))
-  {
-    image(continueButton_hover, 17*gorWidth/32, 13*gorHeight/16);
-  }
+//  float xleft = 17*gorWidth/32;
+//  float xright = xleft + 3*gorWidth/8;
+//  float ytop = 13*gorHeight/16;
+//  float ybot = ytop + 1*gorHeight/8;
+//  if ((mouseX >= xleft) && (mouseX <= xright) && (mouseY >= ytop) && (mouseY <= ybot))
+//  {
+//    image(continueButton_hover, 17*gorWidth/32, 13*gorHeight/16);
+//  }
 }
 
 void instr_place_tower() 

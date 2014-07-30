@@ -246,9 +246,10 @@ void drawLegoContours_g()
           stroke(255, 0, 0);
         else
         {
-          if (foundLeftMatch==false)
-            break;
-          else
+          //if (foundLeftMatch==false)
+          //  break;
+          //else
+            fill(255,255,255);
             stroke(0, 255, 0);
         }
       }
@@ -259,9 +260,10 @@ void drawLegoContours_g()
           stroke(255, 0, 0);
         else
         {
-          if (foundRightMatch==false)
-            break;
-          else
+          //if (foundRightMatch==false)
+          //  break;
+          //else
+            fill(255,255,255);   
             stroke(0, 255, 0);
         }
       }
@@ -277,7 +279,7 @@ void drawLegoContours_g()
       translate(adjustx,-adjusty);
       contour.draw();
       translate(-adjustx,adjusty);
-      
+      noFill();
     }
   }
 }
@@ -285,7 +287,10 @@ void drawLegoContours_g()
 void newRoundOfTowers()
 {
   if (extractLegoTowers_g().size() == 0)
-    continue_button();
+  {
+    resetVariables();
+    scene2 = true;
+  }
   else
     image(t_clear_table, 1*gorWidth/4, 0);
 }
