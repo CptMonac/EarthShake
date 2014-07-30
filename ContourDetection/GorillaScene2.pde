@@ -264,7 +264,7 @@ void drawLegoContours_g()
       
       if ((contour.getPolygonApproximation().getPoints().get(0).x) < 640/2) {
         side = 1; //left
-        adjustx = 11*gorWidth/32;
+        adjustx = 10*gorWidth/32;
         if (contour.getBoundingBox().height < 100)
         {
           fill(255, 140, 140);
@@ -278,7 +278,7 @@ void drawLegoContours_g()
       }
       else {
         side = 2; //right
-        adjustx = 8*gorWidth/32;
+        adjustx = 7*gorWidth/32;
         if (contour.getBoundingBox().height < 100)  
         {
           fill(255, 140, 140);
@@ -319,7 +319,7 @@ void drawLegoContours_static()
         }
         else
         {
-          image(leftToMatchImg, 1*gorWidth/2, 5*gorHeight/16);
+          image(LTMstanding, 1*gorWidth/2, 5*gorHeight/16);
         }
       }
       else {
@@ -330,7 +330,7 @@ void drawLegoContours_static()
         }
         else
         {
-          image(rightToMatchImg, 23*gorWidth/32, 5*gorHeight/16);
+          image(RTMstanding, 23*gorWidth/32, 5*gorHeight/16);
         }
       }
     }

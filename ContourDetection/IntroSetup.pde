@@ -154,8 +154,8 @@ void draw()
         prediction_intro();
       if (scene3b==true)
         prediction_discusschoice();
-      drawLegoContours_g();
-      //drawLegoContours_static();
+      //drawLegoContours_g();
+      drawLegoContours_static();
     }
     if (scene4==true)
       guess_message();

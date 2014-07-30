@@ -31,16 +31,26 @@ PImage t_pred_intro, t_pred_left, t_pred_right, t_pred_same;
 PImage t_clear_table;
 
 /* color tower images */
-PImage A1_tower, A1_wrong, A1_correct;
-PImage A2_tower, A2_wrong, A2_correct;
-PImage B1_tower, B1_wrong, B1_correct;
-PImage B2_tower, B2_wrong, B2_correct;
-PImage C1_tower, C1_wrong, C1_correct;
-PImage C2_tower, C2_wrong, C2_correct;
-PImage D1_tower, D1_wrong, D1_correct;
-PImage D2_tower, D2_wrong, D2_correct;
-PImage F1_tower, F1_wrong, F1_correct;
-PImage F2_tower, F2_wrong, F2_correct;
+PImage A1_guide, A1_wrong, A1_correct;
+PImage A1_tower, A1_fallen, A1_expl;
+PImage A2_guide, A2_wrong, A2_correct;
+PImage A2_tower, A2_fallen, A2_expl;
+PImage B1_guide, B1_wrong, B1_correct;
+PImage B1_tower, B1_fallen, B1_expl;
+PImage B2_guide, B2_wrong, B2_correct;
+PImage B2_tower, B2_fallen, B2_expl;
+PImage C1_guide, C1_wrong, C1_correct;
+PImage C1_tower, C1_fallen, C1_expl;
+PImage C2_guide, C2_wrong, C2_correct;
+PImage C2_tower, C2_fallen, C2_expl;
+PImage D1_guide, D1_wrong, D1_correct;
+PImage D1_tower, D1_fallen, D1_expl;
+PImage D2_guide, D2_wrong, D2_correct;
+PImage D2_tower, D2_fallen, D2_expl;
+PImage F1_guide, F1_wrong, F1_correct;
+PImage F1_tower, F1_fallen, F1_expl;
+PImage F2_guide, F2_wrong, F2_correct;
+PImage F2_tower, F2_fallen, F2_expl;
 
 void gameSetup()
 {
@@ -178,37 +188,41 @@ void loadScenario(int scenarioNumber)
     leftToMatch = "A1";
     rightToMatch = "A2";
     
-    leftToMatchImg = A1_tower;
+    leftToMatchImg = A1_guide;
     LTMwrong = A1_wrong;
     LTMcorrect = A1_correct;
-    LTMfallen = pretzel;
-    LTMfinal = pretzel;
+    LTMstanding = A1_tower;
+    LTMfallen = A1_fallen;
+    LTMfinal = pretzel; //A1_expl;
     
-    rightToMatchImg = A2_tower;
+    rightToMatchImg = A2_guide;
     RTMwrong = A2_wrong;
     RTMcorrect = A2_correct;
-    RTMfallen = pretzel;
-    RTMfinal = pretzel;
+    RTMstanding = A2_tower;
+    RTMfallen = A2_fallen;
+    RTMfinal = pretzel; //A2_expl;
     
     fallen_reason = 4; //symm
   }
   
   else if (scenarioNumber==2)
   {
-    leftToMatch = "B1";
-    rightToMatch = "B2";
+    leftToMatch = "B2";
+    rightToMatch = "B1";
     
-    leftToMatchImg = B1_tower;
-    LTMwrong = B1_wrong;
-    LTMcorrect = B1_correct;
-    LTMfallen = pretzel;
-    LTMfinal = pretzel;
-    
-    rightToMatchImg = B2_tower;
-    RTMwrong = B2_wrong;
-    RTMcorrect = B2_correct;
-    RTMfallen = pretzel;
-    RTMfinal = pretzel;
+    leftToMatchImg = B2_guide;
+    LTMwrong = B2_wrong;
+    LTMcorrect = B2_correct;
+    LTMstanding = B2_tower;
+    LTMfallen = B2_fallen;
+    LTMfinal = pretzel; //B2_expl;
+
+    rightToMatchImg = B1_guide;
+    RTMwrong = B1_wrong;
+    RTMcorrect = B1_correct;
+    RTMstanding = B1_tower;
+    RTMfallen = B1_fallen;
+    RTMfinal = pretzel; //B1_expl;
     
     fallen_reason = 3; //weight
   }  
@@ -218,17 +232,19 @@ void loadScenario(int scenarioNumber)
     leftToMatch = "C1";
     rightToMatch = "C2";
     
-    leftToMatchImg = C1_tower;
+    leftToMatchImg = C1_guide;
     LTMwrong = C1_wrong;
     LTMcorrect = C1_correct;
-    LTMfallen = pretzel;
-    LTMfinal = pretzel;
+    LTMstanding = C1_tower;
+    LTMfallen = C1_fallen;
+    LTMfinal = pretzel; //C1_expl;
     
-    rightToMatchImg = C2_tower;
+    rightToMatchImg = C2_guide;
     RTMwrong = C2_wrong;
     RTMcorrect = C2_correct;
-    RTMfallen = pretzel;
-    RTMfinal = pretzel;
+    RTMstanding = C2_tower;
+    RTMfallen = C2_fallen;
+    RTMfinal = pretzel; //C2_expl;
     
     fallen_reason = 4; //symm
   }    
@@ -238,17 +254,19 @@ void loadScenario(int scenarioNumber)
     leftToMatch = "D1";
     rightToMatch = "D2";
     
-    leftToMatchImg = D1_tower;
+    leftToMatchImg = D1_guide;
     LTMwrong = D1_wrong;
     LTMcorrect = D1_correct;
-    LTMfallen = pretzel;
-    LTMfinal = pretzel;
+    LTMstanding = D1_tower;
+    LTMfallen = D1_fallen;
+    LTMfinal = pretzel; //D1_expl;
     
-    rightToMatchImg = D2_tower;
+    rightToMatchImg = D2_guide;
     RTMwrong = D2_wrong;
     RTMcorrect = D2_correct;
-    RTMfallen = pretzel;
-    RTMfinal = pretzel;
+    RTMstanding = D2_tower;
+    RTMfallen = D2_fallen;
+    RTMfinal = pretzel; //D2_expl;
     
     fallen_reason = 2; //thinner
   }  
@@ -258,17 +276,19 @@ void loadScenario(int scenarioNumber)
     leftToMatch = "F1";
     rightToMatch = "F2";
     
-    leftToMatchImg = F1_tower;
+    leftToMatchImg = F1_guide;
     LTMwrong = F1_wrong;
     LTMcorrect = F1_correct;
-    LTMfallen = pretzel;
-    LTMfinal = pretzel;
+    LTMstanding = F1_tower;
+    LTMfallen = F1_fallen;
+    LTMfinal = pretzel; //F1_expl;
     
-    rightToMatchImg = F2_tower;
+    rightToMatchImg = F2_guide;
     RTMwrong = F2_wrong;
     RTMcorrect = F2_correct;
-    RTMfallen = pretzel;
-    RTMfinal = pretzel;
+    RTMstanding = F2_tower;
+    RTMfallen = F2_fallen;
+    RTMfinal = pretzel; //F2_expl;
     
     fallen_reason = 4; //symm
   }   
@@ -281,12 +301,14 @@ void loadScenario(int scenarioNumber)
     leftToMatchImg = pretzel;
     LTMwrong = pretzel;
     LTMcorrect = pretzel;
+    LTMstanding = pretzel;
     LTMfallen = pretzel;
     LTMfinal = pretzel;
     
     rightToMatchImg = pretzel;
     RTMwrong = pretzel;
     RTMcorrect = pretzel;
+    RTMstanding = pretzel;
     RTMfallen = pretzel;
     RTMfinal = pretzel;
     
@@ -297,46 +319,75 @@ void loadScenario(int scenarioNumber)
 
 void loadColorTowers()
 {
-//  A1_tower = loadImage("color/A1_tower.png");
-  A1_tower = loadImage("color/A1_arrow.png");
+  A1_tower = loadImage("color/A1_tower.png");
+  A1_guide = loadImage("color/A1_arrow.png");
   A1_wrong = loadImage("color/A1_wrong.png");
   A1_correct = loadImage("color/A1_correct.png");
-//  A2_tower = loadImage("color/A2_tower.png");
-  A2_tower = loadImage("color/A2_arrow.png");
+  A1_fallen = loadImage("color/A1_fallen.png");
+  A1_expl = loadImage("color/A1_expl.png");
+
+  A2_tower = loadImage("color/A2_tower.png");
+  A2_guide = loadImage("color/A2_arrow.png");
   A2_wrong = loadImage("color/A2_wrong.png");
   A2_correct = loadImage("color/A2_correct.png");
-//  B1_tower = loadImage("color/B1_tower.png");
-  B1_tower = loadImage("color/B1_arrow.png");
+  A2_fallen = loadImage("color/A2_fallen.png");
+  A2_expl = loadImage("color/A2_expl.png");
+
+  B1_tower = loadImage("color/B1_tower.png");
+  B1_guide = loadImage("color/B1_arrow.png");
   B1_wrong = loadImage("color/B1_wrong.png");
   B1_correct = loadImage("color/B1_correct.png");
-//  B2_tower = loadImage("color/B2_tower.png");
-  B2_tower = loadImage("color/B2_arrow.png");
+  B1_fallen = loadImage("color/B1_fallen.png");
+  B1_expl = loadImage("color/B1_expl.png");
+
+  B2_tower = loadImage("color/B2_tower.png");
+  B2_guide = loadImage("color/B2_arrow.png");
   B2_wrong = loadImage("color/B2_wrong.png");
   B2_correct = loadImage("color/B2_correct.png");
-//  C1_tower = loadImage("color/C1_tower.png");
-  C1_tower = loadImage("color/C1_arrow.png");
+  B2_fallen = loadImage("color/B2_fallen.png");
+  B2_expl = loadImage("color/B2_expl.png");
+
+  C1_tower = loadImage("color/C1_tower.png");
+  C1_guide = loadImage("color/C1_arrow.png");
   C1_wrong = loadImage("color/C1_wrong.png");
   C1_correct = loadImage("color/C1_correct.png");
-//  C2_tower = loadImage("color/C2_tower.png");
-  C2_tower = loadImage("color/C2_arrow.png");
+  C1_fallen = loadImage("color/C1_fallen.png");
+  C1_expl = loadImage("color/C1_expl.png");
+
+  C2_tower = loadImage("color/C2_tower.png");
+  C2_guide = loadImage("color/C2_arrow.png");
   C2_wrong = loadImage("color/C2_wrong.png");
   C2_correct = loadImage("color/C2_correct.png");
-//  D1_tower = loadImage("color/D1_tower.png");
-  D1_tower = loadImage("color/D1_arrow.png");
+  C2_fallen = loadImage("color/C2_fallen.png");
+  C2_expl = loadImage("color/C2_expl.png");
+
+  D1_tower = loadImage("color/D1_tower.png");
+  D1_guide = loadImage("color/D1_arrow.png");
   D1_wrong = loadImage("color/D1_wrong.png");
   D1_correct = loadImage("color/D1_correct.png");
-//  D2_tower = loadImage("color/D2_tower.png");
-  D2_tower = loadImage("color/D2_arrow.png");
+  D1_fallen = loadImage("color/D1_fallen.png");
+  D1_expl = loadImage("color/D1_expl.png");
+
+  D2_tower = loadImage("color/D2_tower.png");
+  D2_guide = loadImage("color/D2_arrow.png");
   D2_wrong = loadImage("color/D2_wrong.png");
   D2_correct = loadImage("color/D2_correct.png");
-//  F1_tower = loadImage("color/F1_tower.png");
-  F1_tower = loadImage("color/F1_arrow.png");
+  D2_fallen = loadImage("color/D2_fallen.png");
+  D2_expl = loadImage("color/D2_expl.png");
+
+  F1_tower = loadImage("color/F1_tower.png");
+  F1_guide = loadImage("color/F1_arrow.png");
   F1_wrong = loadImage("color/F1_wrong.png");
   F1_correct = loadImage("color/F1_correct.png");
-//  F2_tower = loadImage("color/F2_tower.png");
-  F2_tower = loadImage("color/F2_arrow.png");
+  F1_fallen = loadImage("color/F1_fallen.png");
+  F1_expl = loadImage("color/F1_expl.png");
+
+  F2_tower = loadImage("color/F2_tower.png");
+  F2_guide = loadImage("color/F2_arrow.png");
   F2_wrong = loadImage("color/F2_wrong.png");
   F2_correct = loadImage("color/F2_correct.png");   
+  F2_fallen = loadImage("color/F2_fallen.png");
+  F2_expl = loadImage("color/F2_expl.png");
 }
 //
 //ArrayList<PImage> createColorImageArray()
