@@ -130,7 +130,8 @@ void trackLegoTowers_g2()
           }
           else 
           {
-            mismatch_left_image();
+            if (scene2==true && scene3==false)
+              mismatch_left_image();
           }
         }
         else if ((rightDown==false) && (hasRight==true))
@@ -143,7 +144,8 @@ void trackLegoTowers_g2()
           }
           else
           {
-            mismatch_right_image();
+            if (scene2==true && scene3==false)
+              mismatch_right_image();
           }
         } 
       }
@@ -159,7 +161,8 @@ void trackLegoTowers_g2()
           }
           else 
           {
-            mismatch_left_image();
+            if (scene2==true && scene3==false)
+              mismatch_left_image();
           }
         }
         if (rightDown==false)
@@ -172,7 +175,8 @@ void trackLegoTowers_g2()
           }
           else 
           {
-            mismatch_right_image();
+            if (scene2==true && scene3==false)
+              mismatch_right_image();
           }
         }
       } 
@@ -184,7 +188,10 @@ void trackLegoTowers_g2()
     instr_place_right_img();  
     
   if (scene2==true && scene3==false)
+  {
+    checkTowerImage();
     checkTowerMatch();
+  }
     
   if (scene4==true)
   {
@@ -201,6 +208,11 @@ void trackLegoTowers_g2()
       correctGuess = true;
     }
   }
+}
+
+void checkTowerImage()
+{
+  
 }
 
 void checkTowerMatch()
@@ -234,7 +246,7 @@ void drawLegoContours_g()
   //Filter contours to only lego towers
   for (Contour contour: towerContours)
   {
-    if(contour.area() > 500)
+    if(contour.area() > 1500)
     {
       //Draw outline approximation
       int side = 0;
@@ -243,39 +255,30 @@ void drawLegoContours_g()
         side = 1; //left
         adjustx = 11*gorWidth/32;
         if (contour.getBoundingBox().height < 100)
+        {
+          fill(255, 140, 140);
           stroke(255, 0, 0);
+        }
         else
         {
-          //if (foundLeftMatch==false)
-          //  break;
-          //else
-            fill(255,255,255);
-            stroke(0, 255, 0);
+          fill(140, 255, 140);
+          stroke(0, 255, 0);
         }
       }
       else {
         side = 2; //right
         adjustx = 8*gorWidth/32;
         if (contour.getBoundingBox().height < 100)  
+        {
+          fill(255, 140, 140);
           stroke(255, 0, 0);
+        }
         else
         {
-          //if (foundRightMatch==false)
-          //  break;
-          //else
-            fill(255,255,255);   
-            stroke(0, 255, 0);
+          fill(140, 255, 140);   
+          stroke(0, 255, 0);
         }
       }
-       
-//      if (contour.getBoundingBox().height > 100)
-//      {  
-//        if ((side==1) && (foundLeftMatch==false))
-//          break;
-//        else if ((side==2) && (foundRightMatch==false))
-//          break;  
-//      }
-      
       translate(adjustx,-adjusty);
       contour.draw();
       translate(-adjustx,adjusty);

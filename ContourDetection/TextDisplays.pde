@@ -1,6 +1,7 @@
 PImage wrongTower, correctTower;
 PImage leftToMatchImg, rightToMatchImg;
 PImage LTMwrong, LTMcorrect, RTMwrong, RTMcorrect;
+PImage LTMfinal, RTMfinal;
 
 //****************************************************** PLACING TOWERS
 void placementcircles()
@@ -185,7 +186,15 @@ void expl_result()
     fallen_correct(fallen_reason);
   else
     fallen_wrong(fallen_reason);
+  expl_towerImages();
   continue_button();
+}
+
+
+void expl_towerImages()
+{
+  image(LTMfinal, 1*gorWidth/2, 5*gorHeight/16);
+  image(RTMfinal, 23*gorWidth/32, 5*gorHeight/16);
 }
 
 //****************************************************** TRANSITION

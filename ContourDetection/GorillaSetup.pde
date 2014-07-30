@@ -104,6 +104,8 @@ void mousePressed()
   {
     if (shake_pressed()==true) {
       scene3b = false;
+      //scene2 = false;
+      //scene3 = false;
       scene4 = true;
     }
   }
@@ -179,9 +181,11 @@ void loadScenario(int scenarioNumber)
     leftToMatchImg = A1_tower;
     LTMwrong = A1_wrong;
     LTMcorrect = A1_correct;
+    LTMfinal = pretzel;
     rightToMatchImg = A2_tower;
     RTMwrong = A2_wrong;
     RTMcorrect = A2_correct;
+    RTMfinal = pretzel;
     
     fallen_reason = 4; //symm
   }
@@ -194,9 +198,11 @@ void loadScenario(int scenarioNumber)
     leftToMatchImg = B1_tower;
     LTMwrong = B1_wrong;
     LTMcorrect = B1_correct;
+    LTMfinal = pretzel;
     rightToMatchImg = B2_tower;
     RTMwrong = B2_wrong;
     RTMcorrect = B2_correct;
+    RTMfinal = pretzel;
     
     fallen_reason = 3; //weight
   }  
@@ -209,9 +215,11 @@ void loadScenario(int scenarioNumber)
     leftToMatchImg = C1_tower;
     LTMwrong = C1_wrong;
     LTMcorrect = C1_correct;
+    LTMfinal = pretzel;
     rightToMatchImg = C2_tower;
     RTMwrong = C2_wrong;
     RTMcorrect = C2_correct;
+    RTMfinal = pretzel;
     
     fallen_reason = 4; //symm
   }    
@@ -224,9 +232,11 @@ void loadScenario(int scenarioNumber)
     leftToMatchImg = D1_tower;
     LTMwrong = D1_wrong;
     LTMcorrect = D1_correct;
+    LTMfinal = pretzel;
     rightToMatchImg = D2_tower;
     RTMwrong = D2_wrong;
     RTMcorrect = D2_correct;
+    RTMfinal = pretzel;
     
     fallen_reason = 2; //thinner
   }  
@@ -239,9 +249,11 @@ void loadScenario(int scenarioNumber)
     leftToMatchImg = F1_tower;
     LTMwrong = F1_wrong;
     LTMcorrect = F1_correct;
+    LTMfinal = pretzel;
     rightToMatchImg = F2_tower;
     RTMwrong = F2_wrong;
     RTMcorrect = F2_correct;
+    RTMfinal = pretzel;
     
     fallen_reason = 4; //symm
   }   
@@ -254,9 +266,11 @@ void loadScenario(int scenarioNumber)
     leftToMatchImg = pretzel;
     LTMwrong = pretzel;
     LTMcorrect = pretzel;
+    LTMfinal = pretzel;
     rightToMatchImg = pretzel;
     RTMwrong = pretzel;
     RTMcorrect = pretzel;
+    RTMfinal = pretzel;
     
     fallen_reason = 0;
   }  
