@@ -8,16 +8,16 @@ void cleanKinectInput()
   {
     if (inputDepthMap[i] == 0) { //Error depth map value 
       context.depthImage().pixels[i] = color(0,0,0); 
-      colorTower.pixels[i] = color(0,0,0);
+      //colorTower.pixels[i] = color(0,0,0);
     }
 
     if ((inputDepthMap[i]< 600) || (inputDepthMap[i] > 1000)) { //Irrelevant depths
       context.depthImage().pixels[i] = color(0,0,0);
-      colorTower.pixels[i] = color(0,0,0);
+      //colorTower.pixels[i] = color(0,0,0);
     }
 
-    else if ((inputDepthMap[i] > 400) && (inputDepthMap[i] < 1000))
-      colorTower.pixels[i] = context.rgbImage().pixels[i];
+    //else if ((inputDepthMap[i] > 400) && (inputDepthMap[i] < 1000))
+      //colorTower.pixels[i] = context.rgbImage().pixels[i];
   }
 }
 
@@ -178,19 +178,19 @@ ArrayList<Contour> extractLegoTowers()
     {
       filteredContours.add(contour);
 
-      contour.draw();
+      //contour.draw();
       //fill(0,0,255);
       
       //Draw polygon approximation
       stroke(255, 0, 0);
 
      
-        beginShape();
-        for (PVector point : contour.getPolygonApproximation().getPoints())
-        {
-          vertex(point.x, point.y);
-        }
-        endShape();
+//        beginShape();
+//        for (PVector point : contour.getPolygonApproximation().getPoints())
+//        {
+//          //vertex(point.x, point.y);
+//        }
+//        endShape();
     }
   }
   //fill(255, 255, 255);

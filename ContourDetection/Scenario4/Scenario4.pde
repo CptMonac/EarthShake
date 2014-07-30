@@ -42,6 +42,21 @@ void setup()
   	//Initialize GUI
   	controlP5 = new ControlP5(this);
   	messageBox = controlP5.addGroup("messageBox", width/2 - 150,100,300);
+  messageBox.setBackgroundHeight(120);
+    messageBox.setBackgroundColor(color(0,128));
+    messageBox.hideBar();
+
+    Textlabel messagelabel = controlP5.addTextlabel("messageBoxLabel", "Please place only one tower on the table.", 20, 20);
+    messagelabel.moveTo(messageBox);
+          PImage[] shakeIcon = {loadImage("shakehovercircle.png"), loadImage("shakehover.png"), loadImage("shake.png")};
+
+    controlP5.addButton("shake")
+           .setValue(128)
+           .setPosition(width/2 -120, height/2 -90)
+           .setImages(shakeIcon)
+           .setSize(100,40)
+           .updateSize();
+    controlP5.controller("shake").hide();
   	shakeVisible = false;
   	timerVisible = false;
   	startScreen = loadImage("startscreen.jpg");
@@ -50,19 +65,23 @@ void setup()
 
 void draw()
 {
-	if (singleTowerCheck())
+  context.update();
+    cleanKinectInput();
+
+  srcImage = context.depthImage();
+  opencv = new OpenCV(this, srcImage);
+  opencv.gray();
+  opencv.threshold(70);
+  legoTowers = extractLegoTowers();
+  //image(context.rgbImage(),0,0);
+  if (singleTowerCheck())
 	{
 		if (!shakeVisible)
 		{
 			shakeVisible = true;
-			PImage[] shakeIcon = {loadImage("shakehovercircle.png"), loadImage("shakehover.png"), loadImage("shake.png")};
+                       controlP5.controller("shake").setVisible(true);
    			//noTint();
-			controlP5.addButton("shake")
-					 .setValue(128)
-					 .setPosition(width/2 -120, height/2 -90)
-					 .setImages(shakeIcon)
-					 .setSize(100,40)
-					 .updateSize();
+			
 		    image(startScreen,0,0);
 		}
 		else if (shakeVisible)
@@ -82,7 +101,20 @@ void draw()
 			textSize(32);
 			text((elapsedTime - startTime)/1000, width/2 - 100, height/2 - 40);
 		}
+
 	}
+        else
+        {
+          shakeVisible = false;
+          startTime = 0;
+          
+          image(context.depthImage(),0,0);  
+          controlP5.controller("shake").hide();
+    messageBox.show();
+
+           //image(context.rgbImage(),0,0);
+           //legoTowers = extractLegoTowers();
+       }
 }
 
 void setupKinect()
@@ -148,27 +180,29 @@ ArrayList<Contour> buildLegoDatabase()
 		opencv.threshold(70);
 		legoDatabase.addAll(extractLegoTowers());
 	}
+        opencv = new OpenCV(this, context.depthImage());
+
 	return legoDatabase;
 }
 
 boolean singleTowerCheck()
 {
-	if (legoTowers.size() > 1)
+  println(legoTowers.size());
+	
+  if (legoTowers.size() > 1)
 	{
-		messageBox.setBackgroundHeight(120);
-		messageBox.setBackgroundColor(color(0,128));
-		messageBox.hideBar();
-
-		Textlabel messagelabel = controlP5.addTextlabel("messageBoxLabel", "Please place only one tower on the table.", 20, 20);
-		messagelabel.moveTo(messageBox);
-		messageBox.show();
+	
 		return false;
 	}
-	else
+	else if (legoTowers.size() == 1)
 	{
 		messageBox.hide();
 		return true;
 	}
+         else
+         {
+           return false;
+         }
 }
 
 ArrayList<String> loadTowerColors() 
