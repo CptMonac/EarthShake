@@ -202,15 +202,16 @@ void expl_result()
     fallen_correct(fallen_reason);
   else
     fallen_wrong(fallen_reason);
-  scene2 = false;
-  scene3 = false;
   expl_towerImages();
   continue_button();
+  //scene2 = false;
+  //scene3 = false;
 }
 
 
 void expl_towerImages()
 {
+  explain = true;
   image(LTMfinal, 1*gorWidth/2, 5*gorHeight/16);
   image(RTMfinal, 23*gorWidth/32, 5*gorHeight/16);
 }

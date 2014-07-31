@@ -6,7 +6,7 @@ Boolean leftStanding, rightStanding;
 Boolean placingTowers;
 String towerPredictionString;
 int towerPredictionNumber;
-Boolean correctGuess;
+Boolean correctGuess, explain;
 int fallen, fallen_reason;
 int scenarioNumber;
 int expl_guess = 0;
@@ -77,6 +77,7 @@ void resetVariables()
   towerPredictionNumber = 0;
   towerPredictionString = "";
   correctGuess = false;
+  explain = false;
   fallen = 0;  
 }
 
@@ -193,14 +194,14 @@ void loadScenario(int scenarioNumber)
     LTMcorrect = A1_correct;
     LTMstanding = A1_tower;
     LTMfallen = A1_fallen;
-    LTMfinal = pretzel; //A1_expl;
+    LTMfinal = A1_expl;
     
     rightToMatchImg = A2_guide;
     RTMwrong = A2_wrong;
     RTMcorrect = A2_correct;
     RTMstanding = A2_tower;
     RTMfallen = A2_fallen;
-    RTMfinal = pretzel; //A2_expl;
+    RTMfinal = A2_expl;
     
     fallen_reason = 4; //symm
   }
@@ -215,14 +216,14 @@ void loadScenario(int scenarioNumber)
     LTMcorrect = B2_correct;
     LTMstanding = B2_tower;
     LTMfallen = B2_fallen;
-    LTMfinal = pretzel; //B2_expl;
+    LTMfinal = B2_expl;
 
     rightToMatchImg = B1_guide;
     RTMwrong = B1_wrong;
     RTMcorrect = B1_correct;
     RTMstanding = B1_tower;
     RTMfallen = B1_fallen;
-    RTMfinal = pretzel; //B1_expl;
+    RTMfinal = B1_expl;
     
     fallen_reason = 3; //weight
   }  
@@ -237,14 +238,14 @@ void loadScenario(int scenarioNumber)
     LTMcorrect = C1_correct;
     LTMstanding = C1_tower;
     LTMfallen = C1_fallen;
-    LTMfinal = pretzel; //C1_expl;
+    LTMfinal = C1_expl;
     
     rightToMatchImg = C2_guide;
     RTMwrong = C2_wrong;
     RTMcorrect = C2_correct;
     RTMstanding = C2_tower;
     RTMfallen = C2_fallen;
-    RTMfinal = pretzel; //C2_expl;
+    RTMfinal = C2_expl;
     
     fallen_reason = 4; //symm
   }    
@@ -259,14 +260,14 @@ void loadScenario(int scenarioNumber)
     LTMcorrect = D1_correct;
     LTMstanding = D1_tower;
     LTMfallen = D1_fallen;
-    LTMfinal = pretzel; //D1_expl;
+    LTMfinal = D1_expl;
     
     rightToMatchImg = D2_guide;
     RTMwrong = D2_wrong;
     RTMcorrect = D2_correct;
     RTMstanding = D2_tower;
     RTMfallen = D2_fallen;
-    RTMfinal = pretzel; //D2_expl;
+    RTMfinal = D2_expl;
     
     fallen_reason = 2; //thinner
   }  
@@ -281,14 +282,14 @@ void loadScenario(int scenarioNumber)
     LTMcorrect = F1_correct;
     LTMstanding = F1_tower;
     LTMfallen = F1_fallen;
-    LTMfinal = pretzel; //F1_expl;
+    LTMfinal = F1_expl;
     
     rightToMatchImg = F2_guide;
     RTMwrong = F2_wrong;
     RTMcorrect = F2_correct;
     RTMstanding = F2_tower;
     RTMfallen = F2_fallen;
-    RTMfinal = pretzel; //F2_expl;
+    RTMfinal = F2_expl;
     
     fallen_reason = 4; //symm
   }   

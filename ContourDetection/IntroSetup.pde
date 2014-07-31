@@ -154,8 +154,9 @@ void draw()
         prediction_intro();
       if (scene3b==true)
         prediction_discusschoice();
-      drawLegoContours_g();
-      //drawLegoContours_static();
+      if (explain==false)
+        //drawLegoContours_g();
+        drawLegoContours_static();
     }
     if (scene4==true)
       guess_message();
@@ -218,9 +219,9 @@ void loadPImages()
   M2 = loadImage("bw/M2_b.png");
   M2_left = loadImage("bw/M2_left.png");
   M2_right = loadImage("bw/M2_right.png"); 
-  M3 = loadImage("bw/M3_b.png");
-  M3_left = loadImage("bw/M3_left.png");
-  M3_right = loadImage("bw/M3_right.png"); 
+//  M3 = loadImage("bw/M3_b.png");
+//  M3_left = loadImage("bw/M3_left.png");
+//  M3_right = loadImage("bw/M3_right.png"); 
   M4 = loadImage("bw/M4_b.png"); 
   M4_left = loadImage("bw/M4_left.png");
   M4_right = loadImage("bw/M4_right.png"); 
@@ -280,9 +281,9 @@ ArrayList<PImage> createPImageArray()
   database.add(M2);
   database.add(M2_left);
   database.add(M2_right);
-  database.add(M3);  
-  database.add(M3_left);
-  database.add(M3_right);
+//  database.add(M3);  
+//  database.add(M3_left);
+//  database.add(M3_right);
   database.add(M4);
   database.add(M4_left);
   database.add(M4_right);
@@ -341,9 +342,9 @@ ArrayList<String> loadPImgStrings()
   pImgNames.add("M2");
   pImgNames.add("M2");
   pImgNames.add("M2"); 
-  pImgNames.add("M3");
-  pImgNames.add("M3");
-  pImgNames.add("M3");
+//  pImgNames.add("M3");
+//  pImgNames.add("M3");
+//  pImgNames.add("M3");
   pImgNames.add("M4");
   pImgNames.add("M4");
   pImgNames.add("M4"); 
@@ -402,9 +403,9 @@ ArrayList<String> loadTowerColors()
   towerColors.add("BYRG"); //M2
   towerColors.add("BYRG"); //M2
   towerColors.add("BYRG"); //M2
-  towerColors.add("GYRB"); //M3
-  towerColors.add("GYRB"); //M3
-  towerColors.add("GYRB"); //M3
+//  towerColors.add("GYRB"); //M3
+//  towerColors.add("GYRB"); //M3
+//  towerColors.add("GYRB"); //M3
   towerColors.add("yBYRG"); //M4
   towerColors.add("yBYRG"); //M4
   towerColors.add("yBYRG"); //M4

@@ -212,18 +212,21 @@ void trackLegoTowers_g2()
 
 void checkTowerImage()
 {
-  if (hasLeft==false)
-    instr_place_left_img();
-  if (hasRight==false)
-    instr_place_right_img();
-  if ((hasLeft==true) && (foundLeftMatch==false))
-    mismatch_left_image();
-  if ((hasLeft==true) && (foundLeftMatch==true))
-    match_left_image();
-  if ((hasRight==true) && (foundRightMatch==false))
-    mismatch_right_image();
-  if ((hasRight==true) && (foundRightMatch==true))
-    match_right_image();
+  if (explain==false)
+  {
+    if (hasLeft==false)
+      instr_place_left_img();
+    if (hasRight==false)
+      instr_place_right_img();
+    if ((hasLeft==true) && (foundLeftMatch==false))
+      mismatch_left_image();
+    if ((hasLeft==true) && (foundLeftMatch==true))
+      match_left_image();
+    if ((hasRight==true) && (foundRightMatch==false))
+      mismatch_right_image();
+    if ((hasRight==true) && (foundRightMatch==true))
+      match_right_image();
+  }
 }
 
 void checkTowerMatch()
@@ -315,7 +318,7 @@ void drawLegoContours_static()
         side = 1; //left
         if (contour.getBoundingBox().height < 100)
         {
-          image(LTMfallen, 1*gorWidth/2, 5*gorHeight/16);
+          image(LTMfallen, 7*gorWidth/16, 9*gorHeight/16);
         }
         else
         {
@@ -326,7 +329,7 @@ void drawLegoContours_static()
         side = 2; //right
         if (contour.getBoundingBox().height < 100)  
         {
-          image(RTMfallen, 23*gorWidth/32, 5*gorHeight/16);
+          image(RTMfallen, 23*gorWidth/32, 9*gorHeight/16);
         }
         else
         {
@@ -345,6 +348,10 @@ void newRoundOfTowers()
     scene2 = true;
   }
   else
+  {
+    scene2 = false;
+    scene3 = false;
     image(t_clear_table, 1*gorWidth/4, 0);
+  }
 }
 
