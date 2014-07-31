@@ -223,10 +223,10 @@ String getBestTowerMatch(Contour inputTower, String inputColor)
         bestSimilarity = currentSimilarity;
         towerType = pImgNames.get(c);
         println("****** high "+towerType+" "+bestSimilarity);
-        if (pImgNames.get(c)=="D1")
-          text(currentSimilarity + " " + pImgNames.get(c), 450, 50);
-        if (pImgNames.get(c)=="M3")
-          text(currentSimilarity + " " + pImgNames.get(c), 450, 150);
+//        if (pImgNames.get(c)=="D1")
+//          text(currentSimilarity + " " + pImgNames.get(c), 450, 50);
+//        if (pImgNames.get(c)=="M3")
+//          text(currentSimilarity + " " + pImgNames.get(c), 450, 150);
       }
     }
   }

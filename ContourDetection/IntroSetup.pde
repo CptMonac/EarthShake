@@ -92,7 +92,8 @@ void setup()
   screen1 = loadImage("gorilla.jpg");
   wrongTower = loadImage("wrongtower.png");
   correctTower = loadImage("correctTower.png");
-  startScreen = loadImage("startscreen.jpg");
+  //startScreen = loadImage("startscreen.jpg");
+  startScreen = screen1;
   pretzel = loadImage("pretzel.png");
   circle = loadImage("placementcircle.png");
   
@@ -155,8 +156,8 @@ void draw()
       if (scene3b==true)
         prediction_discusschoice();
       if (explain==false)
-        //drawLegoContours_g();
-        drawLegoContours_static();
+        drawLegoContours_g();
+        //drawLegoContours_static();
     }
     if (scene4==true)
       guess_message();

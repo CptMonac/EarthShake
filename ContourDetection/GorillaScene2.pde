@@ -124,29 +124,15 @@ void trackLegoTowers_g2()
         {
           if (noteArray.get(0)==leftToMatch)
           {
-//            if (scene2==true && scene3==false)
-//              match_left_image();
             foundLeftMatch = true;
           }
-//          else 
-//          {
-//            if (scene2==true && scene3==false)
-//              mismatch_left_image();
-//          }
         }
         else if ((rightDown==false) && (hasRight==true))
         {
           if (noteArray.get(0)==rightToMatch)
           {
-//            if (scene2==true && scene3==false)
-//              match_right_image();
             foundRightMatch = true;
           }
-//          else
-//          {
-//            if (scene2==true && scene3==false)
-//              mismatch_right_image();
-//          }
         } 
       }
       else if (noteArray.size()==2)
@@ -155,37 +141,19 @@ void trackLegoTowers_g2()
         {
           if (noteArray.get(0)==leftToMatch)
           {
-//            if (scene2==true && scene3==false)
-//              match_left_image();
             foundLeftMatch = true;
           }
-//          else 
-//          {
-//            if (scene2==true && scene3==false)
-//              mismatch_left_image();
-//          }
         }
         if (rightDown==false)
         {
           if (noteArray.get(1)==rightToMatch)
           {
-//            if (scene2==true && scene3==false)
-//              match_right_image();
             foundRightMatch = true;
           }
-//          else 
-//          {
-//            if (scene2==true && scene3==false)
-//              mismatch_right_image();
-//          }
         }
       } 
     } 
   }
-//  if (hasLeft==false)
-//    instr_place_left_img();
-//  if (hasRight==false)
-//    instr_place_right_img();  
     
   if (scene2==true && scene3==false)
   {
@@ -236,7 +204,11 @@ void checkTowerMatch()
   else if ((foundLeftMatch==false) && (foundRightMatch==true) && (legoTowers.size()==2))
     mismatch_left_text();
   else if ((foundLeftMatch==true) && (foundRightMatch==false) && (legoTowers.size()==2))
-    mismatch_right_text();      
+    mismatch_right_text();   
+  else if ((foundLeftMatch==false) && (hasLeft==true) && (legoTowers.size()==1))
+    image(t_place_wrong_left_only, 1*gorWidth/4, 0);
+  else if ((foundRightMatch==false) && (hasRight==true) && (legoTowers.size()==1))
+    image(t_place_wrong_right_only, 1*gorWidth/4, 0); 
   else if ((foundLeftMatch==true) && (foundRightMatch==true))
     both_match_text();
   else if (foundLeftMatch==true)
@@ -306,37 +278,45 @@ void drawLegoContours_static()
   //Find all contours in input image
   ArrayList<Contour> towerContours = opencv.findContours();
     
-  //Filter contours to only lego towers
-  for (Contour contour: towerContours)
+  int side = 0;
+  
+  if ((leftStanding==false) || (rightStanding==false))
   {
-    if(contour.area() > 1500)
+    if (scenarioNumber==1)
     {
-      //Draw outline approximation
-      int side = 0;
-      
-      if ((contour.getPolygonApproximation().getPoints().get(0).x) < 640/2) {
-        side = 1; //left
-        if (contour.getBoundingBox().height < 100)
-        {
-          image(LTMfallen, 7*gorWidth/16, 9*gorHeight/16);
-        }
-        else
-        {
-          image(LTMstanding, 1*gorWidth/2, 5*gorHeight/16);
-        }
-      }
-      else {
-        side = 2; //right
-        if (contour.getBoundingBox().height < 100)  
-        {
-          image(RTMfallen, 23*gorWidth/32, 9*gorHeight/16);
-        }
-        else
-        {
-          image(RTMstanding, 23*gorWidth/32, 5*gorHeight/16);
-        }
-      }
+      image(LTMfallen, 7*gorWidth/16, 9*gorHeight/16);
+      image(RTMstanding, 23*gorWidth/32, 5*gorHeight/16);
     }
+    
+    else if (scenarioNumber==2)
+    {
+      image(LTMstanding, 1*gorWidth/2, 5*gorHeight/16);
+      image(RTMfallen, 23*gorWidth/32, 9*gorHeight/16);
+    }
+    
+    else if (scenarioNumber==3)
+    {
+      image(LTMfallen, 7*gorWidth/16, 9*gorHeight/16);
+      image(RTMstanding, 23*gorWidth/32, 5*gorHeight/16);
+    }
+    
+    else if (scenarioNumber==4)
+    {
+      image(LTMfallen, 7*gorWidth/16, 9*gorHeight/16);
+      image(RTMstanding, 23*gorWidth/32, 5*gorHeight/16);
+    }
+    
+    else if (scenarioNumber==5)
+    {
+      image(LTMfallen, 7*gorWidth/16, 9*gorHeight/16);
+      image(RTMstanding, 23*gorWidth/32, 5*gorHeight/16);
+    }
+  }
+  
+  else
+  {
+    image(LTMstanding, 1*gorWidth/2, 5*gorHeight/16);    
+    image(RTMstanding, 23*gorWidth/32, 5*gorHeight/16);
   }
 }
 

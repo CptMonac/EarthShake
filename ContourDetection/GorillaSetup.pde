@@ -473,9 +473,9 @@ void loadText()
   t_place_right = loadImage("text/place_right.png");
   t_place_wrong_both = loadImage("text/place_wrong_both.png");
   t_place_wrong_left = loadImage("text/place_wrong_left.png");
-  //t_place_wrong_left_only = loadImage("text/place_wrong_left_only.png");
+  t_place_wrong_left_only = loadImage("text/place_wrong_left_only.png");
   t_place_wrong_right = loadImage("text/place_wrong_right.png");
-  //t_place_wrong_right_only = loadImage("text/place_wrong_right_only.png");
+  t_place_wrong_right_only = loadImage("text/place_wrong_right_only.png");
   t_pred_intro = loadImage("text/prediction_intro.png");
   t_pred_left = loadImage("text/prediction_left_first.png");
   t_pred_right = loadImage("text/prediction_right_first.png");
