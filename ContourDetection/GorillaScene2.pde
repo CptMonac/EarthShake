@@ -22,9 +22,6 @@ ArrayList<Contour> extractLegoTowers_g()
 
 void trackLegoTowers_g2()
 {   
-  Contour tempContour, originalContour;
-  ArrayList<Contour> filteredContours;
-
   legoTowers = extractLegoTowers_g();
   
   if (legoTowers.size() == 0) {
@@ -39,8 +36,34 @@ void trackLegoTowers_g2()
     placementcircles();
   
   if (!skipThese())
+    detection();
+    
+  if (scene2==true && scene3==false)
   {
-  
+    checkTowerImage();
+    checkTowerMatch();
+  }
+    
+  if (scene4==true)
+  {
+    if ((rightStanding==true) && (leftStanding==false))
+      fallen = 1;
+    else if ((rightStanding==false) && (leftStanding==true)) 
+      fallen = 2;
+    if ((towerPredictionNumber==1) && (fallen==1))
+    {
+      correctGuess = true;
+    }  
+    if ((towerPredictionNumber==2) && (fallen==2))
+    {
+      correctGuess = true;
+    }
+  }
+   
+}
+
+void initMatchVariables()
+{
   leftDown = false;
   rightDown = false;
   hasLeft = false;
@@ -49,7 +72,15 @@ void trackLegoTowers_g2()
   rightStanding = false;  
   
   foundLeftMatch = false;
-  foundRightMatch = false;
+  foundRightMatch = false;  
+}
+
+void detection()
+{
+  Contour tempContour, originalContour;
+  ArrayList<Contour> filteredContours;  
+  
+  initMatchVariables();
   
   for (Contour contour: legoTowers)
   {
@@ -111,16 +142,6 @@ void trackLegoTowers_g2()
           }
         }
       }
-      
-      if (leftDown==true) {}
-        //text("Fallen", 167, 320);
-      if (rightDown==true) {}
-        //text("Fallen", 400, 320);
-        
-      if (leftStanding==true) {}
-        //text("LEFT STANDING", 167, 270);
-      if (rightStanding==true) {}
-        //text("RIGHT STANDING", 400, 270);
         
       if (noteArray.size()==1) 
       {
@@ -158,33 +179,6 @@ void trackLegoTowers_g2()
       } 
     } 
   }
-  
-  }
-    
-  if (scene2==true && scene3==false)
-  {
-    checkTowerImage();
-    checkTowerMatch();
-  }
-    
-  if (scene4==true)
-  {
-    if ((rightStanding==true) && (leftStanding==false))
-      fallen = 1;
-    else if ((rightStanding==false) && (leftStanding==true)) 
-      fallen = 2;
-    if ((towerPredictionNumber==1) && (fallen==1))
-    {
-      correctGuess = true;
-    }  
-    if ((towerPredictionNumber==2) && (fallen==2))
-    {
-      correctGuess = true;
-    }
-  }
-  
-//  }
-  
 }
 
 Boolean skipThese()
@@ -229,21 +223,21 @@ void checkTowerImage()
 
 void checkTowerMatch()
 {
-  if ((foundLeftMatch==false) && (foundRightMatch==false) && (legoTowers.size()==2))
+  if ((foundLeftMatch==false) && (foundRightMatch==false))
     neither_match_text();
-  else if ((foundLeftMatch==false) && (foundRightMatch==true) && (legoTowers.size()==2))
+  if ((foundLeftMatch==false) && (foundRightMatch==true))
     mismatch_left_text();
-  else if ((foundLeftMatch==true) && (foundRightMatch==false) && (legoTowers.size()==2))
+  if ((foundLeftMatch==true) && (foundRightMatch==false))
     mismatch_right_text();   
-  else if ((foundLeftMatch==false) && (hasLeft==true) && (legoTowers.size()==1))
+  if ((foundLeftMatch==false) && (hasRight==false))
     image(t_place_wrong_left_only, 1*gorWidth/4, 0);
-  else if ((foundRightMatch==false) && (hasRight==true) && (legoTowers.size()==1))
+  if ((foundRightMatch==false) && (hasLeft==false))
     image(t_place_wrong_right_only, 1*gorWidth/4, 0); 
-  else if ((foundLeftMatch==true) && (foundRightMatch==true))
+  if ((foundLeftMatch==true) && (foundRightMatch==true))
     both_match_text();
-  else if (foundLeftMatch==true)
+  if (foundLeftMatch==true)
     match_left_text();
-  else if (foundRightMatch==true)
+  if (foundRightMatch==true)
     match_right_text();
 }
 

@@ -4,6 +4,12 @@ PImage LTMwrong, LTMcorrect, RTMwrong, RTMcorrect;
 PImage LTMfallen, RTMfallen, LTMstanding, RTMstanding;
 PImage LTMfinal, RTMfinal;
 
+//****************************************************** GENERAL THINGS
+void displayText(PImage textBubble)
+{
+  image(textBubble, 1*gorWidth/4, 0);
+}
+
 //****************************************************** PLACING TOWERS
 void placementcircles()
 {

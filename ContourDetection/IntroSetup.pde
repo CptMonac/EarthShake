@@ -104,6 +104,7 @@ void setup()
   resetVariables();
   scene1 = true;
   scene2 = false;
+  initMatchVariables();
   
   frame.setSize(780,500);
   frame.setTitle("gorilla window");
