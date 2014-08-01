@@ -178,112 +178,6 @@ void initMatchVariables()
   foundRightMatch = false;  
 }
 
-void detection()
-{
-  Contour tempContour, originalContour;
-  ArrayList<Contour> filteredContours;  
-  
-  initMatchVariables();
-  
-  for (Contour contour: legoTowers)
-  {
-    originalBoundingBoxes.add(contour.getBoundingBox());
-  }
-    
-  if (legoTowers.size() > 0)
-  {
-    placingTowers = true;
-    
-    filteredContours = extractLegoTowers_g();
-
-    for (int i=0; i<legoTowers.size(); i++) 
-    {    
-
-      ArrayList<Rectangle> currentBoundingBoxes = new ArrayList<Rectangle>();
-      ArrayList<String> noteArray = new ArrayList<String>();
-      
-      for(int j=0; j<filteredContours.size(); j++)
-      {
-        tempContour = filteredContours.get(j);
-        Rectangle tempBoundingBox = tempContour.getBoundingBox();
-        currentBoundingBoxes.add(tempBoundingBox);
-        
-        int currentx = currentBoundingBoxes.get(j).x;
-        int currenth = currentBoundingBoxes.get(j).height;
-        
-        if (currentx < 640/2) {
-          hasLeft = true;
-          if (currenth > 100)
-            leftStanding = true;
-        }
-        if (currentx > 640/2) {
-          hasRight = true;
-          if (currenth > 100) {
-            rightStanding = true;
-          }
-        }
-        
-        if ((filteredContours.size() <= 2) && (currentTowerColors.length==filteredContours.size())) {
-          
-          noteArray.add(getBestTowerMatch(tempContour, currentTowerColors[j]));    
-          
-          if (currentBoundingBoxes.get(j).height < 100) 
-          {
-            if (filteredContours.size()==1) 
-            {
-              if (hasLeft==true)
-                leftDown = true;
-              else if (hasRight==true)
-                rightDown = true;
-            }
-            else if ((j==0) && (noteArray.get(0)!="Unknown Tower") && (hasRight==true))
-              rightDown = true;
-            else if ((j==0) && (noteArray.get(0)=="Unknown Tower") && (hasLeft==true))
-              leftDown = true;
-            else if (j==1)
-              rightDown = true;
-          }
-        }
-      }
-        
-      if (noteArray.size()==1) 
-      {
-        if ((leftDown==false) && (hasLeft==true)) 
-        {
-          if (noteArray.get(0)==leftToMatch)
-          {
-            foundLeftMatch = true;
-          }
-        }
-        else if ((rightDown==false) && (hasRight==true))
-        {
-          if (noteArray.get(0)==rightToMatch)
-          {
-            foundRightMatch = true;
-          }
-        } 
-      }
-      else if (noteArray.size()==2)
-      {
-        if (leftDown==false)
-        {
-          if (noteArray.get(0)==leftToMatch)
-          {
-            foundLeftMatch = true;
-          }
-        }
-        if (rightDown==false)
-        {
-          if (noteArray.get(1)==rightToMatch)
-          {
-            foundRightMatch = true;
-          }
-        }
-      } 
-    } 
-  }
-}
-
 Boolean skipThese()
 {  
   if (legoTowers.size() > 3)
@@ -298,7 +192,8 @@ Boolean skipThese()
     {
       Contour tempContour = filteredContours.get(j);
       Rectangle tempBoundingBox = tempContour.getBoundingBox();  
-      if (tempBoundingBox.height >= 200)
+      println("YYYYYYYYYYYYYYYYY " + tempBoundingBox.y);
+      if ((tempBoundingBox.y <= 200) || (tempBoundingBox.height >= 200))
         return true;
     }
   }
