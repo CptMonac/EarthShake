@@ -21,25 +21,11 @@ ArrayList<Contour> extractLegoTowers_g()
 }
 
 void trackLegoTowers_g2()
-{ 
-  leftDown = false;
-  rightDown = false;
-  hasLeft = false;
-  hasRight = false;
-  leftStanding = false;
-  rightStanding = false;  
-  
-  foundLeftMatch = false;
-  foundRightMatch = false;
-    
+{   
   Contour tempContour, originalContour;
   ArrayList<Contour> filteredContours;
 
   legoTowers = extractLegoTowers_g();
-  for (Contour contour: legoTowers)
-  {
-    originalBoundingBoxes.add(contour.getBoundingBox());
-  }
   
   if (legoTowers.size() == 0) {
     instr_place_tower();
@@ -49,8 +35,26 @@ void trackLegoTowers_g2()
     }
   }
   
-  if (scene3==false)
+  if ((scene3==false) || (scene5==true))
     placementcircles();
+  
+  if (!skipThese())
+  {
+  
+  leftDown = false;
+  rightDown = false;
+  hasLeft = false;
+  hasRight = false;
+  leftStanding = false;
+  rightStanding = false;  
+  
+  foundLeftMatch = false;
+  foundRightMatch = false;
+  
+  for (Contour contour: legoTowers)
+  {
+    originalBoundingBoxes.add(contour.getBoundingBox());
+  }
     
   if (legoTowers.size() > 0)
   {
@@ -154,6 +158,8 @@ void trackLegoTowers_g2()
       } 
     } 
   }
+  
+  }
     
   if (scene2==true && scene3==false)
   {
@@ -176,6 +182,30 @@ void trackLegoTowers_g2()
       correctGuess = true;
     }
   }
+  
+//  }
+  
+}
+
+Boolean skipThese()
+{  
+  if (legoTowers.size() > 3)
+    return true;
+    
+  ArrayList<Contour> filteredContours = extractLegoTowers_g();  
+  for (int i=0; i<legoTowers.size(); i++) 
+  {    
+    ArrayList<Rectangle> currentBoundingBoxes = new ArrayList<Rectangle>();
+    
+    for(int j=0; j<filteredContours.size(); j++)
+    {
+      Contour tempContour = filteredContours.get(j);
+      Rectangle tempBoundingBox = tempContour.getBoundingBox();  
+      if (tempBoundingBox.height >= 200)
+        return true;
+    }
+  }
+  return false;     
 }
 
 void checkTowerImage()
