@@ -212,21 +212,14 @@ String getBestTowerMatch(Contour inputTower, String inputColor)
 
     //Use hu-moments for image which are invariant to translation, rotation, scale, and skew for comparison
     currentSimilarity = Imgproc.matchShapes(srcContour.pointMat, inputTower.pointMat, Imgproc.CV_CONTOURS_MATCH_I2, 0);
-    
-    if (pImgNames.get(c)=="F1" || pImgNames.get(c)=="F2")
-      println(pImgNames.get(c) + " " + towerColors.get(c) + " " + currentSimilarity);
       
-    if (currentSimilarity < bestSimilarity)
+    if ((inputColor.equals(towerColors.get(c))==true))
     {
-      if ((inputColor.equals(towerColors.get(c))==true))
+      if (currentSimilarity < bestSimilarity)
       {  
         bestSimilarity = currentSimilarity;
         towerType = pImgNames.get(c);
         println("****** high "+towerType+" "+bestSimilarity);
-//        if (pImgNames.get(c)=="D1")
-//          text(currentSimilarity + " " + pImgNames.get(c), 450, 50);
-//        if (pImgNames.get(c)=="M3")
-//          text(currentSimilarity + " " + pImgNames.get(c), 450, 150);
       }
     }
   }
