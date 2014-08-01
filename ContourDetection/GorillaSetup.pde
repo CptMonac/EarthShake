@@ -6,15 +6,18 @@ Boolean leftStanding, rightStanding;
 Boolean placingTowers;
 String towerPredictionString;
 int towerPredictionNumber;
-Boolean correctGuess, explain;
+Boolean correctGuess; 
+Boolean explain = false;
 int fallen, fallen_reason;
 int scenarioNumber;
 int expl_guess = 0;
 int towerIteration, currentPair;
 IntList towerPairs;
+Boolean playgame1, playgame2;
 
 /* buttons etc */
 PImage startScreen, pretzel;
+PImage game1, game2;
 PImage continueButton, tower1, tower2, same, shake;
 PImage continueButton_hover, tower1_hover, tower2_hover, same_hover, shake_hover;
 PImage pred_thinner, pred_symm, pred_weight, pred_taller;
@@ -57,10 +60,15 @@ void gameSetup()
   if (scene1==true)
   {
     image(startScreen, 0, 0);
+//    gameSelection();
     continue_button();
   }
   else
     image(screen1, 0, 0);
+//  else if (playgame1==true)
+//    image(screen1, 0, 0);
+//  else if (playgame2==true)
+//    image(pretzel, 0, 0);
 }
 
 void resetVariables()
@@ -434,6 +442,8 @@ void loadColorTowers()
 
 void loadButtons()
 {
+  game1 = loadImage("buttons/game1.png");
+  game2 = loadImage("buttons/game2.png");
   continueButton = loadImage("buttons/continue.png");
   continueButton_hover = loadImage("buttons/continue_hover.png");
   same = loadImage("buttons/same.png");

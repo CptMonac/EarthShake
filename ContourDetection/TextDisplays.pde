@@ -10,6 +10,12 @@ void displayText(PImage textBubble)
   image(textBubble, 1*gorWidth/4, 0);
 }
 
+void game_buttons()
+{
+  image(game1, 1*gorWidth/2, 21*gorHeight/32);
+  image(game2, 23*gorWidth/32, 21*gorHeight/32);  
+}
+
 //****************************************************** PLACING TOWERS
 void placementcircles()
 {

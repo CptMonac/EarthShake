@@ -104,6 +104,8 @@ void setup()
   resetVariables();
   scene1 = true;
   scene2 = false;
+  playgame1 = false;
+  playgame2 = false;
   //initMatchVariables();
   
   frame.setSize(780,500);
@@ -147,25 +149,31 @@ void draw()
   pushMatrix();
     translate(0, 0);
     gameSetup();
-    if (scene2==true) {
-      placingTowers = false;
-      trackLegoTowers_g2();
-    }
-    if (scene3==true) {
-      if (scene3a==true)
-        prediction_intro();
-      if (scene3b==true)
-        prediction_discusschoice();
-      if (explain==false)
-        drawLegoContours_g();
-        //drawLegoContours_static();
-    }
-    if (scene4==true)
-      guess_message();
-    if (scene5==true)
-      expl_result();
-    if (scene6==true)
-      newRoundOfTowers();
+//    if (playgame1==true)
+//    {
+      if (scene2==true) {
+        placingTowers = false;
+        trackLegoTowers_g2();
+      }
+      if (scene3==true) {
+        if (scene3a==true)
+          prediction_intro();
+        if (scene3b==true)
+          prediction_discusschoice();
+        if (explain==false)
+          drawLegoContours_g();
+          //drawLegoContours_static();
+      }
+      if (scene4==true)
+        guess_message();
+      if (scene5==true)
+        expl_result();
+      if (scene6==true)
+        newRoundOfTowers();
+//    }
+//    
+//    else if (playgame2==true)
+//    {}
   popMatrix();
   
   viewport2 = get(780,20,640,480);

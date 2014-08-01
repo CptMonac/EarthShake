@@ -180,7 +180,7 @@ void initMatchVariables()
 
 Boolean skipThese()
 {  
-  if (legoTowers.size() > 3)
+  if (legoTowers.size() >= 3)
     return true;
     
   ArrayList<Contour> filteredContours = extractLegoTowers_g();  
@@ -193,7 +193,7 @@ Boolean skipThese()
       Contour tempContour = filteredContours.get(j);
       Rectangle tempBoundingBox = tempContour.getBoundingBox();  
       println("YYYYYYYYYYYYYYYYY " + tempBoundingBox.y);
-      if ((tempBoundingBox.y <= 200) || (tempBoundingBox.height >= 200))
+      if ((tempBoundingBox.y <= 280) || (tempBoundingBox.height >= 200))
         return true;
     }
   }
