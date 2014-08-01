@@ -4,6 +4,12 @@ PImage LTMwrong, LTMcorrect, RTMwrong, RTMcorrect;
 PImage LTMfallen, RTMfallen, LTMstanding, RTMstanding;
 PImage LTMfinal, RTMfinal;
 
+//****************************************************** GENERAL THINGS
+void displayText(PImage textBubble)
+{
+  image(textBubble, 1*gorWidth/4, 0);
+}
+
 //****************************************************** PLACING TOWERS
 void placementcircles()
 {
@@ -71,38 +77,38 @@ void mismatch_right_image()
 //****************************************************** text *******
 void instr_place_tower() 
 {
-  image(t_place_both, 1*gorWidth/4, 0);
+  displayText(t_place_both);
 }
 
 void match_left_text()
 {
-  image(t_place_right, 1*gorWidth/4, 0);
+  displayText(t_place_right);
 }
 
 void match_right_text()
 {
-  image(t_place_left, 1*gorWidth/4, 0);
+  displayText(t_place_left);
 }
 
 void mismatch_left_text()
 {
-  image(t_place_wrong_left, 1*gorWidth/4, 0);
+  displayText(t_place_wrong_left);
 }
 
 void mismatch_right_text()
 {
-  image(t_place_wrong_right, 1*gorWidth/4, 0);
+  displayText(t_place_wrong_right);
 }
 
 void both_match_text()
 {
-  image(t_place_continue, 1*gorWidth/4, 0);
+  displayText(t_place_continue);
   continue_button();
 }
 
 void neither_match_text()
 {
-  image(t_place_wrong_both, 1*gorWidth/4, 0);
+  displayText(t_place_wrong_both);
 }
 
 //*************************************************** PREDICTION SCREENS
@@ -115,18 +121,18 @@ void prediction_tower_buttons()
 
 void prediction_intro()
 {
-  image(t_pred_intro, 1*gorWidth/4, 0);
+  displayText(t_pred_intro);
   prediction_tower_buttons();
 }
 
 void prediction_discusschoice()
 {
   if (towerPredictionNumber==1)
-    image(t_pred_left, 1*gorWidth/4, 0);
+    displayText(t_pred_left);
   else if (towerPredictionNumber==2)
-    image(t_pred_right, 1*gorWidth/4, 0);    
+    displayText(t_pred_right);    
   else if (towerPredictionNumber==3)
-    image(t_pred_same, 1*gorWidth/4, 0);
+    displayText(t_pred_same);
   shake_button();
 }
 
@@ -147,16 +153,16 @@ void guess_message()
   if (correctGuess==true)
   {
     if (towerPredictionNumber==1)
-      image(t_hyp_correct_left, 1*gorWidth/4, 0);
+      displayText(t_hyp_correct_left);
     else if (towerPredictionNumber==2) 
-      image(t_hyp_correct_right, 1*gorWidth/4, 0);
+      displayText(t_hyp_correct_right);
   }
   else if ((fallen!=0) && (correctGuess==false))
   {
     if (fallen==1)
-      image(t_hyp_wrong_left, 1*gorWidth/4, 0);
+      displayText(t_hyp_wrong_left);
     else if (fallen==2)
-      image(t_hyp_wrong_right, 1*gorWidth/4, 0);
+      displayText(t_hyp_wrong_right);
   }
 
   if (fallen!=0)
@@ -175,25 +181,25 @@ void pred_buttons()
 void fallen_correct(int fr)
 {
   if (fr==1)
-    image(t_expl_correct_taller, 1*gorWidth/4, 0);
+    displayText(t_expl_correct_taller);
   else if (fr==2)
-    image(t_expl_correct_thinner, 1*gorWidth/4, 0);
+    displayText(t_expl_correct_thinner);
   else if (fr==3)
-    image(t_expl_correct_weight, 1*gorWidth/4, 0);
+    displayText(t_expl_correct_weight);
   else if (fr==4)
-    image(t_expl_correct_symm, 1*gorWidth/4, 0);
+    displayText(t_expl_correct_symm);
 }
 
 void fallen_wrong(int fr)
 {
   if (fr==1)
-    image(t_expl_wrong_taller, 1*gorWidth/4, 0);
+    displayText(t_expl_wrong_taller);
   else if (fr==2)
-    image(t_expl_wrong_thinner, 1*gorWidth/4, 0);
+    displayText(t_expl_wrong_thinner);
   else if (fr==3)
-    image(t_expl_wrong_weight, 1*gorWidth/4, 0);
+    displayText(t_expl_wrong_weight);
   else if (fr==4)
-    image(t_expl_wrong_symm, 1*gorWidth/4, 0);
+    displayText(t_expl_wrong_symm);
 }
 
 void expl_result()

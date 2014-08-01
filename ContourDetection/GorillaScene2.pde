@@ -333,9 +333,9 @@ void checkTowerMatch()
   if ((foundLeftMatch==true) && (foundRightMatch==false))
     mismatch_right_text();   
   if ((foundLeftMatch==false) && (hasRight==false))
-    image(t_place_wrong_left_only, 1*gorWidth/4, 0);
+    displayText(t_place_wrong_left_only);
   if ((foundRightMatch==false) && (hasLeft==false))
-    image(t_place_wrong_right_only, 1*gorWidth/4, 0); 
+    displayText(t_place_wrong_right_only); 
   if ((foundLeftMatch==true) && (foundRightMatch==true))
     both_match_text();
   if (foundLeftMatch==true)
@@ -458,7 +458,7 @@ void newRoundOfTowers()
   {
     scene2 = false;
     scene3 = false;
-    image(t_clear_table, 1*gorWidth/4, 0);
+    displayText(t_clear_table);
   }
 }
 
