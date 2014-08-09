@@ -18,103 +18,281 @@ SimpleOpenNI context;
 ArrayList<Contour> legoTowers;
 ArrayList<Contour> contourDBList;
 ArrayList<String> pImgNames;
-ControlP5 controlP5;
+ControlP5 guiController;
 ControlGroup messageBox;
 String[] currentTowerColors;
 ArrayList<Rectangle> originalBoundingBoxes;
 ArrayList<String> towerColors;
-boolean shakeVisible, timerVisible;
-PImage startScreen,timerImage;
+boolean gameStarted, shakeStarted, buttonPressed, rulerComparison;
+PImage startScreen,timerControl, shakeScreen;
+PImage towerFallen, towerStanding, rulerMatchScreen;
+Contour towerInitial;
+PImage countdown;
 
 float scaleFactorx = 0.45;
 float scaleFactory = 0.96; 
-float startTime, elapsedTime;
-int debounceCount = 0;
+float startTime, elapsedTime, stopTime, finishTime;
+float rulerHeight = 45;
 
 void setup()
 {
-  	//Enable all kinect cameras/sensors
-  	setupKinect();
+	//Enable all kinect cameras/sensors
+	setupKinect();
 
-  	//Initialize lego towers
-  	setupTowers();
+	//Initialize lego towers
+	setupTowers();
 
-  	//Initialize GUI
-  	controlP5 = new ControlP5(this);
-  	messageBox = controlP5.addGroup("messageBox", width/2 - 150,100,300);
-  messageBox.setBackgroundHeight(120);
-    messageBox.setBackgroundColor(color(0,128));
-    messageBox.hideBar();
+	//Initialize GUI
+  initializeGUI();
+  initializeGame();
+  
+  image(startScreen, 0, 0);
+}
 
-    Textlabel messagelabel = controlP5.addTextlabel("messageBoxLabel", "Please place only one tower on the table.", 20, 20);
-    messagelabel.moveTo(messageBox);
-          PImage[] shakeIcon = {loadImage("shakehovercircle.png"), loadImage("shakehover.png"), loadImage("shake.png")};
+void initializeGame()
+{
+  gameStarted = false;
+  shakeStarted = false;  
+  buttonPressed = false;
+  rulerComparison = false;
+  towerInitial = null;
+  startTime = 0.0;
+  elapsedTime = 0.0;
+  stopTime = 0.0;
+  finishTime = 0.0;
+  
+  guiController.controller("shake").hide();
+  guiController.controller("tryagain").hide();
+  guiController.controller("continueTower").hide();
+}
 
-    controlP5.addButton("shake")
+void initializeGUI()
+{
+  //Load assets
+  startScreen = loadImage("images/startScreen.jpg");
+  timerControl = loadImage("images/timer.png");
+  shakeScreen = loadImage("images/shakeScreen.jpg");
+  countdown = loadImage("images/countdownScreen.jpg");
+  towerFallen = loadImage("images/towerFallen.jpg");
+  towerStanding = loadImage("images/towerStanding.jpg");
+  rulerMatchScreen = loadImage("images/rulerScreen.jpg");
+  PImage[] shakeIcon = {loadImage("images/shake.png"), loadImage("images/shake_hover.png"), loadImage("images/shake.png")};
+  PImage[] continueIcon = {loadImage("images/continue.png"), loadImage("images/continue_hover.png"), loadImage("images/continue.png")};
+  
+  //Create GUI instance
+  float btnPositionX = 9*width/16;
+  float btnPositionY = 13*height/16 + 15;
+  guiController = new ControlP5(this);
+
+  guiController.addButton("shake")
            .setValue(128)
-           .setPosition(width/2 -120, height/2 -90)
+           .setPosition(btnPositionX, btnPositionY)
            .setImages(shakeIcon)
-           .setSize(100,40)
            .updateSize();
-    controlP5.controller("shake").hide();
-  	shakeVisible = false;
-  	timerVisible = false;
-  	startScreen = loadImage("startscreen.jpg");
-  	timerImage = loadImage("timer.png");
+  guiController.controller("shake").hide();
+
+  guiController.addButton("tryagain")
+            .setValue(128)
+            .setPosition(btnPositionX, btnPositionY)
+            .setImages(continueIcon)
+            .updateSize();
+  guiController.controller("tryagain").hide();
+
+  guiController.addButton("continueTower")
+            .setValue(128)
+            .setPosition(btnPositionX, btnPositionY)
+            .setImages(continueIcon)
+            .updateSize();
+  guiController.controller("continueTower").hide();  
 }
 
 void draw()
 {
   context.update();
-    cleanKinectInput();
+  cleanKinectInput();
 
-  srcImage = context.depthImage();
-  opencv = new OpenCV(this, srcImage);
+  opencv = new OpenCV(this, context.depthImage());
   opencv.gray();
   opencv.threshold(70);
   legoTowers = extractLegoTowers();
-  //image(context.rgbImage(),0,0);
-  if (singleTowerCheck())
-	{
-		if (!shakeVisible)
-		{
-			shakeVisible = true;
-                       controlP5.controller("shake").setVisible(true);
-   			//noTint();
-			
-		    image(startScreen,0,0);
-		}
-		else if (shakeVisible)
-		{
-			tint(150, 50);
-			image(startScreen, 0,0);
-			tint(255,255);
-		}
+  
+  if (gameStarted && rulerComparison && singleTowerCheck())
+  {
+    //Display prompt and comparison ruler
+    image(rulerMatchScreen, 0, 0);
+    fill(200,200,0);
+    rect(130, -75, 15, rulerHeight);
+    
+    //Extract lego tower
+    Contour tempContour = legoTowers.get(0);
+    float contourHeight = tempContour.getBoundingBox().height;
+    if (contourHeight >= rulerHeight)
+    {
+      stroke(10, 240, 10);
+      strokeWeight(4);
+      noFill();
+      drawContour(tempContour);
+      guiController.controller("shake").setVisible(true);
+    }
+    else 
+    {
+      stroke(240, 10, 10);
+      strokeWeight(4);
+      noFill();
+      drawContour(tempContour);
 
-		if (timerVisible)
-		{
-			elapsedTime = millis();
-			tint(150,50);
-			image(startScreen, 0,0);
-			tint(255,255);
-			image(timerImage, width/2 - 140, height/2 - 30);
-			textSize(32);
-			text((elapsedTime - startTime)/1000, width/2 - 100, height/2 - 40);
-		}
+      textSize(15);
+      fill(240, 10, 10);
+      text("Your tower's not quite tall enough yet.", 380, 350);
+      guiController.controller("shake").hide();
+    }
+  }
+  else if (gameStarted && singleTowerCheck() && shakeStarted)
+  {
+    elapsedTime = millis();
+    float timeDiff = (elapsedTime - startTime)/1000;
+    image(countdown, 0, 0);
+    textSize(25);
 
-	}
-        else
+    if (towerInitial == null)
+      towerInitial = legoTowers.get(0);
+
+    Contour tempContour = legoTowers.get(0);
+    float contourDifference = (tempContour.getBoundingBox().height - towerInitial.getBoundingBox().height);
+    println("Contour diff:"+contourDifference);
+
+    if (contourDifference < -20)
+    {
+      if (stopTime == 0.0)
+        stopTime = millis();
+      
+      float elapsedStopTime = (stopTime - startTime)/1000;
+      image(towerFallen, 0, 0);
+      fill(255, 140, 140);
+      stroke(255, 0, 0);
+      strokeWeight(3);
+      drawContour(legoTowers);
+      fill(255,255,255);
+      textSize(20);
+      String timeDiffString = "Your tower fell in:"+ String.format("%.2f", elapsedStopTime) + " seconds";
+      text(timeDiffString, 250, 95);
+      guiController.controller("tryagain").setVisible(true);
+    }
+    else if (timeDiff >= 10.0)
+    {
+      if (finishTime == 0.0)
+          finishTime = millis();
+
+      float elapsedStopTime = (finishTime - startTime)/1000; 
+      image(towerStanding, 0, 0);
+      fill(140, 255, 140);   
+      stroke(0, 255, 0);
+      strokeWeight(3);
+      drawContour(tempContour);
+      fill(255,255,255);
+      textSize(20);
+      guiController.controller("continueTower").setVisible(true);
+    }
+    else 
+    {
+      fill(140, 255, 140);   
+      stroke(0, 255, 0);
+      strokeWeight(3);
+      drawContour(tempContour);
+      fill(100,100,100);
+      textSize(15);
+      String timeDiffString = String.format("%.2f", timeDiff) + " seconds";
+      text(timeDiffString, 610, 200);
+    }
+  }
+  else if (gameStarted && singleTowerCheck() && !shakeStarted)
+  {
+    image(startScreen, 0, 0);
+    Contour tempContour = legoTowers.get(0);
+    fill(140, 255, 140);   
+    stroke(0, 255, 0);
+    strokeWeight(3);
+    drawContour(tempContour);
+    guiController.controller("shake").setVisible(true);
+  }
+  else
+  {
+    //image(startScreen, 0, 0);
+    if (singleTowerCheck())
+      gameStarted = true;  
+    else if (legoTowers.size() == 0)
+    {
+      gameStarted = false;
+      textSize(15);
+      fill(204, 10, 10);
+      if (!shakeStarted)
+       { text("Place a tower on the table", 380, 350);}
+      guiController.controller("shake").hide();
+    }
+    else if (legoTowers.size() > 1)
+    {
+      gameStarted = false;
+      textSize(15);
+      fill(204, 10, 10);
+      if (!shakeStarted)
+      {  text("Place only one tower on the table", 380, 350);}
+      guiController.controller("shake").hide();
+    }  
+  }
+}
+
+void drawContour(Contour inputContour)
+{
+  pushMatrix();
+    translate(200, -75);
+    inputContour.draw();
+    
+    beginShape();
+        for (PVector point : inputContour.getPolygonApproximation().getPoints())
         {
-          shakeVisible = false;
-          startTime = 0;
-          
-          image(context.depthImage(),0,0);  
-          controlP5.controller("shake").hide();
-    messageBox.show();
+          vertex(point.x, point.y);
+        }
+        endShape();
+  popMatrix();
+}
 
-           //image(context.rgbImage(),0,0);
-           //legoTowers = extractLegoTowers();
-       }
+void drawContour(ArrayList<Contour> inputContours)
+{
+  for (int i=0; i<inputContours.size(); i++)
+  {
+    pushMatrix();
+      translate(200, -75);
+      inputContours.get(i).draw(); 
+      beginShape();
+        for (PVector point : inputContours.get(i).getPolygonApproximation().getPoints())
+        {
+          vertex(point.x, point.y);
+        }
+        endShape();
+    popMatrix();
+  }
+}
+
+void mouseClicked()
+{
+  buttonPressed = true;
+}
+
+
+void cleanKinectInput()
+{
+  int[] inputDepthMap = context.depthMap();
+  context.depthImage().loadPixels();
+
+  //Remove erroneous pixels
+  for (int i=0; i<context.depthMapSize();i++)
+  {
+    if (inputDepthMap[i] == 0) //Error depth map value
+      context.depthImage().pixels[i] = color(0,0,0); 
+    
+    if ((inputDepthMap[i]< 600) || (inputDepthMap[i] > 1000)) //Irrelevant depths
+      context.depthImage().pixels[i] = color(0,0,0);  
+  }
 }
 
 void setupKinect()
@@ -138,34 +316,52 @@ void setupKinect()
 	//Initialize openCv
 	opencv = new OpenCV(this, srcImage);
 	//Initialize screen size
-	size(srcImage.width, srcImage.height);
+	size(760, 500);
 }
 
 void setupTowers()
 {
 	//Extract lego towers in the current scene
 	legoTowers = extractLegoTowers();
-	contourDBList = legoTowers;
 
 	//Build lego database
-	buildLegoDatabase();
+	//buildLegoDatabase();
 }
 
 public void shake()
 {
-	debounceCount++;
-	if (shakeVisible && debounceCount > 1)
+	if (buttonPressed)
 	{
-		controlP5.hide();
-		println("Timer activated!");
-		timerVisible = true;	
+		shakeStarted = true;
+    guiController.controller("shake").hide();
+		println("Timer activated!");	
 		startTime = millis();
+    guiController.controller("shake").hide();
+    buttonPressed = false;
 	}
+  draw();
+}
+
+public void tryagain()
+{
+  if (buttonPressed)
+  {
+    initializeGame();
+  }
+}
+
+public void continueTower()
+{
+  if (buttonPressed)
+  {
+    rulerComparison = true;
+    initializeGame();
+  }
 }
 
 ArrayList<Contour> buildLegoDatabase()
 {
-	String imagePath = sketchPath + "/bw/";
+	String imagePath = sketchPath + "/towerDatabase/";
 	println(imagePath);
 	File imageFolder = new File(imagePath);
 	File[] imageArray = imageFolder.listFiles();
@@ -186,82 +382,28 @@ ArrayList<Contour> buildLegoDatabase()
 }
 
 boolean singleTowerCheck()
-{
-  println(legoTowers.size());
-	
+{	
   if (legoTowers.size() > 1)
-	{
-	
-		return false;
-	}
+    return false;
 	else if (legoTowers.size() == 1)
-	{
-		messageBox.hide();
 		return true;
-	}
-         else
-         {
-           return false;
-         }
+  else       
+    return false;         
 }
 
-ArrayList<String> loadTowerColors() 
+ArrayList<Contour> extractLegoTowers()
 {
-  ArrayList<String> towerColors = new ArrayList<String>();
-  towerColors.add("RYGB"); //A1
-  towerColors.add("RYGB"); //A1
-  towerColors.add("RYGB"); //A1
-  towerColors.add("RYBG"); //A2
-  towerColors.add("RYBG"); //A2
-  towerColors.add("RYBG"); //A2
-  towerColors.add("YRGB"); //B1
-  towerColors.add("YRGB"); //B1
-  towerColors.add("YRGB"); //B1
-  towerColors.add("rGRYB"); //B2
-  towerColors.add("rGRYB"); //B2
-  towerColors.add("rGRYB"); //B2
-  towerColors.add("RGYB"); //C1
-  towerColors.add("RGYB"); //C1
-  towerColors.add("RGYB"); //C1
-  towerColors.add("RYGB"); //C2
-  towerColors.add("RYGB"); //C2
-  towerColors.add("RYGB"); //C2
-  towerColors.add("YRBG"); //D1
-  towerColors.add("YRBG"); //D1
-  towerColors.add("YRBG"); //D1
-  towerColors.add("BYGR"); //D2
-  towerColors.add("BYGR"); //D2
-  towerColors.add("BYGR"); //D2
-  towerColors.add("yBrYRG"); //E1
-  towerColors.add("rBRG"); //E1
-  towerColors.add("BrYRG"); //E1
-  towerColors.add("rYRG"); //E2
-  towerColors.add("BrYRG"); //E2
-  towerColors.add("yBrYRG"); //E2
-  towerColors.add("GYR"); //F1
-  towerColors.add("gBGYR"); //F1
-  towerColors.add("BGYR"); //F1
-  towerColors.add("gBGRY"); //F2
-  towerColors.add("GRY"); //F2
-  towerColors.add("BGRY"); //F2
-  towerColors.add("YGRB"); //G1
-  towerColors.add("YGRB"); //G1
-  towerColors.add("YGRB"); //G1
-  towerColors.add("YGBR"); //M1
-  towerColors.add("YGBR"); //M1
-  towerColors.add("YGBR"); //M1
-  towerColors.add("BYRG"); //M2
-  towerColors.add("BYRG"); //M2
-  towerColors.add("BYRG"); //M2
-  towerColors.add("GYRB"); //M3
-  towerColors.add("GYRB"); //M3
-  towerColors.add("GYRB"); //M3
-  towerColors.add("yBYRG"); //M4
-  towerColors.add("yBYRG"); //M4
-  towerColors.add("yBYRG"); //M4
-  towerColors.add("GYBR"); //X
-  towerColors.add("GYBR"); //X
-  towerColors.add("GYBR"); //X
-  towerColors.add(":)"); //start
-  return towerColors;
+  //Find all contours in input image
+  ArrayList<Contour> towerContours = opencv.findContours();
+  ArrayList<Contour> filteredContours = new ArrayList<Contour>();
+  
+  //Filter contours to only lego towers
+  for (Contour contour: towerContours)
+  {
+    if(contour.area() > 1500)
+    {
+      filteredContours.add(contour);
+    }
+  }
+  return filteredContours;
 }
