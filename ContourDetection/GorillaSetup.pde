@@ -16,7 +16,7 @@ IntList towerPairs;
 Boolean playgame1, playgame2;
 
 /* buttons etc */
-PImage startScreen, pretzel;
+PImage pretzel;
 PImage game1, game2;
 PImage continueButton, tower1, tower2, same, shake;
 PImage continueButton_hover, tower1_hover, tower2_hover, same_hover, shake_hover;
@@ -59,7 +59,7 @@ void gameSetup()
 {
   if (scene1==true)
   {
-    image(startScreen, 0, 0);
+    image(screen1, 0, 0);
 //    gameSelection();
     continue_button();
   }

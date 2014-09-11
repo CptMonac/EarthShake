@@ -221,6 +221,7 @@ void checkTowerImage()
 
 void checkTowerMatch()
 {
+  //if toweriteration==0 and no towers
   if ((foundLeftMatch==false) && (foundRightMatch==false))
     neither_match_text();
   if ((foundLeftMatch==false) && (foundRightMatch==true))
@@ -228,7 +229,10 @@ void checkTowerMatch()
   if ((foundLeftMatch==true) && (foundRightMatch==false))
     mismatch_right_text();   
   if ((foundLeftMatch==false) && (hasRight==false))
+  {
+    image(wrongTower, 0, 0);
     displayText(t_place_wrong_left_only);
+  }
   if ((foundRightMatch==false) && (hasLeft==false))
     displayText(t_place_wrong_right_only); 
   if ((foundLeftMatch==true) && (foundRightMatch==true))

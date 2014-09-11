@@ -47,6 +47,7 @@ float scaleFactory = 0.96; // 480/(480+500)
 
 ImagePanel view2;
 PImage viewport2 = new PImage(780,500,RGB);
+
 /*** VARIABLES end *********************************************/
 
 
@@ -88,12 +89,10 @@ void setup()
   println("sizeof contourDBList = "+contourDBList.size()); 
   pImgNames = loadPImgStrings();
   
-  //screen1 = loadImage("screen1_grid.jpg");
   screen1 = loadImage("gorilla.jpg");
   wrongTower = loadImage("wrongtower.png");
   correctTower = loadImage("correctTower.png");
-  //startScreen = loadImage("startscreen.jpg");
-  startScreen = screen1;
+  //startScreen = screen1;
   pretzel = loadImage("pretzel.png");
   circle = loadImage("placementcircle.png");
   
@@ -117,11 +116,13 @@ void setup()
   v2.add(view2);
   v2.show();  
   
-//  scenarioNumber = int(random(1,6));
-//  loadScenario(scenarioNumber);
-  initTowerPairOrder();
-  generateNewSet();
+////  scenarioNumber = int(random(1,6));
+////  loadScenario(scenarioNumber);
+//  initTowerPairOrder();
+//  generateNewSet();
 }
+
+
 
 void draw()
 {
@@ -140,10 +141,11 @@ void draw()
   
   pushMatrix();
     translate(780, 0);
-    image(context.depthImage(),0,0);
-    editedImage = opencv.getOutput();
-    trackLegoTowers();
-    imageComparison(); 
+//    image(context.depthImage(),0,0);
+//    //out today
+//    editedImage = opencv.getOutput();
+//    trackLegoTowers();
+//    imageComparison(); 
   popMatrix();
  
   pushMatrix();
@@ -152,28 +154,37 @@ void draw()
 //    if (playgame1==true)
 //    {
       if (scene2==true) {
-        placingTowers = false;
-        trackLegoTowers_g2();
+        //String[] runthis = { "/Users/christinelaw/EarthShake/ContourDetection/Scenario4/Scenario4.pde" };
+        //exec(runthis);
+        //open("/Users/christinelaw/EarthShake/ContourDetection/Scenario4/Scenario4.pde");
+        setupgame2();
+//        placingTowers = false;
+//        trackLegoTowers_g2();
       }
-      if (scene3==true) {
-        if (scene3a==true)
-          prediction_intro();
-        if (scene3b==true)
-          prediction_discusschoice();
-        if (explain==false)
-          drawLegoContours_g();
-          //drawLegoContours_static();
-      }
-      if (scene4==true)
-        guess_message();
-      if (scene5==true)
-        expl_result();
-      if (scene6==true)
-        newRoundOfTowers();
-//    }
-//    
-//    else if (playgame2==true)
-//    {}
+//out today
+//      if (scene3==true) {
+//        if (scene3a==true)
+//          prediction_intro();
+//        if (scene3b==true)
+//          prediction_discusschoice();
+//        if (explain==false)
+//          drawLegoContours_g();
+//          //drawLegoContours_static();
+//      }
+//      if (scene4==true)
+//        guess_message();
+//      if (scene5==true)
+//        expl_result();
+//      if (scene6==true)
+//        newRoundOfTowers();
+//
+//
+//
+//
+////    }
+////    
+////    else if (playgame2==true)
+////    {}
   popMatrix();
   
   viewport2 = get(780,20,640,480);
