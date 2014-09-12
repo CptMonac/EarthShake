@@ -28,6 +28,7 @@ void setupgame2()
     initializeGame();
     
     image(startScreen, 0, 0);
+    //drawgame2();
 }
 
 void initializeGame()
@@ -85,6 +86,175 @@ void initializeGUI()
             .setImages(continueIcon)
             .updateSize();
   guiController.controller("continueTower").hide();  
+}
+
+void drawgame2()
+{
+  /*
+  context.update();
+  cleanKinectInput();
+
+  opencv = new OpenCV(this, context.depthImage());
+  opencv.gray();
+  opencv.threshold(70);
+  */
+  legoTowers = extractLegoTowers();
+  
+  if (gameStarted && rulerComparison && singleTowerCheck())
+  {
+    //Display prompt and comparison ruler
+    image(rulerMatchScreen, 0, 0);
+    fill(200,200,0);
+    rect(130, -75, 15, rulerHeight);
+    
+    //Extract lego tower
+    Contour tempContour = legoTowers.get(0);
+    float contourHeight = tempContour.getBoundingBox().height;
+    if (contourHeight >= rulerHeight)
+    {
+      stroke(10, 240, 10);
+      strokeWeight(4);
+      noFill();
+      /* drawContour(tempContour); */
+      guiController.controller("shake").setVisible(true);
+    }
+    else 
+    {
+      stroke(240, 10, 10);
+      strokeWeight(4);
+      noFill();
+      /* drawContour(tempContour); */
+
+      textSize(15);
+      fill(240, 10, 10);
+      text("Your tower's not quite tall enough yet.", 380, 350);
+      guiController.controller("shake").hide();
+    }
+  }
+  else if (gameStarted && singleTowerCheck() && shakeStarted)
+  {
+    elapsedTime = millis();
+    float timeDiff = (elapsedTime - startTime)/1000;
+    image(countdown, 0, 0);
+    textSize(25);
+
+    if (towerInitial == null)
+      towerInitial = legoTowers.get(0);
+
+    Contour tempContour = legoTowers.get(0);
+    float contourDifference = (tempContour.getBoundingBox().height - towerInitial.getBoundingBox().height);
+    println("Contour diff:"+contourDifference);
+
+    if (contourDifference < -20)
+    {
+      if (stopTime == 0.0)
+        stopTime = millis();
+      
+      float elapsedStopTime = (stopTime - startTime)/1000;
+      image(towerFallen, 0, 0);
+      fill(255, 140, 140);
+      stroke(255, 0, 0);
+      strokeWeight(3);
+      /* drawContour(legoTowers); */
+      fill(255,255,255);
+      textSize(20);
+      String timeDiffString = "Your tower fell in:"+ String.format("%.2f", elapsedStopTime) + " seconds";
+      text(timeDiffString, 250, 95);
+      guiController.controller("tryagain").setVisible(true);
+    }
+    else if (timeDiff >= 10.0)
+    {
+      if (finishTime == 0.0)
+          finishTime = millis();
+
+      float elapsedStopTime = (finishTime - startTime)/1000; 
+      image(towerStanding, 0, 0);
+      fill(140, 255, 140);   
+      stroke(0, 255, 0);
+      strokeWeight(3);
+      /* drawContour(tempContour); */
+      fill(255,255,255);
+      textSize(20);
+      guiController.controller("continueTower").setVisible(true);
+    }
+    else 
+    {
+      fill(140, 255, 140);   
+      stroke(0, 255, 0);
+      strokeWeight(3);
+      /* drawContour(tempContour); */
+      fill(100,100,100);
+      textSize(15);
+      String timeDiffString = String.format("%.2f", timeDiff) + " seconds";
+      text(timeDiffString, 610, 200);
+    }
+  }
+  else if (gameStarted && singleTowerCheck() && !shakeStarted)
+  {
+    image(startScreen, 0, 0);
+    Contour tempContour = legoTowers.get(0);
+    fill(140, 255, 140);   
+    stroke(0, 255, 0);
+    strokeWeight(3);
+    /* drawContour(tempContour); */
+    guiController.controller("shake").setVisible(true);
+  }
+  else
+  {
+    //image(startScreen, 0, 0);
+    if (singleTowerCheck())
+      gameStarted = true;  
+    else if (legoTowers.size() == 0)
+    {
+      gameStarted = false;
+      textSize(15);
+      fill(204, 10, 10);
+      if (!shakeStarted)
+       { text("Place a tower on the table", 380, 350);}
+      guiController.controller("shake").hide();
+    }
+    else if (legoTowers.size() > 1)
+    {
+      gameStarted = false;
+      textSize(15);
+      fill(204, 10, 10);
+      if (!shakeStarted)
+      {  text("Place only one tower on the table", 380, 350);}
+      guiController.controller("shake").hide();
+    }  
+  }
+}
+
+void drawContour(Contour inputContour)
+{
+  pushMatrix();
+    translate(200, -75);
+    inputContour.draw();
+    
+    beginShape();
+        for (PVector point : inputContour.getPolygonApproximation().getPoints())
+        {
+          vertex(point.x, point.y);
+        }
+        endShape();
+  popMatrix();
+}
+
+void drawContour(ArrayList<Contour> inputContours)
+{
+  for (int i=0; i<inputContours.size(); i++)
+  {
+    pushMatrix();
+      translate(200, -75);
+      inputContours.get(i).draw(); 
+      beginShape();
+        for (PVector point : inputContours.get(i).getPolygonApproximation().getPoints())
+        {
+          vertex(point.x, point.y);
+        }
+        endShape();
+    popMatrix();
+  }
 }
 
 void setupKinect()

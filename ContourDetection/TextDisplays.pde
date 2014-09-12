@@ -12,8 +12,8 @@ void displayText(PImage textBubble)
 
 void game_buttons()
 {
-  image(game1, 1*gorWidth/2, 21*gorHeight/32);
-  image(game2, 23*gorWidth/32, 21*gorHeight/32);  
+  image(game1, 1*gorWidth/2, 1*gorHeight/2);
+  image(game2, 1*gorWidth/2, 3*gorHeight/4);  
 }
 
 //****************************************************** PLACING TOWERS
@@ -75,8 +75,7 @@ void mismatch_right_image()
 //****************************************************** text *******
 void instr_place_tower() 
 {
-  image(pretzel, 0, 0);
-  //displayText(t_place_both);
+  displayText(t_place_both);
 }
 
 void match_left_text()
@@ -96,7 +95,6 @@ void mismatch_left_text()
 
 void mismatch_right_text()
 {
-  image(wrongTower, 0, 0);
   displayText(t_place_wrong_right);
 }
 
