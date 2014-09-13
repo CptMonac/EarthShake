@@ -144,7 +144,11 @@ void trackLegoTowers_g2()
   if (scene2==true && scene3==false)
   {
     checkTowerImage();
-    checkTowerMatch();
+    if (legoTowers.size() > 0)
+    {
+      //FANCY IGGY
+      checkTowerMatch();
+    }
   }
     
   if (scene4==true)
@@ -229,9 +233,7 @@ void checkTowerMatch()
   if ((foundLeftMatch==true) && (foundRightMatch==false))
     mismatch_right_text();   
   if ((foundLeftMatch==false) && (hasRight==false))
-  {
     displayText(t_place_wrong_left_only);
-  }
   if ((foundRightMatch==false) && (hasLeft==false))
     displayText(t_place_wrong_right_only); 
   if ((foundLeftMatch==true) && (foundRightMatch==true))

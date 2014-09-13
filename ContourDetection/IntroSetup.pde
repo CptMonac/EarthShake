@@ -149,8 +149,12 @@ void draw()
  
   pushMatrix();
     translate(0, 0);
-    //if (playgame1==false && playgame2==false)
-      gameSetup();
+    image(screen1, 0, 0);
+    
+    if (playgame1==false && playgame2==false) {
+      if (scene1==true && scene2==false)
+        gameSelection();
+    }
     
     if (playgame2==true) {
       setupgame2();
@@ -158,8 +162,8 @@ void draw()
     }
     
     if (playgame1==true) {
-      if (scene2==false)
-        continue_button();
+//      if (scene2==false)
+//        continue_button();
       if (scene2==true) {
         placingTowers = false;
         trackLegoTowers_g2();
