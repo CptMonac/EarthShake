@@ -154,13 +154,16 @@ void trackLegoTowers()
           text(noteArray.get(0), 167, 290);
           text(currentTowerColors[0], 167, 305);
         }
+        else
+          text("Fallen", 167, 320);
         if (rightDown==false)
         {
           text("Standing", 400, 320);
           text(noteArray.get(1), 400, 290);
           text(currentTowerColors[1], 400, 305);
         }
-      } 
+      }
+     text(noteArray.size(), 140, 320); 
     }
   }
 }
