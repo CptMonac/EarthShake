@@ -254,7 +254,7 @@ void drawLegoContours_g()
   ArrayList<Contour> towerContours = opencv.findContours();
   
   int adjustx = 0; 
-  int adjusty = 3*gorHeight/16; 
+  int adjusty = 1*gorHeight/16; 
     
   //Filter contours to only lego towers
   for (Contour contour: towerContours)

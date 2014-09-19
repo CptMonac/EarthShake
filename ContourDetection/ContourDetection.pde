@@ -178,11 +178,15 @@ ArrayList<Contour> extractLegoTowers()
     {
       filteredContours.add(contour);
 
+      
       contour.draw();
       //fill(0,0,255);
       
       //Draw polygon approximation
-      stroke(255, 0, 0);
+//      if (playgame1==true)
+//        stroke(255, 0, 0);
+//      else if (playgame2==true)
+        stroke(0, 255, 0);
 
      
         beginShape();

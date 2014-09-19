@@ -97,9 +97,7 @@ int explanation()
 }
 
 void gameSelection()
-{
-  game_buttons();
-  
+{ 
   if ((mouseX >= 1*gorWidth/2) && (mouseX <= (1*gorWidth/2 + 186)) && (mouseY >= 1*gorHeight/2) && (mouseY < (1*gorHeight/2 + 64)))
     playgame1 = true;
     

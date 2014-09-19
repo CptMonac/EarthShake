@@ -62,8 +62,8 @@ void initializeGUI()
   PImage[] continueIcon = {loadImage("images/continue.png"), loadImage("images/continue_hover.png"), loadImage("images/continue.png")};
   
   //Create GUI instance
-  float btnPositionX = 9*width/16;
-  float btnPositionY = 13*height/16 + 15;
+  float btnPositionX = 9*gorWidth/16;
+  float btnPositionY = 13*gorHeight/16 + 15;
   guiController = new ControlP5(this);
 
   guiController.addButton("shake")
@@ -86,6 +86,8 @@ void initializeGUI()
             .setImages(continueIcon)
             .updateSize();
   guiController.controller("continueTower").hide();  
+  
+  
 }
 
 void drawgame2()
@@ -98,7 +100,7 @@ void drawgame2()
   opencv.gray();
   opencv.threshold(70);
   */
-  legoTowers = extractLegoTowers();
+  legoTowers = extractLegoTowers_game2();
   
   if (gameStarted && rulerComparison && singleTowerCheck())
   {
@@ -115,7 +117,8 @@ void drawgame2()
       stroke(10, 240, 10);
       strokeWeight(4);
       noFill();
-      /* drawContour(tempContour); */
+      
+      drawContour(tempContour); 
       guiController.controller("shake").setVisible(true);
     }
     else 
@@ -123,7 +126,7 @@ void drawgame2()
       stroke(240, 10, 10);
       strokeWeight(4);
       noFill();
-      /* drawContour(tempContour); */
+      drawContour(tempContour);
 
       textSize(15);
       fill(240, 10, 10);
@@ -155,12 +158,12 @@ void drawgame2()
       fill(255, 140, 140);
       stroke(255, 0, 0);
       strokeWeight(3);
-      /* drawContour(legoTowers); */
+      drawContour(legoTowers);
       fill(255,255,255);
       textSize(20);
       String timeDiffString = "Your tower fell in:"+ String.format("%.2f", elapsedStopTime) + " seconds";
       text(timeDiffString, 250, 95);
-      guiController.controller("tryagain").setVisible(true);
+      guiController.controller("tryagain").setVisible(true); 
     }
     else if (timeDiff >= 10.0)
     {
@@ -172,7 +175,7 @@ void drawgame2()
       fill(140, 255, 140);   
       stroke(0, 255, 0);
       strokeWeight(3);
-      /* drawContour(tempContour); */
+      drawContour(tempContour);
       fill(255,255,255);
       textSize(20);
       guiController.controller("continueTower").setVisible(true);
@@ -182,10 +185,11 @@ void drawgame2()
       fill(140, 255, 140);   
       stroke(0, 255, 0);
       strokeWeight(3);
-      /* drawContour(tempContour); */
+      drawContour(tempContour);
       fill(100,100,100);
       textSize(15);
       String timeDiffString = String.format("%.2f", timeDiff) + " seconds";
+      translate(-280,0);
       text(timeDiffString, 610, 200);
     }
   }
@@ -196,8 +200,8 @@ void drawgame2()
     fill(140, 255, 140);   
     stroke(0, 255, 0);
     strokeWeight(3);
-    /* drawContour(tempContour); */
-    guiController.controller("shake").setVisible(true);
+    drawContour(tempContour);
+    guiController.controller("shake").setVisible(true); 
   }
   else
   {
@@ -227,7 +231,7 @@ void drawgame2()
 
 void drawContour(Contour inputContour)
 {
-  pushMatrix();
+  //pushMatrix();
     translate(200, -75);
     inputContour.draw();
     
@@ -237,14 +241,14 @@ void drawContour(Contour inputContour)
           vertex(point.x, point.y);
         }
         endShape();
-  popMatrix();
+  //popMatrix();
 }
 
 void drawContour(ArrayList<Contour> inputContours)
 {
   for (int i=0; i<inputContours.size(); i++)
   {
-    pushMatrix();
+//    pushMatrix();
       translate(200, -75);
       inputContours.get(i).draw(); 
       beginShape();
@@ -253,8 +257,13 @@ void drawContour(ArrayList<Contour> inputContours)
           vertex(point.x, point.y);
         }
         endShape();
-    popMatrix();
+//    popMatrix();
   }
+}
+
+void mouseClicked()
+{
+  buttonPressed = true;
 }
 
 void setupKinect()
@@ -291,17 +300,49 @@ void setupTowers()
   //buildLegoDatabase();
 }
 
+//public void shake()
+//{
+//  debounceCount++;
+//  if (shakeVisible && debounceCount > 1)
+//  {
+//    controlP5.hide();
+//    println("Timer activated!");
+//    timerVisible = true;  
+//    startTime = millis();
+//  }
+//}
+
 public void shake()
 {
-  debounceCount++;
-  if (shakeVisible && debounceCount > 1)
+  if (buttonPressed)
   {
-    controlP5.hide();
-    println("Timer activated!");
-    timerVisible = true;  
+    shakeStarted = true;
+    guiController.controller("shake").hide();
+    println("Timer activated!");  
     startTime = millis();
+    guiController.controller("shake").hide();
+    buttonPressed = false;
+  }
+  draw();
+}
+
+public void tryagain()
+{
+  if (buttonPressed)
+  {
+    initializeGame();
   }
 }
+
+public void continueTower()
+{
+  if (buttonPressed)
+  {
+    rulerComparison = true;
+    initializeGame();
+  }
+}
+
 
 ArrayList<Contour> buildLegoDatabase()
 {
@@ -336,12 +377,34 @@ boolean singleTowerCheck()
   }
   else if (legoTowers.size() == 1)
   {
-    messageBox.hide();
+    //messageBox.hide();
     return true;
   }
          else
          {
            return false;
          }
+}
+
+ArrayList<Contour> extractLegoTowers_game2()
+{
+  //Find all contours in input image
+  ArrayList<Contour> towerContours = opencv.findContours();
+  ArrayList<Contour> filteredContours = new ArrayList<Contour>();
+  
+  //translate(-780,0);
+  
+  //Filter contours to only lego towers
+  for (Contour contour: towerContours)
+  {
+    if(contour.area() > 1500)
+    {
+      filteredContours.add(contour);
+    }
+  }
+  
+  //translate(780,0);
+  
+  return filteredContours;
 }
 

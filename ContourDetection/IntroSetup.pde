@@ -120,6 +120,16 @@ void setup()
 //  loadScenario(scenarioNumber);
   initTowerPairOrder();
   generateNewSet();
+  
+  //AYO
+    //Initialize lego towers
+    setupTowers();
+
+    //Initialize GUI
+    initializeGUI();
+    initializeGame();
+  
+  
 }
 
 
@@ -141,10 +151,10 @@ void draw()
  
   pushMatrix();
     translate(780, 0);
-    image(context.depthImage(),0,0);
-    editedImage = opencv.getOutput();
-    trackLegoTowers();
-    imageComparison(); 
+//    image(context.depthImage(),0,0);
+//    editedImage = opencv.getOutput();
+//    trackLegoTowers();
+//    imageComparison(); 
   popMatrix();
  
   pushMatrix();
@@ -152,16 +162,16 @@ void draw()
     image(screen1, 0, 0);
     
     if (playgame1==false && playgame2==false) {
-      if (scene1==true && scene2==false)
-        gameSelection();
+      game_buttons();
     }
     
     if (playgame2==true) {
-      setupgame2();
+      //setupgame2();
+      gameStarted = true;
       drawgame2();
     }
     
-    if (playgame1==true) {
+    else if (playgame1==true) {
 //      if (scene2==false)
 //        continue_button();
       if (scene2==true) {

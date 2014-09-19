@@ -138,6 +138,9 @@ void mousePressed()
       scene2 = true;
     }
   }
+  
+  if (playgame1==false && playgame2==false)
+    gameSelection();
 }
 
 void generateNewSet()
