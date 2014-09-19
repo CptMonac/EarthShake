@@ -191,6 +191,7 @@ void drawgame2()
       String timeDiffString = String.format("%.2f", timeDiff) + " seconds";
       translate(-280,0);
       text(timeDiffString, 610, 200);
+      translate(280,0);
     }
   }
   else if (gameStarted && singleTowerCheck() && !shakeStarted)

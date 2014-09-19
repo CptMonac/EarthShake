@@ -151,10 +151,10 @@ void draw()
  
   pushMatrix();
     translate(780, 0);
-//    image(context.depthImage(),0,0);
-//    editedImage = opencv.getOutput();
-//    trackLegoTowers();
-//    imageComparison(); 
+    image(context.depthImage(),0,0);
+    editedImage = opencv.getOutput();
+    trackLegoTowers();
+    imageComparison(); 
   popMatrix();
  
   pushMatrix();
