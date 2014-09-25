@@ -295,7 +295,7 @@ void setupTowers()
 {
   //Extract lego towers in the current scene
   legoTowers = extractLegoTowers();
-  contourDBList = legoTowers;
+  //contourDBList = legoTowers;
 
   //Build lego database
   //buildLegoDatabase();
