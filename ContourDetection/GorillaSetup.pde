@@ -55,6 +55,22 @@ PImage F1_tower, F1_fallen, F1_expl;
 PImage F2_guide, F2_wrong, F2_correct;
 PImage F2_tower, F2_fallen, F2_expl;
 
+void gameSetup()
+{
+  if (scene1==true)
+  {
+    image(screen1, 0, 0);
+//    gameSelection();
+    continue_button();
+  }
+  else
+    image(screen1, 0, 0);
+//  else if (playgame1==true)
+//    image(screen1, 0, 0);
+//  else if (playgame2==true)
+//    image(pretzel, 0, 0);
+}
+
 void resetVariables()
 {
   //scene1 = true;
@@ -131,16 +147,12 @@ void mousePressed()
     
   if (scene1==true && scene2==false)
   {
-    
-    if (playgame1==true)
+    if (continue_pressed()==true)
     {
       scene1 = false;
       scene2 = true;
     }
   }
-  
-  if (playgame1==false && playgame2==false)
-    gameSelection();
 }
 
 void generateNewSet()

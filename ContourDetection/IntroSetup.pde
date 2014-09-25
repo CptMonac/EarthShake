@@ -116,20 +116,10 @@ void setup()
   v2.add(view2);
   v2.show();  
   
-//  scenarioNumber = int(random(1,6));
-//  loadScenario(scenarioNumber);
-  initTowerPairOrder();
-  generateNewSet();
-  
-  //AYO
-    //Initialize lego towers
-    setupTowers();
-
-    //Initialize GUI
-    initializeGUI();
-    initializeGame();
-  
-  
+////  scenarioNumber = int(random(1,6));
+////  loadScenario(scenarioNumber);
+//  initTowerPairOrder();
+//  generateNewSet();
 }
 
 
@@ -148,53 +138,53 @@ void draw()
   opencv = new OpenCV(this, srcImage);
   opencv.gray();
   opencv.threshold(70);
- 
+  
   pushMatrix();
     translate(780, 0);
-    image(context.depthImage(),0,0);
-    editedImage = opencv.getOutput();
-    trackLegoTowers();
-    imageComparison(); 
+//    image(context.depthImage(),0,0);
+//    //out today
+//    editedImage = opencv.getOutput();
+//    trackLegoTowers();
+//    imageComparison(); 
   popMatrix();
  
   pushMatrix();
     translate(0, 0);
-    image(screen1, 0, 0);
-    
-    if (playgame1==false && playgame2==false) {
-      game_buttons();
-    }
-    
-    if (playgame2==true) {
-      //setupgame2();
-      gameStarted = true;
-      drawgame2();
-    }
-    
-    else if (playgame1==true) {
-//      if (scene2==false)
-//        continue_button();
+    gameSetup();
+//    if (playgame1==true)
+//    {
       if (scene2==true) {
-        placingTowers = false;
-        trackLegoTowers_g2();
+        //String[] runthis = { "/Users/christinelaw/EarthShake/ContourDetection/Scenario4/Scenario4.pde" };
+        //exec(runthis);
+        //open("/Users/christinelaw/EarthShake/ContourDetection/Scenario4/Scenario4.pde");
+        setupgame2();
+//        placingTowers = false;
+//        trackLegoTowers_g2();
       }
-      if (scene3==true) {
-        if (scene3a==true)
-          prediction_intro();
-        if (scene3b==true)
-          prediction_discusschoice();
-        if (explain==false)
-          drawLegoContours_g();
-          //drawLegoContours_static();
-      }
-      if (scene4==true)
-        guess_message();
-      if (scene5==true)
-        expl_result();
-      if (scene6==true)
-        newRoundOfTowers();
-    }
-
+//out today
+//      if (scene3==true) {
+//        if (scene3a==true)
+//          prediction_intro();
+//        if (scene3b==true)
+//          prediction_discusschoice();
+//        if (explain==false)
+//          drawLegoContours_g();
+//          //drawLegoContours_static();
+//      }
+//      if (scene4==true)
+//        guess_message();
+//      if (scene5==true)
+//        expl_result();
+//      if (scene6==true)
+//        newRoundOfTowers();
+//
+//
+//
+//
+////    }
+////    
+////    else if (playgame2==true)
+////    {}
   popMatrix();
   
   viewport2 = get(780,20,640,480);

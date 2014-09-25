@@ -154,16 +154,13 @@ void trackLegoTowers()
           text(noteArray.get(0), 167, 290);
           text(currentTowerColors[0], 167, 305);
         }
-        else
-          text("Fallen", 167, 320);
         if (rightDown==false)
         {
           text("Standing", 400, 320);
           text(noteArray.get(1), 400, 290);
           text(currentTowerColors[1], 400, 305);
         }
-      }
-     text(noteArray.size(), 140, 320); 
+      } 
     }
   }
 }
@@ -181,15 +178,11 @@ ArrayList<Contour> extractLegoTowers()
     {
       filteredContours.add(contour);
 
-      
       contour.draw();
       //fill(0,0,255);
       
       //Draw polygon approximation
-//      if (playgame1==true)
-//        stroke(255, 0, 0);
-//      else if (playgame2==true)
-        stroke(0, 255, 0);
+      stroke(255, 0, 0);
 
      
         beginShape();
