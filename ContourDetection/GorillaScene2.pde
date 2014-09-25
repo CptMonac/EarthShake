@@ -230,7 +230,6 @@ void checkTowerMatch()
     mismatch_right_text();   
   if ((foundLeftMatch==false) && (hasRight==false))
   {
-    image(wrongTower, 0, 0);
     displayText(t_place_wrong_left_only);
   }
   if ((foundRightMatch==false) && (hasLeft==false))
