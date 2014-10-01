@@ -827,7 +827,7 @@ public class LegoTower
     textSize(25);
     noFill();
     stroke(255, 0, 0);
-    text("COLOR "+colorOrder, towerOrigin.x + 20, towerOrigin.y - 10);
+    //text("COLOR "+colorOrder, towerOrigin.x + 20, towerOrigin.y - 10);
     textSize(15);
   }
   

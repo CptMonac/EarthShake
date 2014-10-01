@@ -36,9 +36,6 @@ String[] blobDebugMode()
     println(colorOrder);
     colorTowers[j] = colorOrder;
     
-    //stroke(255,255,255);
-    //rect(towerContours.get(j).x, towerContours.get(j).y, towerContours.get(j).blobWidth, towerContours.get(j).blobHeight);
-    
   }
   //colorTowers = reverse(colorTowers);
   return colorTowers;
@@ -80,9 +77,9 @@ ArrayList<BlobRect> mergeBlobs()
       currRect.y *= scaleFactory;
       currRect.blobHeight *= scaleFactory;
       mergedBlobs.add(currRect);
-      stroke(255,255,255);
+      stroke(0,255,255);
       noFill();
-      //rect(currRect.x, currRect.y, currRect.blobWidth, currRect.blobHeight);  
+      rect(currRect.x, currRect.y, currRect.blobWidth, currRect.blobHeight);  
     }
     
     for (int j = 0; j < mergedBlobs.size(); j++)

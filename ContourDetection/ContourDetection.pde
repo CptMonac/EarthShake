@@ -11,12 +11,12 @@ void cleanKinectInput()
       colorTower.pixels[i] = color(0,0,0);
     }
 
-    if ((inputDepthMap[i]< 600) || (inputDepthMap[i] > 1000)) { //Irrelevant depths
+    if ((inputDepthMap[i]< 600) || (inputDepthMap[i] > 900)) { //Irrelevant depths
       context.depthImage().pixels[i] = color(0,0,0);
       colorTower.pixels[i] = color(0,0,0);
     }
 
-    else if ((inputDepthMap[i] > 400) && (inputDepthMap[i] < 1000))
+    else if ((inputDepthMap[i] > 600) && (inputDepthMap[i] < 900))
       colorTower.pixels[i] = context.rgbImage().pixels[i];
   }
 }
@@ -25,8 +25,8 @@ void imageComparison()
 {
   pushMatrix();
   image(colorTower, -780, 0);
-  scale(scaleFactorx);
-  image(colorTower, 0, 0);
+  //scale(scaleFactorx);
+  //image(colorTower, 0, 0);
 
   theBlobDetection = new BlobDetection(srcImage.width, srcImage.height);
   println("WxH "+srcImage.width+"x"+srcImage.height);
@@ -91,11 +91,25 @@ void trackLegoTowers()
           }
         }
         
+        
+        println("currentTowerColors.length "+currentTowerColors.length);
+        if (currentTowerColors.length == 4)
+        {
+        println("currentTowerColors.length "+currentTowerColors[0]);
+        println("currentTowerColors.length "+currentTowerColors[1]);
+        println("currentTowerColors.length "+currentTowerColors[2]);
+        println("currentTowerColors.length "+currentTowerColors[3]);
+        println("filteredContours.size() "+filteredContours.size());
+        }
+        
         if ((filteredContours.size() <= 2) && (currentTowerColors.length==filteredContours.size())) {
           
+          println("inside IF statement");
           noteArray.add(getBestTowerMatch(tempContour, currentTowerColors[j]));    
           //String note = getBestTowerMatch(tempContour, currentTowerColors[j]);
               
+              
+          //displays on top right of debugging screen    
           text(noteArray.get(j), 400, 50+(50*j));
           text(currentBoundingBoxes.get(j).height, 400, 75+(50*j));
           
