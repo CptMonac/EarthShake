@@ -11,12 +11,12 @@ void cleanKinectInput()
       colorTower.pixels[i] = color(0,0,0);
     }
 
-    if ((inputDepthMap[i]< 600) || (inputDepthMap[i] > 900)) { //Irrelevant depths
+    if ((inputDepthMap[i]< 600) || (inputDepthMap[i] > 1000)) { //Irrelevant depths
       context.depthImage().pixels[i] = color(0,0,0);
       colorTower.pixels[i] = color(0,0,0);
     }
 
-    else if ((inputDepthMap[i] > 600) && (inputDepthMap[i] < 900))
+    else if ((inputDepthMap[i] > 400) && (inputDepthMap[i] < 1000))
       colorTower.pixels[i] = context.rgbImage().pixels[i];
   }
 }
@@ -25,8 +25,8 @@ void imageComparison()
 {
   pushMatrix();
   image(colorTower, -780, 0);
-  //scale(scaleFactorx);
-  //image(colorTower, 0, 0);
+  scale(scaleFactorx);
+  image(colorTower, 0, 0);
 
   theBlobDetection = new BlobDetection(srcImage.width, srcImage.height);
   println("WxH "+srcImage.width+"x"+srcImage.height);
@@ -91,25 +91,11 @@ void trackLegoTowers()
           }
         }
         
-        
-        println("currentTowerColors.length "+currentTowerColors.length);
-        if (currentTowerColors.length == 4)
-        {
-        println("currentTowerColors.length "+currentTowerColors[0]);
-        println("currentTowerColors.length "+currentTowerColors[1]);
-        println("currentTowerColors.length "+currentTowerColors[2]);
-        println("currentTowerColors.length "+currentTowerColors[3]);
-        println("filteredContours.size() "+filteredContours.size());
-        }
-        
         if ((filteredContours.size() <= 2) && (currentTowerColors.length==filteredContours.size())) {
           
-          println("inside IF statement");
           noteArray.add(getBestTowerMatch(tempContour, currentTowerColors[j]));    
           //String note = getBestTowerMatch(tempContour, currentTowerColors[j]);
               
-              
-          //displays on top right of debugging screen    
           text(noteArray.get(j), 400, 50+(50*j));
           text(currentBoundingBoxes.get(j).height, 400, 75+(50*j));
           
@@ -218,8 +204,6 @@ ArrayList<Contour> extractLegoTowers()
   return filteredContours;
 }
 
-//String global1, global2, global3;
-
 String getBestTowerMatch(Contour inputTower, String inputColor)
 {
   double bestSimilarity=10;
@@ -229,38 +213,6 @@ String getBestTowerMatch(Contour inputTower, String inputColor)
 
   println(contourDBList.size());
   println(inputColor);
-  
-  /*
-  for(int c=0; c < contourDBList.size(); c++)
-  {
-    Contour srcContour = contourDBList.get(c);
-
-    //Use hu-moments for image which are invariant to translation, rotation, scale, and skew for comparison
-    //currentSimilarity = Imgproc.matchShapes(srcContour.pointMat, inputTower.pointMat, Imgproc.CV_CONTOURS_MATCH_I2, 0);
-      
-    if ((inputColor.equals(towerColors.get(c))==true))
-    {
-//      global1 = "tower "+inputTower+" "+currentSimilarity;
-      
-        
-      
-      currentSimilarity = Imgproc.matchShapes(contourDBList.get(scenarioNumber).pointMat, inputTower.pointMat, Imgproc.CV_CONTOURS_MATCH_I2, 0);
-      println(" COLOR MATCHED tower "+pImgNames.get(c)+" "+currentSimilarity);
-      
-      if (currentSimilarity < bestSimilarity)
-      {  
-        //check if tower is one of the two gorilla towers
-        //if (towerType == leftToMatch || towerType == rightToMatch)
-        towerType = pImgNames.get(c); // if towerType = leftToMatch or rightToMatch
-        
-          bestSimilarity = currentSimilarity;
-        
-        println("****** high "+towerType+" "+bestSimilarity);
-      }
-    }
-  }
-  */
-  
   for(int c=0; c < contourDBList.size(); c++)
   {
     Contour srcContour = contourDBList.get(c);
@@ -270,25 +222,14 @@ String getBestTowerMatch(Contour inputTower, String inputColor)
       
     if ((inputColor.equals(towerColors.get(c))==true))
     {
-//      global1 = "tower "+inputTower+" "+currentSimilarity;
-      
-        println(" COLOR MATCHED tower "+pImgNames.get(c)+" "+currentSimilarity);
-      
-      
-      
       if (currentSimilarity < bestSimilarity)
       {  
-        //check if tower is one of the two gorilla towers
-        //if (towerType == leftToMatch || towerType == rightToMatch)
-        towerType = pImgNames.get(c); // if towerType = leftToMatch or rightToMatch
-        
-          bestSimilarity = currentSimilarity;
-        
+        bestSimilarity = currentSimilarity;
+        towerType = pImgNames.get(c);
         println("****** high "+towerType+" "+bestSimilarity);
       }
     }
   }
-  
   
   return towerType;
 }

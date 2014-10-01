@@ -12,13 +12,10 @@ import java.awt.Rectangle;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import javax.swing.*;
-import ddf.minim.*;
 
-AudioPlayer player;
-Minim minim;//audio context
 /*** VARIABLES start *******************************************/
 OpenCV opencv;
-PImage srcImage, srcImage2, editedImage, colorImage, screen1, mainmenu, circle;
+PImage srcImage, srcImage2, editedImage, colorImage, screen1, circle;
 SimpleOpenNI  context;
 
 ArrayList<Contour> legoTowers;
@@ -81,7 +78,7 @@ void setup()
   opencv = new OpenCV(this, srcImage);
 
   //Setup screen elements
-  size(640+780, 480+20);
+  size(640+780, 480+20, P3D);
   
   legoTowers = new ArrayList<Contour>();
   originalBoundingBoxes = new ArrayList<Rectangle>();
@@ -93,7 +90,6 @@ void setup()
   pImgNames = loadPImgStrings();
   
   screen1 = loadImage("gorilla.jpg");
-  mainmenu = loadImage("mainmenu.jpg");
   wrongTower = loadImage("wrongtower.png");
   correctTower = loadImage("correctTower.png");
   //startScreen = screen1;
@@ -133,12 +129,6 @@ void setup()
     initializeGUI();
     initializeGame();
   
-  /*
-  //adding sound 
-  minim = new Minim(this);
-  player = minim.loadFile("Scenario1_1.mp3", 2048);
-  player.play();
-  */
   
 }
 
@@ -169,7 +159,7 @@ void draw()
  
   pushMatrix();
     translate(0, 0);
-    image(mainmenu, 0, 0);
+    image(screen1, 0, 0);
     
     if (playgame1==false && playgame2==false) {
       game_buttons();
@@ -177,7 +167,6 @@ void draw()
     
     if (playgame2==true) {
       //setupgame2();
-      image(screen1, 0, 0);
       gameStarted = true;
       drawgame2();
     }
@@ -185,7 +174,6 @@ void draw()
     else if (playgame1==true) {
 //      if (scene2==false)
 //        continue_button();
-      image(screen1, 0, 0);
       if (scene2==true) {
         placingTowers = false;
         trackLegoTowers_g2();

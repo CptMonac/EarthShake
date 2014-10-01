@@ -233,11 +233,9 @@ void checkTowerMatch()
   if ((foundLeftMatch==true) && (foundRightMatch==false))
     mismatch_right_text();   
   if ((foundLeftMatch==false) && (hasRight==false))
-    //displayText(t_place_wrong_left_only);
-    display_place_wrong_left_only();
+    displayText(t_place_wrong_left_only);
   if ((foundRightMatch==false) && (hasLeft==false))
-    //displayText(t_place_wrong_right_only); 
-    display_place_wrong_right_only();
+    displayText(t_place_wrong_right_only); 
   if ((foundLeftMatch==true) && (foundRightMatch==true))
     both_match_text();
   if (foundLeftMatch==true)
@@ -256,7 +254,7 @@ void drawLegoContours_g()
   ArrayList<Contour> towerContours = opencv.findContours();
   
   int adjustx = 0; 
-  int adjusty = 1*gorHeight/16+50; 
+  int adjusty = 1*gorHeight/16; 
     
   //Filter contours to only lego towers
   for (Contour contour: towerContours)
@@ -361,8 +359,6 @@ void newRoundOfTowers()
     scene2 = false;
     scene3 = false;
     displayText(t_clear_table);
-    
-    
   }
 }
 

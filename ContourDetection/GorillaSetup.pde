@@ -89,7 +89,7 @@ void mousePressed()
     if (continue_pressed()==true)
     {
       generateNewSet();
-      //scene2 = false;
+      scene2 = false;
       scene5 = false;
       scene6 = true;
     }
@@ -129,15 +129,15 @@ void mousePressed()
     }
   }
     
-//  if (scene1==true && scene2==false)
-//  {
-//    
-//    if (playgame1==true)
-//    {
-//      scene1 = false;
-//      scene2 = true;
-//    }
-//  }
+  if (scene1==true && scene2==false)
+  {
+    
+    if (playgame1==true)
+    {
+      scene1 = false;
+      scene2 = true;
+    }
+  }
   
   if (playgame1==false && playgame2==false)
     gameSelection();
