@@ -20,14 +20,14 @@ void setupgame2()
 //  //Enable all kinect cameras/sensors
 //    setupKinect();
 //
-    //Initialize lego towers
-    setupTowers();
-
-    //Initialize GUI
-    initializeGUI();
-    initializeGame();
+//    //Initialize lego towers
+//    setupTowers();
+//
+//    //Initialize GUI
+//    initializeGUI();
+//    initializeGame();
     
-    image(startScreen, 0, 0);
+    //image(startScreen, 0, 0);
     //drawgame2();
 }
 
@@ -63,11 +63,11 @@ void initializeGUI()
   
   //Create GUI instance
   float btnPositionX = 9*gorWidth/16;
-  float btnPositionY = 13*gorHeight/16 + 15;
+  float btnPositionY = 13*gorHeight/16 ;
   guiController = new ControlP5(this);
 
   guiController.addButton("shake")
-           .setValue(128)
+           .setValue(90)
            .setPosition(btnPositionX, btnPositionY)
            .setImages(shakeIcon)
            .updateSize();
@@ -150,20 +150,39 @@ void drawgame2()
 
     if (contourDifference < -20)
     {
+      
       if (stopTime == 0.0)
         stopTime = millis();
       
       float elapsedStopTime = (stopTime - startTime)/1000;
+      
       image(towerFallen, 0, 0);
+      fill(140, 255, 140);   
+      stroke(0, 255, 0);
+      strokeWeight(3);
+      drawContour(tempContour);
+      fill(100,100,100);
+      textSize(30);
+      String timeDiffString = "Your tower fell in: ";
+      translate(-280,0);
+      text(timeDiffString, 380, 250);
+      String timeDiffString2 = String.format("%.2f", elapsedStopTime) + "seconds";
+      //text(timeDiffString, 250, 95);
+      //translate(-280,0);
+      text(timeDiffString2, 650, 250);
+      translate(280,0);
+      /*
       fill(255, 140, 140);
       stroke(255, 0, 0);
       strokeWeight(3);
       drawContour(legoTowers);
       fill(255,255,255);
       textSize(20);
-      String timeDiffString = "Your tower fell in:"+ String.format("%.2f", elapsedStopTime) + " seconds";
+      String timeDiffString = "Your tower fell in:\n"+ String.format("%.2f", elapsedStopTime) + " seconds";
       text(timeDiffString, 250, 95);
-      guiController.controller("tryagain").setVisible(true); 
+      */
+      guiController.controller("tryagain").setVisible(true);
+      
     }
     else if (timeDiff >= 10.0)
     {
@@ -187,10 +206,10 @@ void drawgame2()
       strokeWeight(3);
       drawContour(tempContour);
       fill(100,100,100);
-      textSize(15);
+      textSize(30);
       String timeDiffString = String.format("%.2f", timeDiff) + " seconds";
       translate(-280,0);
-      text(timeDiffString, 610, 200);
+      text(timeDiffString, 650, 250);
       translate(280,0);
     }
   }

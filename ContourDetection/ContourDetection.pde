@@ -204,6 +204,8 @@ ArrayList<Contour> extractLegoTowers()
   return filteredContours;
 }
 
+//String global1, global2, global3;
+
 String getBestTowerMatch(Contour inputTower, String inputColor)
 {
   double bestSimilarity=10;
@@ -222,10 +224,19 @@ String getBestTowerMatch(Contour inputTower, String inputColor)
       
     if ((inputColor.equals(towerColors.get(c))==true))
     {
+//      global1 = "tower "+inputTower+" "+currentSimilarity;
+      
+        println(" COLOR MATCHED tower "+pImgNames.get(c)+" "+currentSimilarity);
+      
+      
+      
       if (currentSimilarity < bestSimilarity)
       {  
-        bestSimilarity = currentSimilarity;
-        towerType = pImgNames.get(c);
+        //check if tower is one of the two gorilla towers
+        towerType = pImgNames.get(c); // if towerType = leftToMatch or rightToMatch
+        
+          bestSimilarity = currentSimilarity;
+        
         println("****** high "+towerType+" "+bestSimilarity);
       }
     }
