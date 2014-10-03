@@ -28,10 +28,10 @@ String[] blobDebugMode()
     currentTower.drawTower();
     colorOrder = currentTower.towerColor();
     textSize(40);
-    if (j==0)
-      text(colorOrder, 200, 300);
-    else if (j==1)
-      text(colorOrder, 400, 300);
+//    if (j==0)
+//      text("color "+colorOrder, 200, 300);
+//    else if (j==1)
+//      text("color "+colorOrder, 400, 300);
     textSize(15);
     println(colorOrder);
     colorTowers[j] = colorOrder;

@@ -625,13 +625,13 @@ public class LegoTower
   //Determines color (0-R, 1-B, 2-G, 3-Y) from pixel's hue value
   public int pixelColorHue(float pixelValue) {
     int pixelColor = -1;
-    if (pixelValue > 230 && pixelValue < 256) // red hue
+    if (pixelValue > 230 && pixelValue < 250) // red hue
       pixelColor = 0;
     else if (pixelValue > 150 && pixelValue < 165) // blue hue
       pixelColor = 1;
     else if (pixelValue > 60 && pixelValue < 75) // green hue
       pixelColor = 2;
-    else if (pixelValue > 5 && pixelValue < 40) // yellow hue
+    else if (pixelValue > 20 && pixelValue < 30) // yellow hue
       pixelColor = 3;
     return pixelColor;
   }
@@ -827,11 +827,7 @@ public class LegoTower
     textSize(25);
     noFill();
     stroke(255, 0, 0);
-<<<<<<< HEAD
-    text(colorOrder, towerOrigin.x + 20, towerOrigin.y - 10);
-=======
-    text("COLOR "+colorOrder, towerOrigin.x + 20, towerOrigin.y - 10);
->>>>>>> parent of 8259204... broke and fixed
+    //text("COLOR "+colorOrder, towerOrigin.x + 20, towerOrigin.y - 10);
     textSize(15);
   }
   

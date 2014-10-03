@@ -164,7 +164,7 @@ void initTowerPairOrder()
   towerPairs = new IntList();
   towerPairs.append(1); //A
   towerPairs.append(2); //B
-  towerPairs.append(3); //C
+  //towerPairs.append(3); //C
   towerPairs.append(4); //D
   towerPairs.append(5); //F
   towerPairs.shuffle();

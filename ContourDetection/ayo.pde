@@ -157,8 +157,10 @@ void drawgame2()
       float elapsedStopTime = (stopTime - startTime)/1000;
       
       image(towerFallen, 0, 0);
-      fill(140, 255, 140);   
-      stroke(0, 255, 0);
+      //fill(140, 255, 140);   
+      //stroke(0, 255, 0);
+      fill(255, 140, 140);
+      stroke(255, 0, 0);
       strokeWeight(3);
       drawContour(tempContour);
       fill(100,100,100);

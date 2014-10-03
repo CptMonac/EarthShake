@@ -12,7 +12,10 @@ import java.awt.Rectangle;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import javax.swing.*;
+import ddf.minim.*;
 
+AudioPlayer player;
+Minim minim;//audio context
 /*** VARIABLES start *******************************************/
 OpenCV opencv;
 PImage srcImage, srcImage2, editedImage, colorImage, screen1, mainmenu, circle;
@@ -78,7 +81,7 @@ void setup()
   opencv = new OpenCV(this, srcImage);
 
   //Setup screen elements
-  size(640+780, 480+20, P3D);
+  size(640+780, 480+20);
   
   legoTowers = new ArrayList<Contour>();
   originalBoundingBoxes = new ArrayList<Rectangle>();
@@ -130,6 +133,12 @@ void setup()
     initializeGUI();
     initializeGame();
   
+  /*
+  //adding sound 
+  minim = new Minim(this);
+  player = minim.loadFile("Scenario1_1.mp3", 2048);
+  player.play();
+  */
   
 }
 
