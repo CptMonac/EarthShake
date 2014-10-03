@@ -228,21 +228,21 @@ void checkTowerMatch()
   //if toweriteration==0 and no towers
   if ((foundLeftMatch==false) && (foundRightMatch==false))
     neither_match_text();
-  if ((foundLeftMatch==false) && (foundRightMatch==true))
+  else if ((foundLeftMatch==false) && (foundRightMatch==true))
     mismatch_left_text();
-  if ((foundLeftMatch==true) && (foundRightMatch==false))
+  else if ((foundLeftMatch==true) && (foundRightMatch==false))
     mismatch_right_text();   
-  if ((foundLeftMatch==false) && (hasRight==false))
+  else if ((foundLeftMatch==false) && (hasRight==false))
     displayText(t_place_wrong_left_only);
     //display_place_wrong_left_only();
-  if ((foundRightMatch==false) && (hasLeft==false))
+  else if ((foundRightMatch==false) && (hasLeft==false))
     displayText(t_place_wrong_right_only); 
     //display_place_wrong_right_only();
-  if ((foundLeftMatch==true) && (foundRightMatch==true))
+  else if ((foundLeftMatch==true) && (foundRightMatch==true))
     both_match_text();
-  if (foundLeftMatch==true)
+  else if ((foundLeftMatch==true) && (hasRight==false))
     match_left_text();
-  if (foundRightMatch==true)
+  else if ((foundRightMatch==true) && (hasLeft==false))
     match_right_text();
 }
 

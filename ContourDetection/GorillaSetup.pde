@@ -150,6 +150,7 @@ void generateNewSet()
     scene1 = true;
     scene2 = false;
     resetVariables();
+    //instead of pretzel go to ayo's game
   }
   else
   {
@@ -430,8 +431,8 @@ void loadColorTowers()
 
 void loadButtons()
 {
-  game1 = loadImage("buttons/game1.png");
-  game2 = loadImage("buttons/game2.png");
+  game1 = loadImage("buttons/playgame1.png");
+  game2 = loadImage("buttons/playgame2.png");
   continueButton = loadImage("buttons/continue.png");
   continueButton_hover = loadImage("buttons/continue_hover.png");
   same = loadImage("buttons/same.png");

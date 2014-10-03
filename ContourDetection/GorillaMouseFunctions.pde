@@ -98,13 +98,13 @@ int explanation()
 
 void gameSelection()
 { 
-  if ((mouseX >= 1*gorWidth/2) && (mouseX <= (1*gorWidth/2 + 186)) && (mouseY >= 1*gorHeight/2) && (mouseY < (1*gorHeight/2 + 64)))
+  if ((mouseX >= 1*gorWidth/2) && (mouseX <= (1*gorWidth/2 + 360)) && (mouseY >= 1*gorHeight/2) && (mouseY < (1*gorHeight/2 + 64)))
   {
     scene2 = true;
     playgame1 = true;
   }
     
-  if ((mouseX >= 1*gorWidth/2) && (mouseX <= (1*gorWidth/2 + 186)) && (mouseY >= 3*gorHeight/4) && (mouseY < (3*gorHeight/4 + 64)))
+  if ((mouseX >= 1*gorWidth/2) && (mouseX <= (1*gorWidth/2 + 360)) && (mouseY >= 5*gorHeight/8) && (mouseY < (5*gorHeight/8 + 64)))
     playgame2 = true;
 }
 

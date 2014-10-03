@@ -81,7 +81,8 @@ void setup()
   opencv = new OpenCV(this, srcImage);
 
   //Setup screen elements
-  size(640+780, 480+20, P3D);
+  size(640+780, 480+20);
+  //size(640+780, 480+20, P3D);
   
   legoTowers = new ArrayList<Contour>();
   originalBoundingBoxes = new ArrayList<Rectangle>();
@@ -169,15 +170,19 @@ void draw()
  
   pushMatrix();
     translate(0, 0);
-    //image(mainmenu, 0, 0);
+    
+    //TURN MAINMENU OFF TO SEE DEBUG COLORS (1/3)
+    image(mainmenu, 0, 0);
     
     if (playgame1==false && playgame2==false) {
       game_buttons();
     }
     
     if (playgame2==true) {
-      //setupgame2();
-      //image(screen1, 0, 0);
+      
+      //TURN SCREEN1 OFF TO SEE DEBUG COLORS (2/3)
+      image(screen1, 0, 0);
+      
       gameStarted = true;
       drawgame2();
     }
@@ -185,7 +190,10 @@ void draw()
     else if (playgame1==true) {
 //      if (scene2==false)
 //        continue_button();
-      //image(screen1, 0, 0);
+
+      //TURN SCREEN1 OFF TO SEE DEBUG COLORS (3/3)
+      image(screen1, 0, 0);
+      
       if (scene2==true) {
         placingTowers = false;
         trackLegoTowers_g2();
@@ -262,9 +270,9 @@ void loadPImages()
   M2 = loadImage("bw/M2_b.png");
   M2_left = loadImage("bw/M2_left.png");
   M2_right = loadImage("bw/M2_right.png"); 
-//  M3 = loadImage("bw/M3_b.png");
-//  M3_left = loadImage("bw/M3_left.png");
-//  M3_right = loadImage("bw/M3_right.png"); 
+  M3 = loadImage("bw/M3_b.png");
+  M3_left = loadImage("bw/M3_left.png");
+  M3_right = loadImage("bw/M3_right.png"); 
   M4 = loadImage("bw/M4_b.png"); 
   M4_left = loadImage("bw/M4_left.png");
   M4_right = loadImage("bw/M4_right.png"); 
@@ -324,9 +332,9 @@ ArrayList<PImage> createPImageArray()
   database.add(M2);
   database.add(M2_left);
   database.add(M2_right);
-//  database.add(M3);  
-//  database.add(M3_left);
-//  database.add(M3_right);
+  database.add(M3);  
+  database.add(M3_left);
+  database.add(M3_right);
   database.add(M4);
   database.add(M4_left);
   database.add(M4_right);
@@ -385,9 +393,9 @@ ArrayList<String> loadPImgStrings()
   pImgNames.add("M2");
   pImgNames.add("M2");
   pImgNames.add("M2"); 
-//  pImgNames.add("M3");
-//  pImgNames.add("M3");
-//  pImgNames.add("M3");
+  pImgNames.add("M3");
+  pImgNames.add("M3");
+  pImgNames.add("M3");
   pImgNames.add("M4");
   pImgNames.add("M4");
   pImgNames.add("M4"); 
@@ -425,9 +433,9 @@ ArrayList<String> loadTowerColors()
   towerColors.add("BYGR"); //D2
   towerColors.add("BYGR"); //D2
   towerColors.add("BYGR"); //D2
-  towerColors.add("yBrYRG"); //E1
-  towerColors.add("rBRG"); //E1
-  towerColors.add("BrYRG"); //E1
+  towerColors.add("YrBRG"); //E1
+  towerColors.add("YrBRG"); //E1
+  towerColors.add("YrBRG"); //E1
   towerColors.add("rYRG"); //E2
   towerColors.add("BrYRG"); //E2
   towerColors.add("yBrYRG"); //E2
@@ -446,14 +454,14 @@ ArrayList<String> loadTowerColors()
   towerColors.add("BYRG"); //M2
   towerColors.add("BYRG"); //M2
   towerColors.add("BYRG"); //M2
-//  towerColors.add("GYRB"); //M3
-//  towerColors.add("GYRB"); //M3
-//  towerColors.add("GYRB"); //M3
+  towerColors.add("GYRB"); //M3
+  towerColors.add("GYRB"); //M3
+  towerColors.add("GYRB"); //M3
   towerColors.add("yBYRG"); //M4
   towerColors.add("yBYRG"); //M4
   towerColors.add("yBYRG"); //M4
   towerColors.add("GYBR"); //X
-  towerColors.add("GYBR"); //X
+  towerColors.add("yGYBR"); //X
   towerColors.add("GYBR"); //X
   towerColors.add(":)"); //start
   return towerColors;
