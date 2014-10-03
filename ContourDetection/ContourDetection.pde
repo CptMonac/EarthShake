@@ -25,8 +25,8 @@ void imageComparison()
 {
   pushMatrix();
   image(colorTower, -780, 0);
-  //scale(scaleFactorx);
-  //image(colorTower, 0, 0);
+//  scale(scaleFactorx);
+//  image(colorTower, 0, 0);
 
   theBlobDetection = new BlobDetection(srcImage.width, srcImage.height);
   println("WxH "+srcImage.width+"x"+srcImage.height);
@@ -91,6 +91,7 @@ void trackLegoTowers()
           }
         }
         
+        text("currTwrlen "+currentTowerColors.length+" filtctrs "+filteredContours.size(), 400, 35);
         if ((filteredContours.size() <= 2) && (currentTowerColors.length==filteredContours.size())) {
           
           noteArray.add(getBestTowerMatch(tempContour, currentTowerColors[j]));    
@@ -134,7 +135,7 @@ void trackLegoTowers()
         if ((leftDown==false) && (hasLeft==true)) 
         {
           text("Standing L", 167, 320);
-          text(noteArray.get(0), 167, 290);
+          text(getBestTowerMatch(filteredContours.get(0), currentTowerColors[0]), 167, 290);
           text(currentTowerColors[0], 167, 305);
           //call getbesttowermatch
         }

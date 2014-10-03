@@ -16,12 +16,16 @@ String[] blobDebugMode()
   println(towerContours.size());
   ArrayList<LegoTower> colorContours = analyzeTower(towerContours);
   println(colorContours.size());
+  ArrayList<Contour> filteredContours = extractLegoTowers();
   String[] colorTowers = new String[colorContours.size()];
   BlobRect currBlob;
   LegoTower currentTower;
   
   //Draw coloured blobs
   println(colorContours.size());
+//  int z = 1;
+//  if (colorContours.size()>2)
+//    z = 2;
   for (int j = 0; j<colorContours.size(); j++)
   {
     currentTower = colorContours.get(j);
