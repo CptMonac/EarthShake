@@ -827,7 +827,11 @@ public class LegoTower
     textSize(25);
     noFill();
     stroke(255, 0, 0);
+<<<<<<< HEAD
     text(colorOrder, towerOrigin.x + 20, towerOrigin.y - 10);
+=======
+    text("COLOR "+colorOrder, towerOrigin.x + 20, towerOrigin.y - 10);
+>>>>>>> parent of 8259204... broke and fixed
     textSize(15);
   }
   
