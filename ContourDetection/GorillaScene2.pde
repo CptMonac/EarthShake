@@ -226,24 +226,47 @@ void checkTowerImage()
 void checkTowerMatch()
 {
   //if toweriteration==0 and no towers
-  if ((foundLeftMatch==false) && (foundRightMatch==false))
-    neither_match_text();
-  else if ((foundLeftMatch==false) && (foundRightMatch==true))
-    mismatch_left_text();
-  else if ((foundLeftMatch==true) && (foundRightMatch==false))
-    mismatch_right_text();   
-  else if ((foundLeftMatch==false) && (hasRight==false))
-    displayText(t_place_wrong_left_only);
-    //display_place_wrong_left_only();
-  else if ((foundRightMatch==false) && (hasLeft==false))
-    displayText(t_place_wrong_right_only); 
-    //display_place_wrong_right_only();
-  else if ((foundLeftMatch==true) && (foundRightMatch==true))
-    both_match_text();
-  else if ((foundLeftMatch==true) && (hasRight==false))
-    match_left_text();
-  else if ((foundRightMatch==true) && (hasLeft==false))
-    match_right_text();
+  
+  if ((hasLeft==true) && (hasRight==true))
+  {
+    //x x
+    if ((foundLeftMatch==false) && (foundRightMatch==false))
+      neither_match_text();
+      
+    //x v 
+    else if ((foundLeftMatch==false) && (foundRightMatch==true))
+      mismatch_left_text();
+    
+    //v x
+    else if ((foundLeftMatch==true) && (foundRightMatch==false))
+      mismatch_right_text();  
+
+    //v v  
+    else if ((foundLeftMatch==true) && (foundRightMatch==true))
+      both_match_text();
+  }
+  
+  else if ((hasLeft==true) && (hasRight==false))
+  {
+    //x o  
+    if ((foundLeftMatch==false))
+      display_place_wrong_left_only();
+        
+    //v o  
+    else //if ((foundLeftMatch==true))
+      match_left_text();     
+  } 
+    
+  else if ((hasLeft==false) && (hasRight==true))
+  {  
+    //o x  
+    if ((foundRightMatch==false))
+      display_place_wrong_right_only();
+      
+    //o v  
+    else //if ((foundRightMatch==true))
+      match_right_text();
+  }
 }
 
 //**********************************************************************************

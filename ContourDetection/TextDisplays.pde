@@ -173,7 +173,7 @@ void mismatch_left_text()
     */
 }
 
-void display_place_wrong_left_only(){
+void display_place_wrong_left_only() {
   
   displayText(t_place_wrong_left_only);
   
@@ -198,7 +198,7 @@ void display_place_wrong_left_only(){
   */
 }
 
-void display_place_wrong_right_only(){
+void display_place_wrong_right_only() {
   
   displayText(t_place_wrong_right_only);
   /*
