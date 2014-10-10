@@ -78,6 +78,15 @@ void resetTowerVars()
 
 void mousePressed()
 { 
+  if (exit_pressed()==true)
+  {
+    scene1 = true;
+    playgame1 = false;
+    playgame2 = false;
+    resetScenes();
+    resetTowerVars();
+  }
+  
   if (scene6==true)
   {
 //    if (continue_pressed()==true)

@@ -1,3 +1,15 @@
+Boolean exit_pressed()
+{
+  float xleft = 0;
+  float xright = 100;
+  float ytop = 0;
+  float ybot = 88;
+  if ((mouseX >= xleft) && (mouseX <= xright) && (mouseY >= ytop) && (mouseY <= ybot))
+    return true;
+  else
+    return false;
+}
+
 
 Boolean continue_pressed()
 {

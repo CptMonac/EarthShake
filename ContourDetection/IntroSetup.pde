@@ -183,6 +183,7 @@ void draw()
       
       //TURN SCREEN1 OFF TO SEE DEBUG COLORS (2/3)
       image(screen1, 0, 0);
+      image(pretzel, 0, 0); //exit option
       
       gameStarted = true;
       drawgame2();
@@ -194,6 +195,7 @@ void draw()
 
       //TURN SCREEN1 OFF TO SEE DEBUG COLORS (3/3)
       image(screen1, 0, 0);
+      image(pretzel, 0, 0); //exit option
       
       if (scene2==true) {
         placingTowers = false;
