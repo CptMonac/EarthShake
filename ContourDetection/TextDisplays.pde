@@ -4,7 +4,7 @@ PImage LTMwrong, LTMcorrect, RTMwrong, RTMcorrect;
 PImage LTMfallen, RTMfallen, LTMstanding, RTMstanding;
 PImage LTMfinal, RTMfinal;
 
-boolean entered_place_both, entered_place_right, entered_place_left, entered_place_wrong_left, entered_place_wrong_right, entered_place_continue, entered_place_wrong_both, entered_place_wrong_left_only, entered_place_wrong_right_only=false;
+boolean entered_place_both=false, entered_place_right=false, entered_place_left=false, entered_place_wrong_left=false, entered_place_wrong_right=false, entered_place_continue=false, entered_place_wrong_both=false, entered_place_wrong_left_only=false, entered_place_wrong_right_only=false;
 
 //****************************************************** GENERAL THINGS
 void displayText(PImage textBubble)
@@ -81,9 +81,11 @@ void instr_place_tower()
 
   if (entered_place_both == false) {
     //adding sound 
+    println("play place_both");
     minim = new Minim(this);
-    player = minim.loadFile("audio/place_both.wav", 2048);
-    player.play();
+    minim.stop();
+    player_place_both = minim.loadFile("audio/place_both.wav", 2048);
+    player_place_both.play();
   }
 
   println("instr_place_tower"); 
@@ -105,9 +107,11 @@ void match_left_text()
 
   if (entered_place_right == false) {
     //adding sound 
+    println("play place_right");
     minim = new Minim(this);
-    player = minim.loadFile("audio/place_right.wav", 2048);
-    player.play();
+    minim.stop();
+    player_place_right = minim.loadFile("audio/place_right.wav", 2048);
+    player_place_right.play();
   }
 
   println("match_left_text");
@@ -127,12 +131,14 @@ void match_right_text()
   //"good job! the right tower matches. now place the left tower."
   displayText(t_place_left);
 
-  /*
+  
   if(entered_place_left == false){
    //adding sound 
+   println("play place_left");
    minim = new Minim(this);
-   player = minim.loadFile("audio/place_left.wav", 2048);
-   player.play();
+   minim.stop();
+   player_place_left = minim.loadFile("audio/place_left.wav", 2048);
+   player_place_left.play();
    }
    
    println("match_right_text");
@@ -145,7 +151,7 @@ void match_right_text()
    entered_place_wrong_both = false;
    entered_place_wrong_left_only = false;
    entered_place_wrong_right_only = false;
-   */
+   
 }
 
 void mismatch_left_text()
@@ -153,12 +159,14 @@ void mismatch_left_text()
   //"uh oh! you placed the wrong tower on the left. please place the correct tower."
   displayText(t_place_wrong_left);
 
-  /*
+  
   if(entered_place_wrong_left == false){
    //adding sound 
+   println("play place_wrong");
    minim = new Minim(this);
-   player = minim.loadFile("audio/place_wrong_left.wav", 2048);
-   player.play();
+   minim.stop();
+   player_place_wrong_left = minim.loadFile("audio/place_wrong_left.wav", 2048);
+   player_place_wrong_left.play();
    }
    
    println("mismatch_left_text");
@@ -171,19 +179,22 @@ void mismatch_left_text()
    entered_place_wrong_both = false;
    entered_place_wrong_left_only = false;
    entered_place_wrong_right_only = false;
-   */
+   
 }
 
 void display_place_wrong_left_only() {
   //"the left tower is incorrect. please place the correct tower."
   displayText(t_place_wrong_left_only);
 
-  /*
+  
   if(entered_place_wrong_left_only == false){
    //adding sound 
+   println("play place_wrong_left_only");
    minim = new Minim(this);
-   player = minim.loadFile("audio/place_wrong_left_only.wav", 2048);
-   player.play();
+   minim.stop();
+   player_place_wrong_left_only = minim.loadFile("audio/place_wrong_left_only.wav", 2048);
+   player_place_wrong_left_only.play();
+
    }
    
    println("mismatch_left_text");
@@ -196,19 +207,21 @@ void display_place_wrong_left_only() {
    entered_place_wrong_both = false;
    entered_place_wrong_left_only = true;
    entered_place_wrong_right_only = false;
-   */
+   
 }
 
 void display_place_wrong_right_only() {
   //"the right tower is incorrect. please place the correct tower."
   displayText(t_place_wrong_right_only);
-  /*
+  
   
    if(entered_place_wrong_right_only == false){
    //adding sound 
+   println("play place_wrong_right_only");
    minim = new Minim(this);
-   player = minim.loadFile("audio/place_wrong_right_only.wav", 2048);
-   player.play();
+   minim.stop();
+   player_place_wrong_right_only = minim.loadFile("audio/place_wrong_right_only.wav", 2048);
+   player_place_wrong_right_only.play();
    }
    
    println("mismatch_left_text");
@@ -221,7 +234,7 @@ void display_place_wrong_right_only() {
    entered_place_wrong_both = false;
    entered_place_wrong_left_only = false;
    entered_place_wrong_right_only = true;
-   */
+   
 }
 
 void mismatch_right_text()
@@ -229,13 +242,13 @@ void mismatch_right_text()
   //"uh oh! you placed the wrong tower on the left. please place the correct tower."
   displayText(t_place_wrong_right);
 
-  /*
-  
    if(entered_place_wrong_right == false){
    //adding sound 
+   println("play place_wrong_right");
    minim = new Minim(this);
-   player = minim.loadFile("audio/place_wrong_right.wav", 2048);
-   player.play();
+   minim.stop();
+   player_place_wrong_right = minim.loadFile("audio/place_wrong_right.wav", 2048);
+   player_place_wrong_right.play();
    }
    
    println("mismatch_right_text");
@@ -248,7 +261,7 @@ void mismatch_right_text()
    entered_place_wrong_both = false;
    entered_place_wrong_left_only = false;
    entered_place_wrong_right_only = false;
-   */
+   
 }
 
 void both_match_text()
@@ -257,12 +270,19 @@ void both_match_text()
   displayText(t_place_continue);
   continue_button();
 
+  println("entered_place_continue" + entered_place_continue);
+  
   if (entered_place_continue == false) {
     //adding sound 
+    println("niyeeee place_continue");
     minim = new Minim(this);
-    player = minim.loadFile("audio/place_continue.wav", 2048);
-    player.play();
+    minim.stop();
+    player_place_continue = minim.loadFile("audio/place_continue.wav", 2048);
+    player_place_continue.play();
+    
   }
+  
+  println("playyyyyy place_continue");
   println("both_match_text");
   entered_place_both = false;
   entered_place_right = false;
@@ -280,12 +300,14 @@ void neither_match_text()
   //"uh oh! neither tower is correct. please try placing the towers again."
   displayText(t_place_wrong_both);
 
-  /*
+  
   if(entered_place_wrong_both == false){
    //adding sound 
+   println("play place_wrong_both");
    minim = new Minim(this);
-   player = minim.loadFile("audio/place_wrong_both.wav", 2048);
-   player.play();
+   minim.stop();
+   player_place_wrong_both = minim.loadFile("audio/place_wrong_both.wav", 2048);
+   player_place_wrong_both.play();
    
    }
    
@@ -299,7 +321,7 @@ void neither_match_text()
    entered_place_wrong_both = true;
    entered_place_wrong_left_only = false;
    entered_place_wrong_right_only = false;
-   */
+   
 }
 
 //*************************************************** PREDICTION SCREENS
