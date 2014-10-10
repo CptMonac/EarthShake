@@ -177,6 +177,10 @@ void draw()
     
     if (playgame1==false && playgame2==false) {
       game_buttons();
+      scene1 = true;
+      scene2 = false;
+      resetScenes();
+      resetTowerVars();
     }
     
     if (playgame2==true) {

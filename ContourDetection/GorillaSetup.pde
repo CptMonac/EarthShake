@@ -80,11 +80,12 @@ void mousePressed()
 { 
   if (exit_pressed()==true)
   {
-    scene1 = true;
+//    scene1 = true;
     playgame1 = false;
     playgame2 = false;
-    resetScenes();
-    resetTowerVars();
+//    scene2 = false;
+//    resetScenes();
+//    resetTowerVars();
   }
   
   if (scene6==true)
@@ -164,7 +165,7 @@ void generateNewSet()
     resetScenes();
     
     //instead of pretzel go to ayo's game
-    playgame 2 =true;
+    playgame2 =true;
   }
   else
   {
