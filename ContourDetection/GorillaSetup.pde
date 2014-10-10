@@ -55,7 +55,7 @@ PImage F1_tower, F1_fallen, F1_expl;
 PImage F2_guide, F2_wrong, F2_correct;
 PImage F2_tower, F2_fallen, F2_expl;
 
-void resetVariables()
+void resetScenes()
 {
   //scene1 = true;
   //scene2 = false;
@@ -65,7 +65,10 @@ void resetVariables()
   scene4 = false;
   scene5 = false;
   scene6 = false;
-  
+}
+
+void resetTowerVars()
+{
   towerPredictionNumber = 0;
   towerPredictionString = "";
   correctGuess = false;
@@ -145,12 +148,14 @@ void mousePressed()
 
 void generateNewSet()
 {
-  if (towerIteration >= 5)
+  if (towerIteration >= 4)
   {
     scene1 = true;
-    scene2 = false;
-    resetVariables();
+    //scene2 = false;
+    resetScenes();
+    
     //instead of pretzel go to ayo's game
+    playgame 2 =true;
   }
   else
   {

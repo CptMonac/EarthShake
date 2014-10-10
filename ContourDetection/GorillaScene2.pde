@@ -376,7 +376,8 @@ void newRoundOfTowers()
 {
   if (extractLegoTowers_g().size() == 0)
   {
-    resetVariables();
+    resetScenes();
+    resetTowerVars();
     scene2 = true;
   }
   else

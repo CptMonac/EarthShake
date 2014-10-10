@@ -105,7 +105,8 @@ void setup()
   loadButtons(); 
   loadText();
   
-  resetVariables();
+  resetScenes();
+  resetTowerVars();
   scene1 = true;
   scene2 = false;
   playgame1 = false;
