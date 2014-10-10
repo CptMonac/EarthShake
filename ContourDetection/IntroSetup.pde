@@ -14,7 +14,7 @@ import java.awt.image.BufferedImage;
 import javax.swing.*;
 import ddf.minim.*;
 
-AudioPlayer player;
+AudioPlayer player, player_place_both, player_place_continue, player_place_wrong_right, player_place_wrong_right_only, player_place_wrong_left_only, player_place_wrong_left, player_place_left, player_place_right, player_place_wrong_both;
 Minim minim;//audio context
 /*** VARIABLES start *******************************************/
 OpenCV opencv;
