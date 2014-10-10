@@ -116,7 +116,7 @@ void gameSelection()
     playgame1 = true;
   }
     
-  if ((mouseX >= 1*gorWidth/2) && (mouseX <= (1*gorWidth/2 + 360)) && (mouseY >= 5*gorHeight/8) && (mouseY < (5*gorHeight/8 + 64)))
+  if ((mouseX >= 1*gorWidth/2) && (mouseX <= (1*gorWidth/2 + 360)) && (mouseY >= 3*gorHeight/4) && (mouseY < (3*gorHeight/4 + 64)))
     playgame2 = true;
 }
 

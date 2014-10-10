@@ -83,6 +83,7 @@ void mousePressed()
 //    scene1 = true;
     playgame1 = false;
     playgame2 = false;
+    gameStarted = false;
 //    scene2 = false;
 //    resetScenes();
 //    resetTowerVars();

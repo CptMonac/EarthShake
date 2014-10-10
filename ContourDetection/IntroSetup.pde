@@ -164,9 +164,12 @@ void draw()
   pushMatrix();
     translate(780, 0);
     image(context.depthImage(),0,0);
-    editedImage = opencv.getOutput();
-    trackLegoTowers();
-    imageComparison(); 
+    if ((playgame1==true) && (playgame2==false))
+    {
+      editedImage = opencv.getOutput();
+      trackLegoTowers();
+      imageComparison(); //runs blobDebugMode() -> currentTowerColors
+    }
   popMatrix();
  
   pushMatrix();
@@ -183,7 +186,7 @@ void draw()
       resetTowerVars();
     }
     
-    if (playgame2==true) {
+    else if (playgame2==true) {
       
       //TURN SCREEN1 OFF TO SEE DEBUG COLORS (2/3)
       image(screen1, 0, 0);
@@ -193,6 +196,7 @@ void draw()
       drawgame2();
     }
     
+    //used to be ELSE IF
     else if (playgame1==true) {
 //      if (scene2==false)
 //        continue_button();
