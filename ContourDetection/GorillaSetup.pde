@@ -159,7 +159,7 @@ void mousePressed()
 
 void generateNewSet()
 {
-  if (towerIteration >= 4)
+  if (towerIteration >= 1) // 4 because 4 tower pairs, ABDF
   {
     scene1 = true;
     //scene2 = false;
@@ -167,7 +167,9 @@ void generateNewSet()
     resetTowerVars();
     
     //instead of pretzel go to ayo's game
-    playgame2 =true;
+    playgame1 = false;
+    playgame2 = true;
+    initializeGame();
   }
   else
   {
@@ -334,12 +336,12 @@ void loadScenario(int scenarioNumber)
 
 void loadColorTowers()
 {
-  A1_tower = loadImage("color/A1_tower.png");
-  A1_guide = loadImage("color/A1_arrow.png");
-  A1_wrong = loadImage("color/A1_wrong.png");
-  A1_correct = loadImage("color/A1_correct.png");
-  A1_fallen = loadImage("color/A1_fallen.png");
-  A1_expl = loadImage("color/A1_expl.png");
+  A1_tower = loadImage("color/A1_tower.png"); // plain tower
+  A1_guide = loadImage("color/A1_arrow.png"); // arrow going down for placement
+  A1_wrong = loadImage("color/A1_wrong.png"); // tower with red outline
+  A1_correct = loadImage("color/A1_correct.png"); // tower with green outline
+  A1_fallen = loadImage("color/A1_fallen.png"); // don't need
+  A1_expl = loadImage("color/A1_expl.png"); // tower with circled spot (explanation)
 
   A2_tower = loadImage("color/A2_tower.png");
   A2_guide = loadImage("color/A2_arrow.png");

@@ -212,7 +212,7 @@ void draw()
       initializeGame();
     }
     
-    else if (playgame2==true) {
+    if (playgame2==true) {
       
       //TURN SCREEN1 OFF TO SEE DEBUG COLORS (2/3)
       image(screen1, 0, 0);
@@ -316,6 +316,7 @@ void loadPImages()
   towerx = loadImage("bw/x_b.png");  
   towerx_left = loadImage("bw/x_left.png"); 
   towerx_right = loadImage("bw/x_right.png"); 
+  //add new towers here
   start = loadImage("bw/start.png");
 }
 
@@ -378,6 +379,7 @@ ArrayList<PImage> createPImageArray()
   database.add(towerx);
   database.add(towerx_left);
   database.add(towerx_right);
+  //add new towers here
   database.add(start);
   return database;
 }
@@ -439,6 +441,7 @@ ArrayList<String> loadPImgStrings()
   pImgNames.add("X");
   pImgNames.add("X");
   pImgNames.add("X");
+  //add new towers here (just name, not left or right)
   pImgNames.add("start");
   return pImgNames;                               
 }
@@ -500,6 +503,10 @@ ArrayList<String> loadTowerColors()
   towerColors.add("GYBR"); //X
   towerColors.add("yGYBR"); //X
   towerColors.add("GYBR"); //X
+  //add new tower colors here (x3)
+  //towerColors.add("COLOR_ORDER");
+  //towerColors.add("COLOR_ORDER");
+  //towerColors.add("COLOR_ORDER");
   towerColors.add(":)"); //start
   return towerColors;
 }
