@@ -230,42 +230,60 @@ void checkTowerMatch()
   if ((hasLeft==true) && (hasRight==true))
   {
     //x x
-    if ((foundLeftMatch==false) && (foundRightMatch==false))
+    if ((foundLeftMatch==false) && (foundRightMatch==false)){
       neither_match_text();
+      println("x x");
+    }
       
     //x v 
-    else if ((foundLeftMatch==false) && (foundRightMatch==true))
-      mismatch_left_text();
+    else if ((foundLeftMatch==false) && (foundRightMatch==true)){
+      //mismatch_left_text();//change this
+      match_right_text();
+      println("x v");
+    }
     
     //v x
-    else if ((foundLeftMatch==true) && (foundRightMatch==false))
-      mismatch_right_text();  
+    else if ((foundLeftMatch==true) && (foundRightMatch==false)){
+      //mismatch_right_text();  //change this
+      match_left_text();
+      println("v x");
+    }
 
     //v v  
-    else if ((foundLeftMatch==true) && (foundRightMatch==true))
+    else if ((foundLeftMatch==true) && (foundRightMatch==true)){
       both_match_text();
+      println("v v");
+    }
   }
   
   else if ((hasLeft==true) && (hasRight==false))
   {
     //x o  
-    if ((foundLeftMatch==false))
+    if ((foundLeftMatch==false)){
       display_place_wrong_left_only();
+      println("x o");
+    }
         
     //v o  
-    else //if ((foundLeftMatch==true))
-      match_left_text();     
+    else{ //if ((foundLeftMatch==true))
+      match_left_text();  
+      println("v o");
+    }   
   } 
     
   else if ((hasLeft==false) && (hasRight==true))
   {  
     //o x  
-    if ((foundRightMatch==false))
+    if ((foundRightMatch==false)){
       display_place_wrong_right_only();
+      println("o x");
+    }
       
     //o v  
-    else //if ((foundRightMatch==true))
+    else{ //if ((foundRightMatch==true))
       match_right_text();
+      println("o v");
+    }
   }
 }
 
@@ -385,8 +403,6 @@ void newRoundOfTowers()
     scene2 = false;
     scene3 = false;
     displayText(t_clear_table);
-    
-    
   }
 }
 
