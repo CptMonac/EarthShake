@@ -217,37 +217,6 @@ String getBestTowerMatch(Contour inputTower, String inputColor)
   println(contourDBList.size());
   println(inputColor);
   
-  /*
-  for(int c=0; c < contourDBList.size(); c++)
-  {
-    Contour srcContour = contourDBList.get(c);
-
-    //Use hu-moments for image which are invariant to translation, rotation, scale, and skew for comparison
-    //currentSimilarity = Imgproc.matchShapes(srcContour.pointMat, inputTower.pointMat, Imgproc.CV_CONTOURS_MATCH_I2, 0);
-      
-    if ((inputColor.equals(towerColors.get(c))==true))
-    {
-//      global1 = "tower "+inputTower+" "+currentSimilarity;
-      
-        
-      
-      currentSimilarity = Imgproc.matchShapes(contourDBList.get(scenarioNumber).pointMat, inputTower.pointMat, Imgproc.CV_CONTOURS_MATCH_I2, 0);
-      println(" COLOR MATCHED tower "+pImgNames.get(c)+" "+currentSimilarity);
-      
-      if (currentSimilarity < bestSimilarity)
-      {  
-        //check if tower is one of the two gorilla towers
-        //if (towerType == leftToMatch || towerType == rightToMatch)
-        towerType = pImgNames.get(c); // if towerType = leftToMatch or rightToMatch
-        
-          bestSimilarity = currentSimilarity;
-        
-        println("****** high "+towerType+" "+bestSimilarity);
-      }
-    }
-  }
-  */
-  
   for(int c=0; c < contourDBList.size(); c++)
   {
     Contour srcContour = contourDBList.get(c);
