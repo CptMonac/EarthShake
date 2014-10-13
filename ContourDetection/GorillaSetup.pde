@@ -164,6 +164,7 @@ void generateNewSet()
     scene1 = true;
     //scene2 = false;
     resetScenes();
+    resetTowerVars();
     
     //instead of pretzel go to ayo's game
     playgame2 =true;
