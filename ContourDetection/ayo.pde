@@ -106,6 +106,7 @@ void drawgame2()
   {
     //Display prompt and comparison ruler
     image(rulerMatchScreen, 0, 0);
+    image(pretzel, 0, 0); //exit option
     fill(200,200,0);
     rect(130, -75, 15, rulerHeight);
     
@@ -139,6 +140,7 @@ void drawgame2()
     elapsedTime = millis();
     float timeDiff = (elapsedTime - startTime)/1000;
     image(countdown, 0, 0);
+    image(pretzel, 0, 0); //exit option
     textSize(25);
 
     if (towerInitial == null)
@@ -157,6 +159,7 @@ void drawgame2()
       float elapsedStopTime = (stopTime - startTime)/1000;
       
       image(towerFallen, 0, 0);
+      image(pretzel, 0, 0); //exit option
       //fill(140, 255, 140);   
       //stroke(0, 255, 0);
       fill(255, 140, 140);
@@ -193,6 +196,7 @@ void drawgame2()
 
       float elapsedStopTime = (finishTime - startTime)/1000; 
       image(towerStanding, 0, 0);
+      image(pretzel, 0, 0); //exit option
       fill(140, 255, 140);   
       stroke(0, 255, 0);
       strokeWeight(3);
@@ -218,6 +222,7 @@ void drawgame2()
   else if (gameStarted && singleTowerCheck() && !shakeStarted)
   {
     image(startScreen, 0, 0);
+    image(pretzel, 0, 0); //exit option
     Contour tempContour = legoTowers.get(0);
     fill(140, 255, 140);   
     stroke(0, 255, 0);

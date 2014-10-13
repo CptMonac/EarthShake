@@ -91,7 +91,7 @@ void trackLegoTowers()
           }
         }
         
-        text("currTwrlen "+currentTowerColors.length+" filtctrs "+filteredContours.size(), 400, 35);
+        //text("currTwrlen "+currentTowerColors.length+" filtctrs "+filteredContours.size(), 400, 35);
         if ((filteredContours.size() <= 2) && (currentTowerColors.length==filteredContours.size())) {
           
           noteArray.add(getBestTowerMatch(tempContour, currentTowerColors[j]));    

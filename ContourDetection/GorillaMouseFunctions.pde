@@ -5,7 +5,9 @@ Boolean exit_pressed()
   float ytop = 0;
   float ybot = 88;
   if ((mouseX >= xleft) && (mouseX <= xright) && (mouseY >= ytop) && (mouseY <= ybot))
+  {
     return true;
+  }
   else
     return false;
 }
