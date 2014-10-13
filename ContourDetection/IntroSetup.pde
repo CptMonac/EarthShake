@@ -185,18 +185,15 @@ void draw()
   opencv.gray();
   opencv.threshold(70);
  
-  pushMatrix();
+  pushMatrix(); //right side of screen
     translate(780, 0);
     image(context.depthImage(),0,0);
-//    if ((playgame1==true) && (playgame2==false))
-//    {
       editedImage = opencv.getOutput();
       trackLegoTowers();
       imageComparison(); //runs blobDebugMode() -> currentTowerColors
-//    }
   popMatrix();
  
-  pushMatrix();
+  pushMatrix(); //left side of screen
     translate(0, 0);
     
     //TURN MAINMENU OFF TO SEE DEBUG COLORS (1/3)
@@ -212,7 +209,6 @@ void draw()
       resetTowerVars();
       
       //reset playgame2's variables
-      gameStarted = false;
       initializeGame();
     }
     
